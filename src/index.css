@@ -1,0 +1,549 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   少儿AI课程网站 · 全局设计令牌 (1920×1080 横屏)
+   配色体系：低饱和高明亮 · 柔和童趣
+   ============================================================ */
+@layer base {
+  :root {
+    /* ---- 主色调：清新蓝 ---- */
+    --kid-blue-50:  #eef7ff;
+    --kid-blue-100: #d6ecff;
+    --kid-blue-200: #a8d6ff;
+    --kid-blue-300: #6ab9ff;
+    --kid-blue-400: #3a9ee8;
+    --kid-blue-500: #2185d0;
+    --kid-blue-600: #1a6eb0;
+
+    /* ---- 暖橙：活力点缀 ---- */
+    --kid-orange-50:  #fff6ed;
+    --kid-orange-100: #fde8cc;
+    --kid-orange-200: #f9c98a;
+    --kid-orange-300: #f5a84d;
+    --kid-orange-400: #f08a24;
+    --kid-orange-500: #e07010;
+
+    /* ---- 嫩绿：正确/完成 ---- */
+    --kid-green-50:  #edfaf4;
+    --kid-green-100: #c7f0de;
+    --kid-green-200: #8adab8;
+    --kid-green-300: #4dc494;
+    --kid-green-400: #27a872;
+    --kid-green-500: #1a8c5c;
+
+    /* ---- 粉紫：装饰/辅助 ---- */
+    --kid-purple-50:  #f5f0ff;
+    --kid-purple-100: #e4d9fe;
+    --kid-purple-200: #c6affe;
+    --kid-purple-300: #a07ff0;
+    --kid-purple-400: #7c5de0;
+    --kid-purple-500: #6244c8;
+
+    /* ---- 柔和红：错误提示 ---- */
+    --kid-red-50:  #fff2f2;
+    --kid-red-100: #ffd6d6;
+    --kid-red-300: #f08080;
+    --kid-red-500: #e05050;
+
+    /* ---- 中性色 ---- */
+    --kid-gray-50:  #f8fafc;
+    --kid-gray-100: #f0f4f8;
+    --kid-gray-200: #e2e8f0;
+    --kid-gray-300: #cbd5e1;
+    --kid-gray-400: #94a3b8;
+    --kid-gray-500: #64748b;
+    --kid-gray-700: #374151;
+    --kid-gray-900: #1e293b;
+
+    /* ---- 背景渐变 ---- */
+    --page-bg: linear-gradient(160deg, #eef7ff 0%, #f3f0ff 40%, #fff6ed 80%, #edfaf4 100%);
+    --hero-bg: linear-gradient(135deg, #4a9ee8 0%, #5ba8f0 35%, #7c5de0 70%, #a07ff0 100%);
+
+    /* ---- 圆角 · 全站大圆角 ---- */
+    --radius-sm:   12px;
+    --radius-md:   18px;
+    --radius-lg:   24px;
+    --radius-xl:   32px;
+    --radius-full: 9999px;
+
+    /* ---- shadcn 变量映射 ---- */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 214 77% 46%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 215 28% 95%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 215 28% 95%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 215 28% 95%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 214 77% 46%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* 圆润童趣无衬线字体 */
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei Rounded',
+                 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--page-bg);
+    color: var(--kid-gray-700);
+    /* 全局字号偏大 */
+    font-size: 16px;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+  html, body, #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+/* ============================================================
+   滚动条优化
+   ============================================================ */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+.scrollbar-kid::-webkit-scrollbar { width: 6px; height: 6px; }
+.scrollbar-kid::-webkit-scrollbar-track { background: var(--kid-blue-50); border-radius: 10px; }
+.scrollbar-kid::-webkit-scrollbar-thumb { background: var(--kid-blue-200); border-radius: 10px; }
+.scrollbar-kid::-webkit-scrollbar-thumb:hover { background: var(--kid-blue-300); }
+
+/* ============================================================
+   多行截断
+   ============================================================ */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* ============================================================
+   少儿按钮 · 五态
+   ============================================================ */
+.kid-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  border-radius: var(--radius-lg);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+}
+/* 默认态 */
+.kid-btn-primary {
+  background: linear-gradient(135deg, #3a9ee8, #2185d0);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(33, 133, 208, 0.28);
+  padding: 14px 32px;
+  font-size: 17px;
+}
+/* 悬浮态 */
+.kid-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4ab0f8, #2a95e0);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(33, 133, 208, 0.38);
+}
+/* 点击态 */
+.kid-btn-primary:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 2px 8px rgba(33, 133, 208, 0.22);
+}
+/* 选中态 */
+.kid-btn-primary.selected {
+  background: linear-gradient(135deg, #1a6eb0, #155a90);
+  box-shadow: 0 0 0 3px rgba(33,133,208,0.3), 0 4px 14px rgba(33,133,208,0.35);
+}
+/* 禁用态 */
+.kid-btn-primary:disabled {
+  background: var(--kid-gray-200);
+  color: var(--kid-gray-400);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 橙色主按钮 */
+.kid-btn-orange {
+  background: linear-gradient(135deg, #f5a84d, #e07010);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(224, 112, 16, 0.28);
+  padding: 14px 32px;
+  font-size: 17px;
+}
+.kid-btn-orange:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f8b860, #ec7e20);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(224, 112, 16, 0.38);
+}
+.kid-btn-orange:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+.kid-btn-orange:disabled {
+  background: var(--kid-gray-200);
+  color: var(--kid-gray-400);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 绿色正确按钮 */
+.kid-btn-green {
+  background: linear-gradient(135deg, #4dc494, #27a872);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(39, 168, 114, 0.28);
+  padding: 14px 32px;
+  font-size: 17px;
+}
+.kid-btn-green:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5dd0a2, #31ba80);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(39, 168, 114, 0.38);
+}
+.kid-btn-green:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* 次要/灰色按钮 */
+.kid-btn-secondary {
+  background: var(--kid-gray-100);
+  color: var(--kid-gray-500);
+  padding: 14px 32px;
+  font-size: 17px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.kid-btn-secondary:hover:not(:disabled) {
+  background: var(--kid-blue-50);
+  color: var(--kid-blue-500);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(33, 133, 208, 0.12);
+}
+.kid-btn-secondary:active:not(:disabled) {
+  transform: translateY(0);
+  background: var(--kid-blue-100);
+}
+
+/* 小号按钮 */
+.kid-btn-sm {
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: var(--radius-md);
+}
+
+/* 图标圆形按钮 */
+.kid-btn-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  padding: 0;
+  font-size: 22px;
+}
+
+/* ============================================================
+   课程卡片 · 五态
+   ============================================================ */
+.kid-course-card {
+  border-radius: var(--radius-lg);
+  background: #fff;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 12px rgba(74, 158, 232, 0.08);
+  transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+/* 悬浮 */
+.kid-course-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--kid-blue-200);
+  box-shadow: 0 16px 40px rgba(33, 133, 208, 0.18);
+}
+/* 点击 */
+.kid-course-card:active {
+  transform: translateY(-2px) scale(0.99);
+  box-shadow: 0 6px 16px rgba(33, 133, 208, 0.14);
+}
+
+/* ============================================================
+   问答选项 · 五态
+   ============================================================ */
+.kid-quiz-option {
+  width: 100%;
+  text-align: left;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  border: 2.5px solid var(--kid-gray-200);
+  background: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--kid-gray-700);
+  transition: all 0.18s ease;
+  cursor: pointer;
+  font-family: inherit;
+}
+/* 悬浮 */
+.kid-quiz-option:hover:not(.answered) {
+  border-color: var(--kid-blue-300);
+  background: var(--kid-blue-50);
+  color: var(--kid-blue-600);
+  transform: translateX(4px);
+}
+/* 选中（未提交）*/
+.kid-quiz-option.selected {
+  border-color: var(--kid-blue-400);
+  background: var(--kid-blue-50);
+  color: var(--kid-blue-600);
+  box-shadow: 0 0 0 3px rgba(33, 133, 208, 0.12);
+}
+/* 正确 */
+.kid-quiz-option.correct {
+  border-color: var(--kid-green-400);
+  background: var(--kid-green-50);
+  color: var(--kid-green-500);
+  box-shadow: 0 0 0 3px rgba(39, 168, 114, 0.15);
+}
+/* 错误 */
+.kid-quiz-option.wrong {
+  border-color: var(--kid-red-300);
+  background: var(--kid-red-50);
+  color: var(--kid-red-500);
+  box-shadow: 0 0 0 3px rgba(224, 80, 80, 0.12);
+}
+/* 禁用（已答对后其余选项）*/
+.kid-quiz-option.disabled {
+  border-color: var(--kid-gray-100);
+  background: var(--kid-gray-50);
+  color: var(--kid-gray-300);
+  cursor: default;
+}
+
+/* ============================================================
+   导航模块标签 · 五态
+   ============================================================ */
+.kid-module-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  font-family: inherit;
+  gap: 3px;
+}
+/* 默认 */
+.kid-module-tab.inactive {
+  background: var(--kid-gray-100);
+  color: var(--kid-gray-500);
+}
+/* 悬浮 */
+.kid-module-tab.inactive:hover {
+  background: var(--kid-blue-50);
+  color: var(--kid-blue-400);
+  transform: translateY(-2px);
+}
+/* 点击 */
+.kid-module-tab:active {
+  transform: translateY(0) scale(0.97);
+}
+/* 激活 */
+.kid-module-tab.active {
+  background: linear-gradient(135deg, #3a9ee8, #2185d0);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(33, 133, 208, 0.32);
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* 已完成模块标签 */
+.kid-module-tab.inactive.completed {
+  background: var(--kid-green-50);
+  color: var(--kid-green-500);
+  border: 1.5px solid var(--kid-green-200);
+}
+.kid-module-tab.inactive.completed:hover {
+  background: var(--kid-green-100);
+  color: var(--kid-green-600);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   底部导航 · 五态
+   ============================================================ */
+.kid-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 8px 4px;
+  font-family: inherit;
+  border-radius: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.kid-nav-btn:hover:not(.nav-active) {
+  background: var(--kid-blue-50);
+}
+.kid-nav-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================================================
+   卡片 · 通用
+   ============================================================ */
+.kid-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid rgba(74, 158, 232, 0.12);
+  box-shadow: 0 2px 16px rgba(33, 133, 208, 0.07);
+  backdrop-filter: blur(8px);
+}
+
+.kid-card-blue {
+  background: linear-gradient(135deg, #eef7ff, #f3f0ff);
+  border: 1.5px solid var(--kid-blue-100);
+}
+
+.kid-card-orange {
+  background: linear-gradient(135deg, #fff6ed, #fef3c7);
+  border: 1.5px solid var(--kid-orange-100);
+}
+
+.kid-card-green {
+  background: linear-gradient(135deg, #edfaf4, #f0fdf8);
+  border: 1.5px solid var(--kid-green-100);
+}
+
+/* ============================================================
+   动画 · 平滑 / 舒缓 / 无快闪
+   ============================================================ */
+@keyframes kid-float-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes kid-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes kid-bounce-in {
+  0%   { opacity: 0; transform: scale(0.8); }
+  60%  { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes kid-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes kid-pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+@keyframes kid-spin {
+  to { transform: rotate(360deg); }
+}
+
+.kid-float-in  { animation: kid-float-in  0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.kid-fade-in   { animation: kid-fade-in   0.32s ease both; }
+.kid-bounce-in { animation: kid-bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.kid-slide-up  { animation: kid-slide-up  0.3s ease both; }
+
+/* 延迟工具类 */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+
+/* 加载转圈 */
+.kid-spin { animation: kid-spin 1s linear infinite; }
+.kid-pulse { animation: kid-pulse-soft 2s ease-in-out infinite; }
+
+/* ============================================================
+   Progress bar
+   ============================================================ */
+.kid-progress-track {
+  background: var(--kid-blue-100);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.kid-progress-fill {
+  background: linear-gradient(90deg, var(--kid-blue-400), var(--kid-blue-500));
+  border-radius: var(--radius-full);
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  height: 100%;
+}
+
+/* ============================================================
+   文字辅助
+   ============================================================ */
+.kid-heading {
+  font-weight: 800;
+  color: var(--kid-gray-900);
+  line-height: 1.3;
+}
+.kid-text-muted {
+  color: var(--kid-gray-400);
+  font-size: 14px;
+}
+.kid-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+}
+.kid-badge-blue {
+  background: var(--kid-blue-100);
+  color: var(--kid-blue-500);
+}
+.kid-badge-orange {
+  background: var(--kid-orange-100);
+  color: var(--kid-orange-500);
+}
+.kid-badge-green {
+  background: var(--kid-green-100);
+  color: var(--kid-green-400);
+}

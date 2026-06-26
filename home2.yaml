@@ -1,0 +1,314 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: 🤖
+          - generic [ref=e11]: 32节完整课程
+        - heading "AI人工智能 启蒙绘本课程" [level=1] [ref=e12]:
+          - text: AI人工智能
+          - text: 启蒙绘本课程
+        - paragraph [ref=e13]:
+          - text: 和团团、点点一起探索人工智能的神奇世界，
+          - text: 从信息到深度学习，系统掌握AI核心知识！
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - generic [ref=e16]: "32"
+            - generic [ref=e17]: 节课程
+          - generic [ref=e18]:
+            - generic [ref=e19]: "7"
+            - generic [ref=e20]: 大模块
+          - generic [ref=e21]:
+            - generic [ref=e22]: "320"
+            - generic [ref=e23]: 道题目
+      - generic [ref=e24]: 🌟
+      - generic [ref=e25]: ✨
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]: 🎯
+        - generic [ref=e30]: 7大模块
+        - generic [ref=e31]: 系统学习闭环
+      - generic [ref=e32]:
+        - generic [ref=e33]: 🎮
+        - generic [ref=e34]: 互动游戏
+        - generic [ref=e35]: 趣味实践体验
+      - generic [ref=e36]:
+        - generic [ref=e37]: 🏅
+        - generic [ref=e38]: 学习勋章
+        - generic [ref=e39]: 成就激励成长
+    - generic [ref=e40]:
+      - heading "全部课程" [level=2] [ref=e41]
+      - paragraph [ref=e42]: 点击课程卡片，开始探索AI世界 ✨
+    - generic [ref=e43]:
+      - button "小侦探找线索 第01课 点击开始学习 → 小侦探找线索 信息从哪里来" [ref=e44] [cursor=pointer]:
+        - generic [ref=e45]:
+          - img "小侦探找线索" [ref=e46]
+          - generic [ref=e47]: 第01课
+          - generic [ref=e49]: 点击开始学习 →
+        - generic [ref=e50]:
+          - generic [ref=e51]: 小侦探找线索
+          - generic [ref=e52]: 信息从哪里来
+      - button "开关城的两兄弟 第02课 点击开始学习 → 开关城的两兄弟 信息从哪里来" [ref=e53] [cursor=pointer]:
+        - generic [ref=e54]:
+          - img "开关城的两兄弟" [ref=e55]
+          - generic [ref=e56]: 第02课
+          - generic [ref=e58]: 点击开始学习 →
+        - generic [ref=e59]:
+          - generic [ref=e60]: 开关城的两兄弟
+          - generic [ref=e61]: 信息从哪里来
+      - button "小邮差的密码信 第03课 点击开始学习 → 小邮差的密码信 信息从哪里来" [ref=e62] [cursor=pointer]:
+        - generic [ref=e63]:
+          - img "小邮差的密码信" [ref=e64]
+          - generic [ref=e65]: 第03课
+          - generic [ref=e67]: 点击开始学习 →
+        - generic [ref=e68]:
+          - generic [ref=e69]: 小邮差的密码信
+          - generic [ref=e70]: 信息从哪里来
+      - button "仓库管理员机器人 第04课 点击开始学习 → 仓库管理员机器人 信息从哪里来" [ref=e71] [cursor=pointer]:
+        - generic [ref=e72]:
+          - img "仓库管理员机器人" [ref=e73]
+          - generic [ref=e74]: 第04课
+          - generic [ref=e76]: 点击开始学习 →
+        - generic [ref=e77]:
+          - generic [ref=e78]: 仓库管理员机器人
+          - generic [ref=e79]: 信息从哪里来
+      - button "小方块拼出大世界 第05课 点击开始学习 → 小方块拼出大世界 颜色与像素的秘密" [ref=e80] [cursor=pointer]:
+        - generic [ref=e81]:
+          - img "小方块拼出大世界" [ref=e82]
+          - generic [ref=e83]: 第05课
+          - generic [ref=e85]: 点击开始学习 →
+        - generic [ref=e86]:
+          - generic [ref=e87]: 小方块拼出大世界
+          - generic [ref=e88]: 颜色与像素的秘密
+      - button "红绿蓝灯的合唱团 第06课 点击开始学习 → 红绿蓝灯的合唱团 颜色与像素的秘密" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]:
+          - img "红绿蓝灯的合唱团" [ref=e91]
+          - generic [ref=e92]: 第06课
+          - generic [ref=e94]: 点击开始学习 →
+        - generic [ref=e95]:
+          - generic [ref=e96]: 红绿蓝灯的合唱团
+          - generic [ref=e97]: 颜色与像素的秘密
+      - button "行李箱装不下啦 第07课 点击开始学习 → 行李箱装不下啦 颜色与像素的秘密" [ref=e98] [cursor=pointer]:
+        - generic [ref=e99]:
+          - img "行李箱装不下啦" [ref=e100]
+          - generic [ref=e101]: 第07课
+          - generic [ref=e103]: 点击开始学习 →
+        - generic [ref=e104]:
+          - generic [ref=e105]: 行李箱装不下啦
+          - generic [ref=e106]: 颜色与像素的秘密
+      - button "雾气里的照片 第08课 点击开始学习 → 雾气里的照片 颜色与像素的秘密" [ref=e107] [cursor=pointer]:
+        - generic [ref=e108]:
+          - img "雾气里的照片" [ref=e109]
+          - generic [ref=e110]: 第08课
+          - generic [ref=e112]: 点击开始学习 →
+        - generic [ref=e113]:
+          - generic [ref=e114]: 雾气里的照片
+          - generic [ref=e115]: 颜色与像素的秘密
+      - button "红灯停绿灯行 第09课 点击开始学习 → 红灯停绿灯行 算法就是食谱" [ref=e116] [cursor=pointer]:
+        - generic [ref=e117]:
+          - img "红灯停绿灯行" [ref=e118]
+          - generic [ref=e119]: 第09课
+          - generic [ref=e121]: 点击开始学习 →
+        - generic [ref=e122]:
+          - generic [ref=e123]: 红灯停绿灯行
+          - generic [ref=e124]: 算法就是食谱
+      - button "会数数的刷牙机器人 第10课 点击开始学习 → 会数数的刷牙机器人 算法就是食谱" [ref=e125] [cursor=pointer]:
+        - generic [ref=e126]:
+          - img "会数数的刷牙机器人" [ref=e127]
+          - generic [ref=e128]: 第10课
+          - generic [ref=e130]: 点击开始学习 →
+        - generic [ref=e131]:
+          - generic [ref=e132]: 会数数的刷牙机器人
+          - generic [ref=e133]: 算法就是食谱
+      - button "做披萨的流水线 第11课 点击开始学习 → 做披萨的流水线 算法就是食谱" [ref=e134] [cursor=pointer]:
+        - generic [ref=e135]:
+          - img "做披萨的流水线" [ref=e136]
+          - generic [ref=e137]: 第11课
+          - generic [ref=e139]: 点击开始学习 →
+        - generic [ref=e140]:
+          - generic [ref=e141]: 做披萨的流水线
+          - generic [ref=e142]: 算法就是食谱
+      - button "找bug的小修理工 第12课 点击开始学习 → 找bug的小修理工 算法就是食谱" [ref=e143] [cursor=pointer]:
+        - generic [ref=e144]:
+          - img "找bug的小修理工" [ref=e145]
+          - generic [ref=e146]: 第12课
+          - generic [ref=e148]: 点击开始学习 →
+        - generic [ref=e149]:
+          - generic [ref=e150]: 找bug的小修理工
+          - generic [ref=e151]: 算法就是食谱
+      - button "袜子大整理 第13课 点击开始学习 → 袜子大整理 机器学习的秘密" [ref=e152] [cursor=pointer]:
+        - generic [ref=e153]:
+          - img "袜子大整理" [ref=e154]
+          - generic [ref=e155]: 第13课
+          - generic [ref=e157]: 点击开始学习 →
+        - generic [ref=e158]:
+          - generic [ref=e159]: 袜子大整理
+          - generic [ref=e160]: 机器学习的秘密
+      - button "特征放大镜 第14课 点击开始学习 → 特征放大镜 机器学习的秘密" [ref=e161] [cursor=pointer]:
+        - generic [ref=e162]:
+          - img "特征放大镜" [ref=e163]
+          - generic [ref=e164]: 第14课
+          - generic [ref=e166]: 点击开始学习 →
+        - generic [ref=e167]:
+          - generic [ref=e168]: 特征放大镜
+          - generic [ref=e169]: 机器学习的秘密
+      - button "猜一猜明天带伞吗 第15课 点击开始学习 → 猜一猜明天带伞吗 机器学习的秘密" [ref=e170] [cursor=pointer]:
+        - generic [ref=e171]:
+          - img "猜一猜明天带伞吗" [ref=e172]
+          - generic [ref=e173]: 第15课
+          - generic [ref=e175]: 点击开始学习 →
+        - generic [ref=e176]:
+          - generic [ref=e177]: 猜一猜明天带伞吗
+          - generic [ref=e178]: 机器学习的秘密
+      - button "背答案的鹦鹉 第16课 点击开始学习 → 背答案的鹦鹉 机器学习的秘密" [ref=e179] [cursor=pointer]:
+        - generic [ref=e180]:
+          - img "背答案的鹦鹉" [ref=e181]
+          - generic [ref=e182]: 第16课
+          - generic [ref=e184]: 点击开始学习 →
+        - generic [ref=e185]:
+          - generic [ref=e186]: 背答案的鹦鹉
+          - generic [ref=e187]: 机器学习的秘密
+      - button "学校里的AI同学 第17课 点击开始学习 → 学校里的AI同学 模块E｜AI是怎么学会的" [ref=e188] [cursor=pointer]:
+        - generic [ref=e189]:
+          - img "学校里的AI同学" [ref=e190]
+          - generic [ref=e191]: 第17课
+          - generic [ref=e193]: 点击开始学习 →
+        - generic [ref=e194]:
+          - generic [ref=e195]: 学校里的AI同学
+          - generic [ref=e196]: 模块E｜AI是怎么学会的
+      - button "小狗学握手 第18课 点击开始学习 → 小狗学握手 模块E｜AI是怎么学会的" [ref=e197] [cursor=pointer]:
+        - generic [ref=e198]:
+          - img "小狗学握手" [ref=e199]
+          - generic [ref=e200]: 第18课
+          - generic [ref=e202]: 点击开始学习 →
+        - generic [ref=e203]:
+          - generic [ref=e204]: 小狗学握手
+          - generic [ref=e205]: 模块E｜AI是怎么学会的
+      - button "贴标签的老师 第19课 点击开始学习 → 贴标签的老师 模块E｜AI是怎么学会的" [ref=e206] [cursor=pointer]:
+        - generic [ref=e207]:
+          - img "贴标签的老师" [ref=e208]
+          - generic [ref=e209]: 第19课
+          - generic [ref=e211]: 点击开始学习 →
+        - generic [ref=e212]:
+          - generic [ref=e213]: 贴标签的老师
+          - generic [ref=e214]: 模块E｜AI是怎么学会的
+      - button "没有标签的玩具箱 第20课 点击开始学习 → 没有标签的玩具箱 模块E｜AI是怎么学会的" [ref=e215] [cursor=pointer]:
+        - generic [ref=e216]:
+          - img "没有标签的玩具箱" [ref=e217]
+          - generic [ref=e218]: 第20课
+          - generic [ref=e220]: 点击开始学习 →
+        - generic [ref=e221]:
+          - generic [ref=e222]: 没有标签的玩具箱
+          - generic [ref=e223]: 模块E｜AI是怎么学会的
+      - button "点亮聪明灯 第21课 点击开始学习 → 点亮聪明灯 模块F｜神经网络大揭秘" [ref=e224] [cursor=pointer]:
+        - generic [ref=e225]:
+          - img "点亮聪明灯" [ref=e226]
+          - generic [ref=e227]: 第21课
+          - generic [ref=e229]: 点击开始学习 →
+        - generic [ref=e230]:
+          - generic [ref=e231]: 点亮聪明灯
+          - generic [ref=e232]: 模块F｜神经网络大揭秘
+      - button "从边边角角到整张脸 第22课 点击开始学习 → 从边边角角到整张脸 模块F｜神经网络大揭秘" [ref=e233] [cursor=pointer]:
+        - generic [ref=e234]:
+          - img "从边边角角到整张脸" [ref=e235]
+          - generic [ref=e236]: 第22课
+          - generic [ref=e238]: 点击开始学习 →
+        - generic [ref=e239]:
+          - generic [ref=e240]: 从边边角角到整张脸
+          - generic [ref=e241]: 模块F｜神经网络大揭秘
+      - button "音量旋钮决定谁更重要 第23课 点击开始学习 → 音量旋钮决定谁更重要 模块F｜神经网络大揭秘" [ref=e242] [cursor=pointer]:
+        - generic [ref=e243]:
+          - img "音量旋钮决定谁更重要" [ref=e244]
+          - generic [ref=e245]: 第23课
+          - generic [ref=e247]: 点击开始学习 →
+        - generic [ref=e248]:
+          - generic [ref=e249]: 音量旋钮决定谁更重要
+          - generic [ref=e250]: 模块F｜神经网络大揭秘
+      - button "慢慢调准的小箭头 第24课 点击开始学习 → 慢慢调准的小箭头 模块F｜神经网络大揭秘" [ref=e251] [cursor=pointer]:
+        - generic [ref=e252]:
+          - img "慢慢调准的小箭头" [ref=e253]
+          - generic [ref=e254]: 第24课
+          - generic [ref=e256]: 点击开始学习 →
+        - generic [ref=e257]:
+          - generic [ref=e258]: 慢慢调准的小箭头
+          - generic [ref=e259]: 模块F｜神经网络大揭秘
+      - button "会接话的鹦鹉2.0 第25课 点击开始学习 → 会接话的鹦鹉2.0 模块G｜语言与创造力" [ref=e260] [cursor=pointer]:
+        - generic [ref=e261]:
+          - img "会接话的鹦鹉2.0" [ref=e262]
+          - generic [ref=e263]: 第25课
+          - generic [ref=e265]: 点击开始学习 →
+        - generic [ref=e266]:
+          - generic [ref=e267]: 会接话的鹦鹉2.0
+          - generic [ref=e268]: 模块G｜语言与创造力
+      - button "给AI的清楚指令 第26课 点击开始学习 → 给AI的清楚指令 模块G｜语言与创造力" [ref=e269] [cursor=pointer]:
+        - generic [ref=e270]:
+          - img "给AI的清楚指令" [ref=e271]
+          - generic [ref=e272]: 第26课
+          - generic [ref=e274]: 点击开始学习 →
+        - generic [ref=e275]:
+          - generic [ref=e276]: 给AI的清楚指令
+          - generic [ref=e277]: 模块G｜语言与创造力
+      - button "从乱点点到清图画 第27课 点击开始学习 → 从乱点点到清图画 模块G｜语言与创造力" [ref=e278] [cursor=pointer]:
+        - generic [ref=e279]:
+          - img "从乱点点到清图画" [ref=e280]
+          - generic [ref=e281]: 第27课
+          - generic [ref=e283]: 点击开始学习 →
+        - generic [ref=e284]:
+          - generic [ref=e285]: 从乱点点到清图画
+          - generic [ref=e286]: 模块G｜语言与创造力
+      - button "会编故事的机器人 第28课 点击开始学习 → 会编故事的机器人 模块G｜语言与创造力" [ref=e287] [cursor=pointer]:
+        - generic [ref=e288]:
+          - img "会编故事的机器人" [ref=e289]
+          - generic [ref=e290]: 第28课
+          - generic [ref=e292]: 点击开始学习 →
+        - generic [ref=e293]:
+          - generic [ref=e294]: 会编故事的机器人
+          - generic [ref=e295]: 模块G｜语言与创造力
+      - button "不要随便给陌生人 第29课 点击开始学习 → 不要随便给陌生人 模块H｜AI伦理与未来" [ref=e296] [cursor=pointer]:
+        - generic [ref=e297]:
+          - img "不要随便给陌生人" [ref=e298]
+          - generic [ref=e299]: 第29课
+          - generic [ref=e301]: 点击开始学习 →
+        - generic [ref=e302]:
+          - generic [ref=e303]: 不要随便给陌生人
+          - generic [ref=e304]: 模块H｜AI伦理与未来
+      - button "同样努力却分数不同 第30课 点击开始学习 → 同样努力却分数不同 模块H｜AI伦理与未来" [ref=e305] [cursor=pointer]:
+        - generic [ref=e306]:
+          - img "同样努力却分数不同" [ref=e307]
+          - generic [ref=e308]: 第30课
+          - generic [ref=e310]: 点击开始学习 →
+        - generic [ref=e311]:
+          - generic [ref=e312]: 同样努力却分数不同
+          - generic [ref=e313]: 模块H｜AI伦理与未来
+      - button "超级搭档 第31课 点击开始学习 → 超级搭档 模块H｜AI伦理与未来" [ref=e314] [cursor=pointer]:
+        - generic [ref=e315]:
+          - img "超级搭档" [ref=e316]
+          - generic [ref=e317]: 第31课
+          - generic [ref=e319]: 点击开始学习 →
+        - generic [ref=e320]:
+          - generic [ref=e321]: 超级搭档
+          - generic [ref=e322]: 模块H｜AI伦理与未来
+      - button "小小AI研究员毕业啦 第32课 点击开始学习 → 小小AI研究员毕业啦 模块H｜AI伦理与未来" [ref=e323] [cursor=pointer]:
+        - generic [ref=e324]:
+          - img "小小AI研究员毕业啦" [ref=e325]
+          - generic [ref=e326]: 第32课
+          - generic [ref=e328]: 点击开始学习 →
+        - generic [ref=e329]:
+          - generic [ref=e330]: 小小AI研究员毕业啦
+          - generic [ref=e331]: 模块H｜AI伦理与未来
+  - navigation [ref=e334]:
+    - button "🏠 首页" [ref=e335] [cursor=pointer]:
+      - generic [ref=e336]: 🏠
+      - generic [ref=e337]: 首页
+    - button "🎬 影院" [ref=e339] [cursor=pointer]:
+      - generic [ref=e340]: 🎬
+      - generic [ref=e341]: 影院
+    - button "🎮 游戏" [ref=e342] [cursor=pointer]:
+      - generic [ref=e343]: 🎮
+      - generic [ref=e344]: 游戏
+    - button "📚 档案" [ref=e345] [cursor=pointer]:
+      - generic [ref=e346]: 📚
+      - generic [ref=e347]: 档案
+    - button "👨‍👩‍👧 家长" [ref=e348] [cursor=pointer]:
+      - generic [ref=e349]: 👨‍👩‍👧
+      - generic [ref=e350]: 家长

@@ -1,0 +1,10 @@
+- heading "🤖 开关城的两兄弟 ⚀/h1> 游戏 1：抢修开关城 游戏 2：黑白卡片发消息 点点提示：看刀就亮，看刀就灭＀/h2> 目标指令＀ 0 1 1 💡 点击卡片切换 0 咀1，点亮正确的路灯吧！" [level=1] [ref=e2]:
+  - text: 🤖 开关城的两兄弟 ⚀/h1>
+  - generic [ref=e3]:
+    - button "游戏 1：抢修开关城" [ref=e4] [cursor=pointer]
+    - button "游戏 2：黑白卡片发消息" [ref=e5] [cursor=pointer]
+  - heading "点点提示：看刀就亮，看刀就灭＀/h2> 目标指令＀ 0 1 1 💡 点击卡片切换 0 咀1，点亮正确的路灯吧！" [level=2] [ref=e7]:
+    - text: 点点提示：看刀就亮，看刀就灭＀/h2>
+    - generic [ref=e8]: 目标指令＀ 0 1 1
+    - generic [ref=e9]: 💡
+    - paragraph [ref=e10]: 点击卡片切换 0 咀1，点亮正确的路灯吧！
