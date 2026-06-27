@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>超级搭档互动游乐围</title>
+    <title>超级搭档互动游乐场</title>
     <script src="../../libs/libs/tailwind.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -101,7 +101,7 @@
             <div class="relative">
                 <div class="absolute -inset-4 bg-yellow-300 rounded-full blur-xl opacity-30 animate-pulse"></div>
                 <h1 class="relative text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 drop-shadow-sm pb-2">
-                    超级搭档游乐围                </h1>
+                    超级搭档游乐场                </h1>
             </div>
             
             <p class="text-xl text-gray-600 font-medium leading-relaxed">
@@ -112,19 +112,19 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-8">
                 <button onclick="startGame(1)" class="flex flex-col items-center p-8 bg-white border-4 border-orange-200 rounded-3xl card-shadow hover:scale-105 hover:border-orange-400 transition-all group cursor-pointer">
                     <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform">🤖👦</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-2">分工大作成</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">分工大作战</h3>
                     <p class="text-gray-500 text-sm">点点算得快，团团做决定！</p>
                 </button>
 
                 <button onclick="startGame(2)" class="flex flex-col items-center p-8 bg-white border-4 border-green-200 rounded-3xl card-shadow hover:scale-105 hover:border-green-400 transition-all group cursor-pointer">
                     <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform">🗺️⬆︀</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-2">寻宝小指什</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">寻宝小指南</h3>
                     <p class="text-gray-500 text-sm">发指令拿星星，试一试改一改！</p>
                 </button>
 
                 <button onclick="startGame(3)" class="flex flex-col items-center p-8 bg-white border-4 border-purple-200 rounded-3xl card-shadow hover:scale-105 hover:border-purple-400 transition-all group cursor-pointer">
                     <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform">🍎🤖</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-2">点点帮帮忀</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">点点帮帮侠</h3>
                     <p class="text-gray-500 text-sm">人类定规则，AI来执行！</p>
                 </button>
             </div>
@@ -168,7 +168,7 @@
         <!-- View: Game 2 -->
         <div id="view-game2" class="w-full max-w-3xl flex-col items-center space-y-6 hidden-view animate-slide-up">
             <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第关：试一试，改一攀</h2>
+                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第2关：试一试，改一改</h2>
                 <p class="text-gray-600 text-lg">给点点发指令，拿到星星。走错没关系，可以撤销重来：</p>
             </div>
 
@@ -185,7 +185,7 @@
                     <div class="w-full bg-blue-50 p-4 rounded-2xl border-2 border-blue-200">
                         <h3 class="font-bold text-gray-700 mb-2 text-center">指令序列</h3>
                         <div id="g2-queue" class="flex flex-wrap gap-2 justify-center min-h-[3rem] p-2 bg-white rounded-lg border-2 border-gray-100 items-center">
-                            <span class="text-gray-400 text-sm">点击方向键添劀</span>
+                            <span class="text-gray-400 text-sm">点击方向键添加</span>
                         </div>
                     </div>
 
@@ -209,7 +209,7 @@
             <div id="g2-success" class="fixed inset-0 z-50 items-center justify-center bg-black/40 backdrop-blur-sm hidden-view">
                 <div class="text-center p-8 max-w-md bg-white rounded-3xl border-4 border-green-400 animate-fade-in-zoom flex flex-col items-center">
                     <div class="text-7xl mb-4 animate-spin-slow">🌟</div>
-                    <h3 class="text-3xl font-bold text-green-500 mb-2">越来越像样了：</h3>
+                    <h3 class="text-3xl font-bold text-green-500 mb-2">越来越像样了！</h3>
                     <p class="text-gray-600 mb-6 text-lg">你给出的指令非常准确，点点成功拿到了星星：</p>
                     <button onclick="endGame()" class="btn btn-primary w-full">进入复盘</button>
                 </div>
@@ -226,8 +226,8 @@
         <!-- View: Game 3 -->
         <div id="view-game3" class="w-full max-w-3xl flex-col items-center space-y-6 hidden-view animate-fade-in-zoom">
             <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第关：人机协作大战成</h2>
-                <p class="text-gray-600 text-lg">人类决定规则，AI快速执行，有后由人类确认 </p>
+                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第3关：人机协作大战</h2>
+                <p class="text-gray-600 text-lg">人类决定规则，AI快速执行，最后由人类确认 </p>
             </div>
 
             <div class="bg-white rounded-3xl card-shadow border-4 border-blue-100 p-6 w-full relative min-h-[400px] flex flex-col">
@@ -263,10 +263,10 @@
                 <!-- Phase 3: Confirm Box -->
                 <div id="g3-phase-confirm" class="mt-6 flex-col items-center bg-orange-50 p-6 rounded-2xl border-2 border-orange-200 hidden-view animate-slide-up">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2">🧠 团团 (人类)：请确认结果</h3>
-                    <p class="text-gray-600 mb-4 text-center">点点已经找完了！人类是有终把关人，棕查一下找对了吗？</p>
+                    <p class="text-gray-600 mb-4 text-center">点点已经找完了！人类是最终把关人，检查一下找对了吗？</p>
                     <div class="flex gap-4">
                         <button onclick="g3Reset()" class="btn btn-outline">找错了，重来</button>
-                        <button onclick="endGame()" class="btn btn-secondary">棕查无误，确认！✅</button>
+                        <button onclick="endGame()" class="btn btn-secondary">检查无误，确认！✅</button>
                     </div>
                 </div>
             </div>
@@ -282,7 +282,7 @@
                 <ul class="space-y-3 text-lg text-gray-700 font-medium pl-4">
                     <li>✅今天的关键词：strong>人机协作</strong></li>
                     <li>✅规律：strong>先想规则，再动手</strong></li>
-                    <li>✅秘诀：strong>试一试，再改一攀</strong></li>
+                    <li>✅秘诀：strong>试一试，再改一改</strong></li>
                 </ul>
                 <div class="mt-6 p-4 bg-white rounded-xl border border-gray-200 italic text-gray-600 text-center">
                     "团团把今天的小作品收进档案袋，贴上『第31课』。点点胸口亮起一颗小星星：今天你学会了新本领！                 </div>

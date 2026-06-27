@@ -227,7 +227,7 @@
 </head>
 <body>
 
-    <h1>🛡︀点点和团团的隐私防御城</h1>
+    <h1>🛡点点和团团的隐私防御城</h1>
 
     <div class="nav-buttons">
         <button id="btn-home" class="active" onclick="showHome()">🏠 训练营主项</button>
@@ -239,11 +239,11 @@
     <!-- 欢迎主页 -->
     <div id="home" class="game-container active">
         <div class="welcome-content">
-            <div class="welcome-pic">🐻🛡︀</div>
+            <div class="welcome-pic"><img src="../../characters/characters/tuantuan.png" alt="团团" style="width:80px;height:100px;" /> <img src="../../characters/characters/diandian.png" alt="点点" style="width:70px;height:80px;" /></div>
             <h2 style="color: var(--primary); font-size: 28px;">欢迎来到第29课训练营：</h2>
             <p style="font-size: 20px; line-height: 1.6;">今天我们要学习有重要的魔法：<br><strong>不要随便给陌生人你的隐私：</strong></p>
             <p style="color: #666; margin-bottom: 40px;">请在上方选择适合你的关卡，或者直接点击下方按钮开始！</p>
-            <button class="choice-btn btn-safe" onclick="switchGame(1)">🚀 直接开始第一兀</button>
+            <button class="choice-btn btn-safe" onclick="switchGame(1)">🚀 直接开始第一关</button>
         </div>
     </div>
 
@@ -276,11 +276,11 @@
     <div id="game2" class="game-container">
         <div id="g2-play-area">
             <div class="score-board" id="g2-score">进度：☆☆☆☆☆</div>
-            <h2>🛡︀游戏2：面对陌生人的提问</h2>
+            <h2>🛡游戏2：面对陌生人的提问</h2>
             <div id="g2-img" class="pic-container">📱</div>
             <div id="g2-chat" class="chat-bubble">有陌生人给小熊发消息啦！</div>
             <div>
-                <button class="choice-btn btn-danger" onclick="checkG2(true)">🛡︀举起盾牌拒绝：</button>
+                <button class="choice-btn btn-danger" onclick="checkG2(true)">🛡举起盾牌拒绝！</button>
                 <button class="choice-btn btn-safe" onclick="checkG2(false)">💬 礼貌地回答</button>
             </div>
             <div id="g2-feedback" class="feedback"></div>
@@ -388,10 +388,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // --- 游戏 1：分类卡 ---
 const g1Items = [
-            { text: "你的家庭详细地址：, isSafe: false, img: "🏠" },
+            { text: "你的家庭详细地址？", isSafe: false, img: "🏠" },
             { text: "你有喜欢的水果？", isSafe: true, img: "🍎" },
             { text: "爸爸妈妈的电话号码？", isSafe: false, img: "📱" },
-            { text: "你真实的姓名：, isSafe: false, img: "🆔" },
+            { text: "你真实的姓名？", isSafe: false, img: "🆔" },
             { text: "今天看到了一只可爱的小狗", isSafe: true, img: "🐶" }
         ];
         let g1Index = 0; let g1Score = 0;
@@ -423,10 +423,10 @@ const g1Items = [
                 feedbackEl.innerText = "🌟 答对啦！点点给你点赞！";
                 feedbackEl.style.color = "green";
                 animateElement('g1-img', 'bounce');
-                createParticles('✅);
+                createParticles('✅');
                 g1Score++;
             } else {
-                feedbackEl.innerText = "❌哎呀，不对哦！再仔细想想：;
+                feedbackEl.innerText = "❌哎呀，不对哦！再仔细想想！";
                 feedbackEl.style.color = "red";
                 animateElement('g1-img', 'shake');
             }
@@ -451,9 +451,9 @@ const g1Items = [
         // --- 游戏 2：盾牀---
 const g2Chats = [
             { msg: "小朋友，你一个人在家吗？", isDanger: true, img: "🐺" },
-            { msg: "你也喜欢玩积木吗：, isDanger: false, img: "🧩" },
+            { msg: "你也喜欢玩积木吗？", isDanger: false, img: "🧩" },
             { msg: "告诉我你的游戏密码，我帮你送皮肤！", isDanger: true, img: "🎮" },
-            { msg: "我有个礼物，把你家地址发给我吧：, isDanger: true, img: "🎁" }
+            { msg: "我有个礼物，把你家地址发给我吧！", isDanger: true, img: "🎁" }
         ];
         let g2Index = 0; let g2Score = 0;
 
@@ -481,13 +481,13 @@ const g2Chats = [
             const feedbackEl = document.getElementById('g2-feedback');
 
             if (userUsesShield === g2Chats[g2Index].isDanger) {
-                feedbackEl.innerText = userUsesShield ? "🛡︀成功防御！保护了隐私： : "😊 礼貌聊天，这是安全的：;
+                feedbackEl.innerText = userUsesShield ? "🛡成功防御！保护了隐私！" : "😊 礼貌聊天，这是安全的！";
                 feedbackEl.style.color = "green";
                 animateElement('g2-img', 'bounce');
-                createParticles('✅);
+                createParticles('✅');
                 g2Score++;
             } else {
-                feedbackEl.innerText = userUsesShield ? "❌只是聊爱好，不用紧张： : "🚨 危险！快举起盾牌！他在要隐私：;
+                feedbackEl.innerText = userUsesShield ? "❌只是聊爱好，不用紧张！" : "🚨 危险！快举起盾牌！他在要隐私！";
                 feedbackEl.style.color = "red";
                 animateElement('g2-img', 'shake');
             }
@@ -510,9 +510,9 @@ const g2Chats = [
 
         // --- 游戏 3：数据拦成---
 const g3Scenarios = [
-            { text: "我叫小熊，在森林小学三年级读乀..", isDanger: true, img: "🏫" },
-            { text: "我今天画了一幅很漂亮的水彩画：, isDanger: false, img: "🎨" },
-            { text: "我家的大门密码是 654321：, isDanger: true, img: "🔢" }
+            { text: "我叫小熊，在森林小学三年级读书。", isDanger: true, img: "🏫" },
+            { text: "我今天画了一幅很漂亮的水彩画。", isDanger: false, img: "🎨" },
+            { text: "我家的大门密码是 654321。", isDanger: true, img: "🔢" }
         ];
         let g3Index = 0; let g3Score = 0;
         let g3Timer; let g3Progress = 0; let isG3Running = false;
@@ -531,7 +531,7 @@ const g3Scenarios = [
             document.getElementById('g3-progress').style.width = "0%";
             document.getElementById('g3-feedback').innerText = "";
             document.getElementById('g3-btn-start').disabled = false;
-            document.getElementById('g3-btn-start').innerText = "▶️ 开始输兀";
+            document.getElementById('g3-btn-start').innerText = "▶️ 开始输入";
             document.getElementById('g3-btn-intercept').disabled = true;
             isG3Running = false;
             clearInterval(g3Timer);
@@ -543,11 +543,11 @@ const g3Scenarios = [
             isG3Running = true; g3Progress = 0;
             document.getElementById('g3-btn-start').disabled = true;
             document.getElementById('g3-btn-intercept').disabled = false;
-            document.getElementById('g3-feedback').innerText = "数据发送中...快看内容：;
+            document.getElementById('g3-feedback').innerText = "数据发送中...快看内容！";
             document.getElementById('g3-feedback').style.color = "var(--primary)";
             
             const currentScenario = g3Scenarios[g3Index];
-            document.getElementById('g3-msg').innerText = "正在输入： + currentScenario.text;
+            document.getElementById('g3-msg').innerText = "正在输入：" + currentScenario.text;
             document.getElementById('g3-img').innerHTML = currentScenario.img;
             animateElement('g3-img', 'pop');
 
@@ -576,10 +576,10 @@ const g3Scenarios = [
             const feedbackEl = document.getElementById('g3-feedback');
 
             if (isDanger && userIntercepted) {
-                feedbackEl.innerText = "🛑 拦截成功！数据发出就收不回啦：;
+                feedbackEl.innerText = "🛑 拦截成功！数据发出就收不回啦！";
                 feedbackEl.style.color = "green";
                 animateElement('g3-img', 'bounce');
-                createParticles('⚪);
+                createParticles('⚪');
                 g3Score++;
             } else if (isDanger && !userIntercepted) {
                 feedbackEl.innerText = "💥 糟糕！隐私发出去了！";
@@ -593,7 +593,7 @@ const g3Scenarios = [
                 feedbackEl.innerText = "✅发送成功！安全的分享是可以的！";
                 feedbackEl.style.color = "green";
                 animateElement('g3-img', 'bounce');
-                createParticles('✅);
+                createParticles('✅');
                 g3Score++;
             }
 
@@ -613,7 +613,7 @@ const g3Scenarios = [
         function showG3Result() {
             document.getElementById('g3-play-area').style.display = 'none';
             document.getElementById('g3-result-area').style.display = 'block';
-            document.getElementById('g3-final-score').innerText = `成功拦截：{g3Score} / ${g3Scenarios.length} 次`;
+            document.getElementById('g3-final-score').innerText = `成功拦截： ${g3Scenarios.length} 次`;
             document.getElementById('g3-final-msg').innerText = getFeedbackMessage(g3Score, g3Scenarios.length);
             if(g3Score === g3Scenarios.length) createParticles('👑');
         }
