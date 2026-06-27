@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第30课：同样努力却分数不合- AI公平实验室</title>
+    <title>第30课：同样努力却分数不同- AI公平实验室</title>
     <script src="../../libs/libs/tailwind.min.js"></script>
     <style>
         @keyframes popIn {
@@ -47,7 +47,7 @@
                 <div class="text-center mb-6">
                     <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第1 关(3-5岁)</span>
                     <h2 class="text-xl font-bold text-gray-700">能量打气筒🎈</h2>
-                    <p class="text-gray-500 text-sm">蓝衣点点的分数气球没气了：<br/><strong class="text-yellow-600">不断点击充气，让他们的气球一样大！</strong></p>
+                    <p class="text-gray-500 text-sm">蓝衣点点的分数气球没气了！<br/><strong class="text-yellow-600">不断点击充气，让他们的气球一样大！</strong></p>
                 </div>
 
                 <div class="flex justify-around items-end bg-sky-50 p-6 rounded-2xl h-56 relative border-2 border-sky-100">
@@ -80,20 +80,20 @@
                 </div>
 
                 <button id="pumpBtn" onclick="pumpEnergy()" class="mt-4 w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black text-xl py-4 rounded-xl shadow-[0_6px_0_#b45309] active:shadow-[0_0px_0_#b45309] active:translate-y-2 transition-all flex items-center justify-center gap-2">
-                    ⚪注入公平能量：                </button>
+                    ⚪注入公平能量！</button>
 
                 <div id="msg1" class="hidden text-center mt-4 pop-in">
                     <p class="text-green-500 font-bold text-xl mb-3">🎉 满分啦！气球一样大了！</p>
-                    <button onclick="nextLevel(2)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 w-full">进入下一兀👉</button>
+                    <button onclick="nextLevel(2)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 w-full">进入下一关👉</button>
                 </div>
             </div>
 
             <!-- ====== 关卡 2 ====== -->
             <div id="level2" class="hidden space-y-4 pop-in">
                 <div class="text-center mb-6">
-                    <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第2 兀(6-7岁)</span>
+                    <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第2关(6-7岁)</span>
                     <h2 class="text-xl font-bold text-gray-700">喂养AI大脑 🧠</h2>
-                    <p class="text-gray-500 text-sm">AI只认识蓝衣服。点击下方按钮<br/>给AI喂食 <strong class="text-blue-500">蓝色</strong> 数据直到平衡：</p>
+                    <p class="text-gray-500 text-sm">AI只认识蓝衣服。点击下方按钮<br/>给AI喂食 <strong class="text-blue-500">蓝色</strong> 数据直到平衡！</p>
                 </div>
 
                 <div class="bg-gray-50 p-5 rounded-2xl text-center relative border-2 border-gray-100">
@@ -101,7 +101,7 @@
                     
                     <div class="space-y-4 mt-6">
                         <div class="flex items-center">
-                            <span class="w-16 text-sm font-bold text-gray-600">线衣有</span>
+                            <span class="w-16 text-sm font-bold text-gray-600">红衣有</span>
                             <div class="flex-1 bg-gray-200 h-6 rounded-full overflow-hidden mx-2 shadow-inner">
                                 <div class="bg-red-400 h-full w-[80%] flex items-center justify-end pr-3 text-xs text-white font-bold">8个</div>
                             </div>
@@ -118,7 +118,7 @@
                 </div>
 
                 <button id="feedBtn" onclick="feedAI()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-105 active:scale-95 text-lg flex items-center justify-center gap-2">
-                    <span class="text-2xl">👕</span> 喂入1件蓝衣数捀                </button>
+                    <span class="text-2xl">👕</span> 喂入1件蓝衣数据</button>
 
                 <div id="msg2" class="hidden text-center mt-4 pop-in">
                     <p class="text-green-500 font-bold text-xl mb-3">⚖️ 数据一样多了，AI变聪明了！</p>
@@ -129,7 +129,7 @@
             <!-- ====== 关卡 3 ====== -->
             <div id="level3" class="hidden space-y-4 pop-in">
                 <div class="text-center mb-2">
-                    <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第3 兀(8-9岁)</span>
+                    <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第3关(8-9岁)</span>
                     <h2 class="text-xl font-bold text-gray-700">修理规则天平 ⚖️</h2>
                     <p class="text-gray-500 text-sm">把"颜色偏见"向左滑动消除<br/>观察两端分数是如何达到平衡的：</p>
                 </div>
@@ -249,7 +249,7 @@ animArea.classList.add('feed-animation');
 const bar = document.getElementById('blueDataBar');
                 const percent = (blueCount / 8) * 80;
                 bar.style.width = percent + '%';
-                bar.innerText = blueCount + '个;
+                bar.innerText = blueCount + '个';
 
                 if(blueCount < 8) {
                     btn.disabled = false;
@@ -312,7 +312,8 @@ const faceBlue = document.getElementById('faceBlue');
                 faceBlue.innerText = "😢";
             }
 
-            // 5. 通关检测            if(bias == 0) {
+            // 5. 通关检测
+            if(bias == 0) {
                 slider.disabled = true;
                 slider.classList.add('opacity-50');
                 document.getElementById('msg3').classList.remove('hidden');
