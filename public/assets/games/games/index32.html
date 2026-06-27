@@ -46,20 +46,20 @@
         }
         .pixel-cell:active { transform: scale(0.9); }
 
-        /* 游成二：传送带物品样式 */
+        /* 游戏二：传送带物品样式 */
         .conveyor-item {
             position: absolute;
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* 游成三：指令块样开*/
+        /* 游戏三：指令块样开*/
         .cmd-block {
             cursor: pointer;
             transition: transform 0.1s;
         }
         .cmd-block:active { transform: scale(0.95); }
 
-        /* 游成三：网格地图 */
+        /* 游戏三：网格地图 */
         .map-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -124,21 +124,21 @@
 
         <div class="w-full space-y-4 px-4">
             <button onclick="startGame(1)" class="w-full bg-yellow-300 hover:bg-yellow-400 text-yellow-900 font-bold py-4 px-6 rounded-2xl shadow-lg border-b-4 border-yellow-500 transform transition active:translate-y-1 active:border-b-0 flex items-center justify-between text-xl">
-                <span>🎨 游成一：像素画修复</span>
+                <span>🎨 游戏一：像素画修复</span>
                 <span>▀</span>
             </button>
             <button onclick="startGame(2)" class="w-full bg-green-300 hover:bg-green-400 text-green-900 font-bold py-4 px-6 rounded-2xl shadow-lg border-b-4 border-green-500 transform transition active:translate-y-1 active:border-b-0 flex items-center justify-between text-xl">
-                <span>📦 游成二：规则小机器</span>
+                <span>📦 游戏二：规则小机器</span>
                 <span>▀</span>
             </button>
             <button onclick="startGame(3)" class="w-full bg-blue-300 hover:bg-blue-400 text-blue-900 font-bold py-4 px-6 rounded-2xl shadow-lg border-b-4 border-blue-500 transform transition active:translate-y-1 active:border-b-0 flex items-center justify-between text-xl">
-                <span>📁 游成三：AI小指挀</span>
+                <span>📁 游戏三：AI小指指令</span>
                 <span>▀</span>
             </button>
         </div>
     </div>
 
-    <!-- 游成一：像素画修复 -->
+    <!-- 游戏一：像素画修复 -->
     <div id="game1" class="hidden w-full max-w-2xl flex-col items-center mt-4">
         <div class="flex w-full justify-between items-center mb-4 px-4">
             <button onclick="backToMenu()" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-xl shadow border-b-4 border-gray-300 active:translate-y-1 active:border-b-0">
@@ -177,7 +177,7 @@
         </div>
     </div>
 
-    <!-- 游成二：分类小机器-->
+    <!-- 游戏二：分类小机器-->
     <div id="game2" class="hidden w-full max-w-md flex-col items-center mt-4">
         <div class="flex w-full justify-between items-center mb-4 px-4">
             <button onclick="backToMenu()" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-xl shadow border-b-4 border-gray-300 active:translate-y-1 active:border-b-0">
@@ -211,13 +211,13 @@
         </div>
     </div>
 
-    <!-- 游成三：AI小指挀(重制牀 -->
+    <!-- 游戏三：AI小指指令(重制版 -->
     <div id="game3" class="hidden w-full max-w-lg flex-col items-center mt-4">
          <div class="flex w-full justify-between items-center mb-4 px-4">
             <button onclick="backToMenu()" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-xl shadow border-b-4 border-gray-300 active:translate-y-1 active:border-b-0">
                 ⬅返回
             </button>
-            <div class="text-xl font-bold text-blue-600 bg-blue-100 py-1 px-4 rounded-full" id="g3-title">AI小指挀第/3兀</div>
+            <div class="text-xl font-bold text-blue-600 bg-blue-100 py-1 px-4 rounded-full" id="g3-title">AI小指指令第/3兀</div>
         </div>
 
         <div class="bg-white p-4 rounded-2xl shadow-lg border-4 border-blue-200 w-full flex flex-col items-center">
@@ -296,7 +296,7 @@
             if (num === 3) initGame3();
         }
 
-        // --- 游成一：像素画修复帀---
+        // --- 游戏一：像素画修复数---
 const g1Colors = ['#ffffff', '#ef4444', '#3b82f6', '#10b981', '#f59e0b']; // 癀穀, 线 蓝 练 黄
 let g1SelectedColor = '#ef4444'; // 默认选线色
 let g1CurrentLevel = 0;
@@ -485,7 +485,7 @@ document.getElementById('g1-player-grid').style.pointerEvents = 'none';
             }
         }
 
-        // --- 游成二：规则小机器(多环节升级版) ---
+        // --- 游戏二：规则小机器(多环节升级版) ---
         // 物品庀
 const g2AllItems = [
             { icon: '🍎', color: 'red', type: 'fruit' },
@@ -631,7 +631,7 @@ itemEl.style.transform = 'translateX(-15px)';
             document.getElementById('g2-score').innerText = `进度：${g2StageScore}/${total}`;
         }
 
-        // --- 游成三：AI小指挀(重制指令排序) ---
+        // --- 游戏三：AI小指指令(重制指令排序) ---
         // 地图大小 4x4
 const g3MapSize = 4;
         let g3CurrentLevel = 0;
@@ -673,7 +673,7 @@ let g3IsRunning = false;
             g3RobotPos = { ...level.robot };
             g3Commands = [];
             g3IsRunning = false;
-            document.getElementById('g3-title').innerText = `AI小指挀第{g3CurrentLevel + 1}/${g3Levels.length}关`;
+            document.getElementById('g3-title').innerText = `AI小指指令第{g3CurrentLevel + 1}/${g3Levels.length}关`;
             document.getElementById('g3-run-btn').disabled = false;
             document.getElementById('g3-msg').style.opacity = '0';
             renderG3Map();

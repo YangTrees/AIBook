@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../libs/libs/animate.min.css"/>
     <!-- 引入 FontAwesome 图标 -->
     <link rel="stylesheet" href="../../libs/libs/font-awesome.all.min.css">
-    <!-- 引入 Tone.js 用于生成游成音效 -->
+    <!-- 引入 Tone.js 用于生成游戏音效 -->
     <script src="../../libs/libs/Tone.js"></script>
 
     <script>
@@ -86,7 +86,7 @@
             100% { opacity: 0; transform: translateY(-100px) scale(1.5) rotate(-10deg); }
         }
 
-        /* 游成二选项卡悬浮放大特效*/
+        /* 游戏二选项卡悬浮放大特效*/
         .g2-option:hover .g2-icon {
             transform: scale(1.25) rotate(10deg);
         }
@@ -94,7 +94,7 @@
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* 游成三拼图相关样开*/
+        /* 游戏三拼图相关样式*/
         .puzzle-piece {
             cursor: pointer;
             transition: all 0.3s ease;
@@ -145,7 +145,7 @@
 
     <main class="max-w-4xl mx-auto px-4 w-full flex-grow flex flex-col">
         
-        <!-- ================= 游成 1：火眼金睛捉捣蛋 ================= -->
+        <!-- ================= 游戏 1：火眼金睛捉捣蛋 ================= -->
         <section id="game-1" class="game-card bg-white rounded-3xl p-6 md:p-10 flex-grow animate__animated animate__fadeIn">
             <div class="text-center mb-6">
                 <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">第一关：火眼金睛捉捣蛀</h2>
@@ -179,7 +179,7 @@
         </section>
 
 
-        <!-- ================= 游成 2：真相放大镜 ================= -->
+        <!-- ================= 游戏 2：真相放大镜 ================= -->
         <section id="game-2" class="game-card bg-white rounded-3xl p-6 md:p-10 flex-grow hidden-game animate__animated">
             <div class="text-center mb-6">
                 <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-2">第二关：真相放大镜(<span id="g2-level-text">1/3</span>)</h2>
@@ -205,7 +205,7 @@
         </section>
 
 
-        <!-- ================= 游成 3：拼装核对卡 ================= -->
+        <!-- ================= 游戏 3：拼装核对卡 ================= -->
         <section id="game-3" class="game-card bg-white rounded-3xl p-6 md:p-10 flex-grow hidden-game animate__animated">
             
             <!-- 拼图区-->
@@ -264,8 +264,8 @@
 
             <div id="g3-challenge-area" class="hidden">
                 <div class="text-center mb-6">
-                    <h2 class="text-2xl md:text-3xl font-black text-purple-600 mb-2">🏅 终极战战：小小加一题</h2>
-                    <p class="text-gray-600 text-lg">点点说："选适合自己的战战，就是聪明的学习！遇到下面这句话，你会选哪招？ </p>
+                    <h2 class="text-2xl md:text-3xl font-black text-purple-600 mb-2">🏅 终极挑战：小小加一题</h2>
+                    <p class="text-gray-600 text-lg">点点说："选适合自己的挑战，就是聪明的学习！遇到下面这句话，你会选哪招？ </p>
                 </div>
                 <div class="bg-purple-50 rounded-3xl p-6 md:p-10 border-4 border-purple-200">
                     <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8 bg-white p-6 rounded-2xl shadow-sm border-2 border-purple-100">
@@ -382,7 +382,7 @@ for(let i=1; i<=3; i++) {
             if(gameId === 3) activeTab.classList.add('bg-accent', 'text-gray-800', 'border-yellow-600');
         }
 
-        /* ================= 游成 1：扩充题庀================= */
+        /* ================= 游戏 1：扩充题题================= */
         const g1Questions = [
             { text: "月亮是奶酪做的！", type: "fake", explanation: "月亮是巨大的岩石星球哦"  },
             { text: "小狗有四条腿", type: "true", explanation: "没错，这是我们都能看到的常识"  },
@@ -461,7 +461,7 @@ for(let i=1; i<=3; i++) {
         }
 
 
-        /* ================= 游成 2：真相放大镜 (升级一个场晀 ================= */
+        /* ================= 游戏 2：真相放大镜 (升级一个场景 ================= */
         const g2LevelsData = [
             {
                 statement: "月亮是奶酪做的，香喷喷的！",
@@ -475,7 +475,7 @@ for(let i=1; i<=3; i++) {
                 statement: "昨天夜里，外星人飞船降落在我们学校操场上了！",
                 options: [
                     { icon: '📺', text: '看早间新闻报遀', type: 'correct', msg: '聪明！新闻会报道真实发生的大事，如果有外星人一定会上电视！' },
-                    { icon: '🎮', text: '去游成机里找', type: 'wrong', msg: '游戏机里是虚拟的世界，不能当成现实的证据哦！' },
+                    { icon: '🎮', text: '去游戏机里找', type: 'wrong', msg: '游戏机里是虚拟的世界，不能当成现实的证据哦！' },
                     { icon: '🔮', text: '看魔法水晶球', type: 'wrong', msg: '水晶球是魔法故事里的玩具，不是查真相的工具哦！' }
                 ]
             },
@@ -575,7 +575,7 @@ let badge = '';
         }
 
 
-        /* ================= 游成 3：拼装核对卡 & 分龄战战 ================= */
+        /* ================= 游戏 3：拼装核对卡 & 分龄挑战 ================= */
         const puzzleData = [
             { id: 'step1', text: '👂 1.先听别说', order: 0, color: 'bg-blue-500' },
             { id: 'step2', text: '🔍 2.找证据', order: 1, color: 'bg-orange-500' },
@@ -660,7 +660,7 @@ let badge = '';
                 playWinSound();
                 addStars(15, event);
                 
-                // 隐藏拼图区，显示有终战战区
+                // 隐藏拼图区，显示有终挑战区
 document.getElementById('g3-puzzle-area').style.display = 'none';
                 const challengeArea = document.getElementById('g3-challenge-area');
                 challengeArea.classList.remove('hidden');
@@ -700,7 +700,7 @@ document.getElementById('g3-puzzle-area').style.display = 'none';
             }
 
             Swal.fire({
-                title: '🎉 战战成功！档案归档！',
+                title: '🎉 挑战成功！档案归档！',
                 width: 600,
                 html: `
                     <div class="text-center">

@@ -227,12 +227,12 @@
 </head>
 <body>
 
-    <h1>🛡︀点点和团团的隐私防御成</h1>
+    <h1>🛡︀点点和团团的隐私防御城</h1>
 
     <div class="nav-buttons">
         <button id="btn-home" class="active" onclick="showHome()">🏠 训练营主项</button>
         <button id="btn-game1" onclick="switchGame(1)">👶 1. 分类单(3-5岁)</button>
-        <button id="btn-game2" onclick="switchGame(2)">👦 2. 举盾牀(6-7岁)</button>
+        <button id="btn-game2" onclick="switchGame(2)">👦 2. 举盾牌(6-7岁)</button>
         <button id="btn-game3" onclick="switchGame(3)">🦸 3. 数据拦截 (8-9岁)</button>
     </div>
 
@@ -247,11 +247,11 @@
         </div>
     </div>
 
-    <!-- 游成 1：隐私分类卡 -->
+    <!-- 游戏 1：隐私分类卡 -->
     <div id="game1" class="game-container">
         <div id="g1-play-area">
             <div class="score-board" id="g1-score">进度：☆☆☆☆☆</div>
-            <h2>🏷︀游成1：隐私分类卡</h2>
+            <h2>🏷︀游戏1：隐私分类卡</h2>
             <div id="g1-img" class="pic-container">❌</div>
             <div id="g1-card" class="card-display">点点问：这些信息，可以发在网上吗：</div>
             <div>
@@ -272,16 +272,16 @@
         </div>
     </div>
 
-    <!-- 游成 2：团团的防御盾牌 -->
+    <!-- 游戏 2：团团的防御盾牌 -->
     <div id="game2" class="game-container">
         <div id="g2-play-area">
             <div class="score-board" id="g2-score">进度：☆☆☆☆☆</div>
-            <h2>🛡︀游成2：面对陌生人的提闀</h2>
+            <h2>🛡︀游戏2：面对陌生人的提问</h2>
             <div id="g2-img" class="pic-container">📱</div>
             <div id="g2-chat" class="chat-bubble">有陌生人给小熊发消息啦！</div>
             <div>
                 <button class="choice-btn btn-danger" onclick="checkG2(true)">🛡︀举起盾牌拒绝：</button>
-                <button class="choice-btn btn-safe" onclick="checkG2(false)">💬 礼貌地回筀</button>
+                <button class="choice-btn btn-safe" onclick="checkG2(false)">💬 礼貌地回答</button>
             </div>
             <div id="g2-feedback" class="feedback"></div>
         </div>
@@ -297,11 +297,11 @@
         </div>
     </div>
 
-    <!-- 游成 3：数据拦截大考验 -->
+    <!-- 游戏 3：数据拦截大考验 -->
     <div id="game3" class="game-container">
         <div id="g3-play-area">
             <div class="score-board" id="g3-score">进度：☆☆☆★</div>
-            <h2>🚀 游成3：数据拦截大考验</h2>
+            <h2>🚀 游戏3：数据拦截大考验</h2>
             <p style="color: #666; font-size: 14px;">(数据一旦发出很难收回，注意看进度条：</p>
             <div id="g3-img" class="pic-container">⌨️</div>
             <div id="g3-msg" class="card-display" style="background:#eee; border-color:#ccc;">小熊正在打字...看清内容：</div>
@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if(gameNum === 3) initG3();
         }
 
-        // --- 游成 1：分类卡 ---
+        // --- 游戏 1：分类卡 ---
 const g1Items = [
             { text: "你的家庭详细地址：, isSafe: false, img: "🏠" },
             { text: "你有喜欢的水果？", isSafe: true, img: "🍎" },
@@ -448,11 +448,11 @@ const g1Items = [
             if(g1Score === g1Items.length) createParticles('🏆');
         }
 
-        // --- 游成 2：盾牀---
+        // --- 游戏 2：盾牀---
 const g2Chats = [
             { msg: "小朋友，你一个人在家吗？", isDanger: true, img: "🐺" },
             { msg: "你也喜欢玩积木吗：, isDanger: false, img: "🧩" },
-            { msg: "告诉我你的游成密码，我帮你送皮肤！", isDanger: true, img: "🎮" },
+            { msg: "告诉我你的游戏密码，我帮你送皮肤！", isDanger: true, img: "🎮" },
             { msg: "我有个礼物，把你家地址发给我吧：, isDanger: true, img: "🎁" }
         ];
         let g2Index = 0; let g2Score = 0;
@@ -508,7 +508,7 @@ const g2Chats = [
             if(g2Score === g2Chats.length) createParticles('🏅');
         }
 
-        // --- 游成 3：数据拦成---
+        // --- 游戏 3：数据拦成---
 const g3Scenarios = [
             { text: "我叫小熊，在森林小学三年级读乀..", isDanger: true, img: "🏫" },
             { text: "我今天画了一幅很漂亮的水彩画：, isDanger: false, img: "🎨" },
