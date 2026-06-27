@@ -3,12 +3,14 @@ import { useState } from 'react';
 interface GameModuleProps {
   courseId: number;
   numStr: string;
+  onComplete?: () => void;
 }
 
-export default function GameModule({ courseId, numStr }: GameModuleProps) {
+export default function GameModule({ courseId, numStr, onComplete }: GameModuleProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [showGame, setShowGame] = useState(false);
+  const [completed, setCompleted] = useState(false);
 
   const gameSrc = `./assets/games/games/index${numStr}.html`;
 
@@ -139,6 +141,35 @@ export default function GameModule({ courseId, numStr }: GameModuleProps) {
           />
         </div>
       )}
+
+      {/* 完成游戏按钮 */}
+      <div style={{ display: 'flex', gap: 12 }}>
+        {!completed ? (
+          <button
+            onClick={() => {
+              setCompleted(true);
+              if (onComplete) onComplete();
+            }}
+            className="kid-btn kid-btn-green"
+            style={{ flex: 1, fontSize: 18, padding: '14px 24px' }}
+          >
+            ✅ 我完成了游戏
+          </button>
+        ) : (
+          <div style={{
+            flex: 1,
+            background: 'var(--kid-green-100)',
+            borderRadius: 14,
+            padding: '14px 24px',
+            textAlign: 'center',
+            border: '2px solid var(--kid-green-300)',
+          }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--kid-green-600)' }}>
+              🎉 游戏已完成！继续加油！
+            </span>
+          </div>
+        )}
+      </div>
 
       <div style={{
         background: 'var(--kid-green-50)',

@@ -7,6 +7,12 @@ interface QuizRecord {
   errors: number;
   timeSeconds: number;
   completed: boolean;
+  wrongAnswers: Array<{
+    questionIndex: number;
+    question: string;
+    selectedKey: string;
+    correctKey: string;
+  }>;
 }
 
 interface QuizModuleProps {
@@ -26,6 +32,7 @@ export default function QuizModule({ quiz, courseTitle, onComplete }: QuizModule
   const [completed, setCompleted] = useState(false);
   const [timeSeconds, setTimeSeconds] = useState(0);
   const [showError, setShowError] = useState(false);
+  const [wrongAnswers, setWrongAnswers] = useState<Array<{ questionIndex: number; question: string; selectedKey: string; correctKey: string }>>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -53,6 +60,13 @@ export default function QuizModule({ quiz, courseTitle, onComplete }: QuizModule
       setTotalErrors((e) => e + 1);
       setErrorCount((c) => c + 1);
       setShowError(true);
+      // 收集错题详情
+      setWrongAnswers(prev => [...prev, {
+        questionIndex: currentQ,
+        question: currentQuestion.question,
+        selectedKey: selectedOption,
+        correctKey: currentQuestion.answer,
+      }]);
     }
   };
 
@@ -73,6 +87,7 @@ export default function QuizModule({ quiz, courseTitle, onComplete }: QuizModule
         errors: totalErrors,
         timeSeconds,
         completed: true,
+        wrongAnswers: wrongAnswers,
       };
       onComplete(record);
       setCompleted(true);

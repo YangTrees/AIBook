@@ -4,6 +4,7 @@ import KnowledgeViewer from './modules/KnowledgeViewer';
 import QuizModule from './modules/QuizModule';
 import GameModule from './modules/GameModule';
 import SummaryModule from './modules/SummaryModule';
+import { useStorage } from '../hooks/useStorage';
 
 interface CoursePageProps {
   courseId: number;
@@ -43,6 +44,7 @@ export default function CoursePage({ courseId, onBack }: CoursePageProps) {
   const [quizRecord, setQuizRecord] = useState<QuizRecord>({
     total: 10, correct: 0, errors: 0, timeSeconds: 0, completed: false,
   });
+  const { saveQuizResult, markGameCompleted, markLessonCompleted } = useStorage();
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -251,12 +253,26 @@ export default function CoursePage({ courseId, onBack }: CoursePageProps) {
           <QuizModule
             quiz={course.quiz}
             courseTitle={course.title}
-            onComplete={(record) => setQuizRecord(record)}
+            onComplete={(record) => {
+              setQuizRecord(record);
+              // 保存到localStorage
+              saveQuizResult(
+                courseId,
+                record.correct,
+                record.total,
+                record.timeSeconds,
+                record.wrongAnswers || []
+              );
+              // 如果答题完成，标记课程为已完成
+              if (record.completed) {
+                markLessonCompleted(courseId);
+              }
+            }}
           />
         );
 
       case 5:
-        return <GameModule courseId={courseId} numStr={numStr} />;
+        return <GameModule courseId={courseId} numStr={numStr} onComplete={() => markGameCompleted(courseId)} />;
 
       case 6:
         return (

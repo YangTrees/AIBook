@@ -2,6 +2,10 @@ import { useState, useLayoutEffect, useCallback } from 'react';
 import HomePage from './sections/HomePage';
 import CoursePage from './sections/CoursePage';
 import BottomNav from './sections/BottomNav';
+import CinemaPage from './sections/CinemaPage';
+import GamePage from './sections/GamePage';
+import ArchivePage from './sections/ArchivePage';
+import ParentPage from './sections/ParentPage';
 import './App.css';
 
 export type TabType = 'home' | 'cinema' | 'game' | 'archive' | 'parent';
@@ -50,21 +54,6 @@ export default function App() {
     setCurrentTab(tab);
   };
 
-  const renderPlaceholder = (emoji: string, title: string, color: string, desc: string) => (
-    <div className="flex flex-col items-center justify-center kid-float-in"
-      style={{ width: 1920, height: 1000 }}>
-      <div style={{ fontSize: 80, marginBottom: 24 }}>{emoji}</div>
-      <h2 style={{
-        fontSize: 40, fontWeight: 800, color,
-        marginBottom: 12, letterSpacing: '0.02em'
-      }}>{title}</h2>
-      <p style={{
-        fontSize: 22, color: 'var(--kid-gray-400)',
-        maxWidth: 560, textAlign: 'center', lineHeight: 1.8
-      }}>{desc}</p>
-    </div>
-  );
-
   const renderContent = () => {
     if (currentCourseId !== null) {
       return <CoursePage courseId={currentCourseId} onBack={handleBackToHome} />;
@@ -73,13 +62,13 @@ export default function App() {
       case 'home':
         return <HomePage onSelectCourse={handleSelectCourse} />;
       case 'cinema':
-        return renderPlaceholder('🎬', '精彩影院', 'var(--kid-purple-400)', '绘本动画故事即将上映，敬请期待！');
+        return <CinemaPage />;
       case 'game':
-        return renderPlaceholder('🎮', '趣味游戏', 'var(--kid-green-400)', '进入各节课程，在课程页面体验专属互动游戏！');
+        return <GamePage />;
       case 'archive':
-        return renderPlaceholder('📚', '学习档案', 'var(--kid-blue-500)', '学习档案功能即将开放，记录你的每一步成长！');
+        return <ArchivePage />;
       case 'parent':
-        return renderPlaceholder('👨‍👩‍👧', '家长专区', 'var(--kid-orange-400)', '家长专区即将开放，查看孩子学习进度与成果！');
+        return <ParentPage />;
       default:
         return <HomePage onSelectCourse={handleSelectCourse} />;
     }
