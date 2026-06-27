@@ -29,7 +29,9 @@
       "Bash(sed -i 's/战战：雾气遮一遮/关卡2：雾气遮一遮/g' public/assets/games/games/index08.html)",
       "Bash(sed -i 's/战战3：拼流程图/关卡3：拼流程图/g' public/assets/games/games/index08.html)",
       "Bash(sed -i 's/完成了战战/完成了关卡/g' public/assets/games/games/index08.html)",
-      "Bash(sed -i 's/这个级别的战战/这个级别的关卡/g' public/assets/games/games/index08.html)"
+      "Bash(sed -i 's/这个级别的战战/这个级别的关卡/g' public/assets/games/games/index08.html)",
+      "Bash(git push *)",
+      "Bash(git remote *)"
     ]
   }
 }

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI启蒙绘本第15课：猜一猜明天带伞吗 - 互动游成雀</title>
+    <title>AI启蒙绘本第15课：猜一猜明天带伞吗 - 互动游戏</title>
     <script src="../../libs/libs/tailwind.min.js"></script>
     <style>
         body {
             font-family: 'Comic Sans MS', '幼圆', sans-serif;
             background-color: #f0f8ff;
             /* 修复背景图片路径，处理空格问题*/
-            background-image: url('../../characters/characters/tuantuan.png');
+            background-image: url('../../backgrounds/backgrounds/backgrounds/bg2.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -112,7 +112,7 @@
             border: 4px solid white;
         }
 
-        /* 游成1样式 */
+        /* 游戏1样式 */
         .sequence-box {
             display: flex;
             flex-wrap: wrap;
@@ -126,7 +126,7 @@
             min-height: 100px;
         }
 
-        /* 游成2样式 */
+        /* 游戏2样式 */
         .star {
             font-size: 3rem;
             color: #d1d5db;
@@ -151,7 +151,7 @@
             width: 100%;
         }
 
-        /* 游成3样式 */
+        /* 游戏3样式 */
         .card-deck {
             width: 100px;
             height: 140px;
@@ -229,11 +229,11 @@
 <!-- 导航菜单 -->
 <nav class="flex flex-wrap justify-center p-2 md:p-4 bg-white bg-opacity-95 shadow-lg rounded-xl mb-4 max-w-4xl mx-auto w-full sticky top-0 z-50">
     <button class="btn text-sm md:text-base" onclick="showGame('game1')">1. 规律连连眼</button>
-    <button class="btn text-sm md:text-base" onclick="showGame('game2')">2. 概率评估呀</button>
-    <button class="btn text-sm md:text-base" onclick="showGame('game3')">3. 气象统计呀</button>
+    <button class="btn text-sm md:text-base" onclick="showGame('game2')">2. 概率评估</button>
+    <button class="btn text-sm md:text-base" onclick="showGame('game3')">3. 气象统计站</button>
 </nav>
 
-<!-- ================= 游成一：天气规律连连看 ================= -->
+<!-- ================= 游戏一：天气规律连连看 ================= -->
 <div id="game1" class="game-container">
     <h2 class="title">天气规律连连眼</h2>
     <p class="text-lg md:text-xl text-slate-700 mb-4 text-center w-full">团团在观察天气记录，你能帮他找出规律，猜出下一个天气吗：</p>
@@ -261,18 +261,18 @@
             <!-- 通关反馈区域 -->
             <div id="game1-end-area" class="hidden flex-col items-center bg-green-50 p-6 rounded-2xl border-4 border-green-400 text-center w-full">
                 <div class="text-6xl mb-4">🏆</div>
-                <h3 class="text-2xl font-bold text-green-700 mb-2">太棒了！游成通关：</h3>
+                <h3 class="text-2xl font-bold text-green-700 mb-2">太棒了！游戏通关：</h3>
                 <p class="text-lg text-green-600 mb-6">你已经学会了"看以前的规律，来猜未来"的本领啦！</p>
                 <button class="btn" onclick="resetGame1()">再玩一次</button>
             </div>
             
             <div class="feedback-message" id="game1-feedback"></div>
-            <button class="btn hidden mt-2 bg-blue-400 text-white border-blue-600 hover:bg-blue-500" id="next-level-btn" onclick="nextLevel()">进入下一兀➡</button>
+            <button class="btn hidden mt-2 bg-blue-400 text-white border-blue-600 hover:bg-blue-500" id="next-level-btn" onclick="nextLevel()">进入下一关➡</button>
         </div>
     </div>
 </div>
 
-<!-- ================= 游成二：天气侦探评估呀================= -->
+<!-- ================= 游戏二：天气侦探评估 ================= -->
 <div id="game2" class="game-container hidden">
     <h2 class="title">天气侦探：星星概率评估员</h2>
     <p class="text-lg md:text-xl text-slate-700 mb-4 text-center w-full">点点说：线索越多，下雨的概率越大！请你根据天空的线索，给出下雨可能性的"星级"吧：</p>
@@ -300,18 +300,18 @@
             
             <div class="feedback-message mt-0" id="game2-feedback"></div>
             
-            <button class="btn hidden mt-2" id="next-scene-btn" onclick="nextScene()">下一个线紀➡</button>
+            <button class="btn hidden mt-2" id="next-scene-btn" onclick="nextScene()">下一个线索➡</button>
             <button class="btn hidden mt-2 bg-green-500 border-green-600 text-white" id="game2-restart-btn" onclick="initGame2()">重新破案</button>
         </div>
     </div>
 </div>
 
-<!-- ================= 游成三：小小气象统计呀================= -->
+<!-- ================= 游戏三：小小气象统计站 ================= -->
 <div id="game3" class="game-container hidden">
-    <h2 class="title">小小气象统计呀</h2>
+    <h2 class="title">小小气象统计站</h2>
     <p class="text-base md:text-xl text-slate-700 mb-4 text-center w-full">
         像真正的AI一样收集数据！<br>
-        先"抽卡"获取天气，冀span class="text-blue-600 font-bold">点击图表放入积木</span>，有后得出气象结论！
+        先"抽卡"获取天气，请<span class="text-blue-600 font-bold">点击图表放入积木</span>，然后得出气象结论！
     </p>
 
     <div class="flex flex-col md:flex-row justify-between w-full mb-4 gap-6">
@@ -354,13 +354,13 @@
     <!-- 结论区-->
     <div id="game3-conclusion" class="w-full bg-yellow-50 p-4 md:p-6 rounded-2xl border-4 border-yellow-300 hidden flex-col items-center mt-2">
         <h3 class="text-xl md:text-2xl font-bold text-yellow-800 mb-2">3. 复盘预测：明天带伞吗：</h3>
-        <p class="text-base md:text-lg mb-4 text-center">你亲手画出的图表显示：span id="final-stats" class="font-bold text-blue-600"></span></p>
+        <p class="text-base md:text-lg mb-4 text-center">你亲手画出的图表显示：<span id="final-stats" class="font-bold text-blue-600"></span></p>
         <div class="flex flex-wrap justify-center gap-4">
-            <button class="btn bg-white border-gray-300 text-gray-700" onclick="checkPrediction('no')">不带伀(晴天概率天</button>
-            <button class="btn bg-blue-400 border-blue-600 text-white" onclick="checkPrediction('yes')">带伞：(雨天概率天</button>
+            <button class="btn bg-white border-gray-300 text-gray-700" onclick="checkPrediction('no')">不带伞(晴天概率大)</button>
+            <button class="btn bg-blue-400 border-blue-600 text-white" onclick="checkPrediction('yes')">带伞(雨天概率大)</button>
         </div>
         <div id="game3-final-feedback" class="feedback-message w-full mb-0"></div>
-        <button class="btn mt-4 bg-green-500 text-white border-green-600 hidden" id="game3-restart-btn" onclick="initGame3()">重新统计一呀</button>
+        <button class="btn mt-4 bg-green-500 text-white border-green-600 hidden" id="game3-restart-btn" onclick="initGame3()">重新统计一次</button>
     </div>
     
     <div id="game3-feedback" class="feedback-message mt-2 mb-0"></div>
@@ -375,7 +375,7 @@
         document.getElementById(gameId).classList.remove('hidden');
     }
 
-    // ================= 游成一：天气规律连连看 =================
+    // ================= 游戏一：天气规律连连看 =================
 let currentLevel = 0;
     const levels = [
         { sequence: ['sunny', 'rainy', 'sunny'], next: 'rainy', rule: "晴、雨交替" },
@@ -398,7 +398,7 @@ document.getElementById('btn-sun').disabled = false;
             icon.className = 'text-4xl md:text-5xl mx-1 drop-shadow-md';
             icon.textContent = weather === 'sunny' ? '☀️' : '🌧️';
             sequenceContainer.appendChild(icon);
-            sequenceContainer.innerHTML += '<span class="text-2xl md:text-3xl text-gray-400 mx-1">ↀ</span>';
+            sequenceContainer.innerHTML += '<span class="text-2xl md:text-3xl text-gray-400 mx-1">→</span>';
         });
         // 加入目标问号
 sequenceContainer.innerHTML += '<div id="q-mark" class="text-5xl md:text-6xl mx-1 text-blue-500 font-bold animate-pulse">?</div>';
@@ -462,11 +462,11 @@ setTimeout(() => {
         loadLevel();
     }
     
-    // 初始化游成一
+    // 初始化游戏一
 loadLevel();
 
 
-    // ================= 游成二：天气侦探评估呀=================
+    // ================= 游戏二：天气侦探评估 =================
 const scenes = [
         { id: 1, desc: "天上只有白白的云朵，没有风", clues: ["白云"], answer: [1], feedback: "晴天线索！下雨可能性极小，1颗星！" },
         { id: 2, desc: "云变灰了，风把树叶吹得沙沙响", clues: ["灰云", "大风"], answer: [3, 4], feedback: "有点危险哦！很可能要下雨！成颗星！" },
@@ -526,7 +526,7 @@ document.querySelectorAll('.star').forEach(s => {
 document.querySelectorAll('.star').forEach(s => s.style.pointerEvents = 'none');
 
         if (scene.answer.includes(val)) {
-            feedback.innerHTML = `✅侦探判断准确：br><span class="text-base md:text-lg font-normal text-green-700">${scene.feedback}</span>`;
+            feedback.innerHTML = `✅侦探判断准确：<br><span class="text-base md:text-lg font-normal text-green-700">${scene.feedback}</span>`;
             feedback.style.color = '#15803d';
             
             if (currentSceneIdx < scenes.length - 1) {
@@ -552,11 +552,11 @@ setTimeout(() => {
         loadScene();
     }
     
-    // 初始化游成二
+    // 初始化游戏二
 initGame2();
 
 
-    // ================= 游成三：小小气象统计呀=================
+    // ================= 游戏三：小小气象统计站 =================
 let weekData = [];
     let currentDrawIndex = 0;
     let pendingDataToRecord = null; 
@@ -568,7 +568,7 @@ pendingDataToRecord = null;
         stats = { sunny: 0, rainy: 0 };
         weekData = [];
         
-        // 生成7天随机数捀(稍微控制一下，避免每次都是4:3)
+        // 生成7天随机数据(稍微控制一下，避免每次都是4:3)
 const isRainyWeek = Math.random() > 0.5;
         for(let i=0; i<7; i++) {
             if (isRainyWeek) {
@@ -620,10 +620,10 @@ const cardDisplay = document.getElementById('current-card-display');
         const cardResult = document.getElementById('card-result');
         cardDisplay.classList.remove('hidden');
         
-        cardResult.innerHTML = '❌';
+        cardResult.innerHTML = '❓';
         setTimeout(() => {
             cardResult.innerHTML = weather === 'sunny' ? '☀️' : '🌧️';
-            feedback.innerHTML = `抽到了${weather === 'sunny' ? '☀︀晴天' : '🌧︀雨天'}：br><span class="text-sm md:text-base text-blue-600 font-bold">👉 快去右边点击对应的列，把数据放进去吧：</span>`;
+            feedback.innerHTML = `抽到了${weather === 'sunny' ? '☀️晴天' : '🌧️雨天'}：<br><span class="text-sm md:text-base text-blue-600 font-bold">👉 快去右边点击对应的列，把数据放进去吧：</span>`;
             feedback.style.color = '#334155';
         }, 300);
 
@@ -705,7 +705,7 @@ let climateFeature = "";
                     <p class="text-slate-700 text-base">根据迀天的数据记录：晴天<b>${stats.sunny}</b> 天，雨天 <b>${stats.rainy}</b> 天 </p>
                     <div class="bg-blue-50 p-3 rounded-lg mt-3 border border-blue-200">
                         <p class="text-blue-800 font-bold text-lg">🌟 专属当地天气报告</p>
-                        <p class="text-slate-800 mt-1 text-base">从数据规律可以总结出，近期当地的天气特点是：br>
+                        <p class="text-slate-800 mt-1 text-base">从数据规律可以总结出，近期当地的天气特点是：<br>
                         <span class="text-red-600 font-bold text-xl inline-block mt-1"> ${climateFeature} </span></p>
                     </div>
                     <p class="text-slate-500 text-sm mt-3 text-center">（看！这就是用数据总结出规律的厉害之处！）</p>
@@ -721,7 +721,7 @@ document.getElementById('game3-restart-btn').classList.remove('hidden');
         }
     }
 
-    // 初始化游成三
+    // 初始化游戏三
 initGame3();
 
 </script>

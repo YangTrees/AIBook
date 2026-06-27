@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第14课《特征放大镜》互动游成</title>
+    <title>第14课《特征放大镜》互动游戏</title>
     <script src="../../libs/libs/tailwind.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
@@ -111,14 +111,14 @@
         <!-- 对话引导区-->
         <div id="dialogue-box" class="bg-blue-50 p-4 border-b-2 border-blue-100 flex items-end gap-4 relative z-10 shrink-0 min-h-[120px]">
             <!-- 角色SVG将在这里动态生成-->
-            <div id="character-avatar" class="w-20 h-20 md:w-24 md:h-24 animate-float shrink-0"></div>
+            <img id="character-avatar" src="../../characters/characters/diandian.png" alt="点点" class="w-20 h-20 md:w-24 md:h-24 object-contain shrink-0" />
             <div class="flex-1 bg-white p-4 rounded-2xl rounded-bl-none shadow-md border border-blue-100 relative">
                 <div class="absolute -left-3 bottom-4 w-4 h-4 bg-white border-b border-l border-blue-100 transform rotate-45"></div>
                 <p id="dialogue-text" class="text-gray-700 text-lg md:text-xl font-medium leading-relaxed"></p>
             </div>
         </div>
 
-        <!-- 游成主区域-->
+        <!-- 游戏主区域-->
         <div id="game-container" class="flex-1 relative bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDIwaDQwTTIwIDB2NDAiIHN0cm9rZT0icmdiYSgwLDE1MCwyNTUsMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] p-4 md:p-8 overflow-y-auto flex flex-col justify-center items-center">
             
             <!-- 放大镜光标跟随-->
@@ -126,44 +126,44 @@
 
             <!-- 主菜单视围-->
             <div id="view-menu" class="w-full max-w-2xl grid grid-cols-1 md:grid-cols-3 gap-6 animate-pop">
-                <!-- 战战1 -->
+                <!-- 关卡1 -->
                 <button onclick="startGame(1)" class="card-hover bg-gradient-to-br from-green-100 to-green-200 border-4 border-green-300 rounded-3xl p-6 flex flex-col items-center gap-4 group">
                     <div class="bg-white p-4 rounded-full shadow-inner group-hover:scale-110 transition-transform">
                         <span class="text-4xl">🔍</span>
                     </div>
                     <div class="text-center">
-                        <h3 class="text-green-800 font-bold text-xl mb-1">战战 1</h3>
+                        <h3 class="text-green-800 font-bold text-xl mb-1">关卡 1</h3>
                         <p class="text-green-600 text-sm font-bold bg-white/50 px-3 py-1 rounded-full mb-2">3-5岁适用</p>
-                        <p class="text-gray-700 text-base">找出一个特征(3兀</p>
+                        <p class="text-gray-700 text-base">找出相同的物品特征</p>
                     </div>
                 </button>
 
-                <!-- 战战2 -->
+                <!-- 关卡2 -->
                 <button onclick="startGame(2)" class="card-hover bg-gradient-to-br from-blue-100 to-blue-200 border-4 border-blue-300 rounded-3xl p-6 flex flex-col items-center gap-4 group">
                     <div class="bg-white p-4 rounded-full shadow-inner group-hover:scale-110 transition-transform">
                         <span class="text-4xl">🧩</span>
                     </div>
                     <div class="text-center">
-                        <h3 class="text-blue-800 font-bold text-xl mb-1">战战 2</h3>
+                        <h3 class="text-blue-800 font-bold text-xl mb-1">关卡 2</h3>
                         <p class="text-blue-600 text-sm font-bold bg-white/50 px-3 py-1 rounded-full mb-2">6-7岁适用</p>
-                        <p class="text-gray-700 text-base">组合特征更准确(3兀</p>
+                        <p class="text-gray-700 text-base">两个特征组合更准确</p>
                     </div>
                 </button>
 
-                <!-- 战战3 -->
+                <!-- 关卡3 -->
                 <button onclick="startGame(3)" class="card-hover bg-gradient-to-br from-purple-100 to-purple-200 border-4 border-purple-300 rounded-3xl p-6 flex flex-col items-center gap-4 group">
                     <div class="bg-white p-4 rounded-full shadow-inner group-hover:scale-110 transition-transform">
                         <span class="text-4xl">📋</span>
                     </div>
                     <div class="text-center">
-                        <h3 class="text-purple-800 font-bold text-xl mb-1">战战 3</h3>
+                        <h3 class="text-purple-800 font-bold text-xl mb-1">关卡 3</h3>
                         <p class="text-purple-600 text-sm font-bold bg-white/50 px-3 py-1 rounded-full mb-2">8-9岁适用</p>
-                        <p class="text-gray-700 text-base">特征清单分类大战成</p>
+                        <p class="text-gray-700 text-base">特征清单分类大挑战</p>
                     </div>
                 </button>
             </div>
 
-            <!-- 游成1视图 -->
+            <!-- 游戏1视图 -->
             <div id="view-game1" class="hidden w-full max-w-3xl flex-col items-center gap-6">
                 <div class="w-full flex justify-between items-center bg-white/80 p-2 rounded-full shadow-sm max-w-sm mb-2">
                     <div class="font-bold text-gray-500 pl-4">关卡进度：</div>
@@ -171,13 +171,13 @@
                         ⚪⚪⚪                    </div>
                 </div>
                 <div class="bg-yellow-100 border-2 border-yellow-400 text-yellow-800 px-6 py-2 rounded-full font-bold text-lg shadow-md flex items-center gap-2">
-                    🎯 目标：找出拥有<span id="g1-target-text" class="text-red-500 text-xl font-black mx-1 animate-pulse">【三只眼睛 </span> 的猫和                </div>
+                    🎯 目标：找出拥有<span id="g1-target-text" class="text-red-500 text-xl font-black mx-1 animate-pulse">三只眼睛</span>的猫                </div>
                 <div id="g1-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 w-full mt-4">
                     <!-- 猫咪容器动态生成-->
                 </div>
             </div>
 
-            <!-- 游成2视图 -->
+            <!-- 游戏2视图 -->
             <div id="view-game2" class="hidden w-full max-w-4xl flex-col items-center gap-4">
                 <div class="w-full flex justify-between items-center bg-white/80 p-2 rounded-full shadow-sm max-w-sm mb-2">
                     <div class="font-bold text-gray-500 pl-4">关卡进度：</div>
@@ -210,7 +210,7 @@
                 </div>
             </div>
 
-            <!-- 游成3视图 -->
+            <!-- 游戏3视图 -->
             <div id="view-game3" class="hidden w-full max-w-4xl flex-col items-center gap-4 h-full">
                 <!-- 进度指示器-->
                 <div class="bg-white/80 px-6 py-2 rounded-full shadow-sm font-bold text-purple-600 mb-2">
@@ -254,7 +254,7 @@
                     <button onclick="checkG3('alien')" class="card-hover bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-full shadow-md border-b-4 border-cyan-700 text-base md:text-lg">
                         ✅它是外星猫                    </button>
                     <button onclick="checkG3('none')" class="card-hover bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full shadow-md border-b-4 border-gray-700 text-base md:text-lg">
-                        ❌混淆项都不的
+                        ❌混淆项都不对
                     </button>
                 </div>
             </div>
@@ -277,9 +277,9 @@
         </div>
     </div>
 
-    <!-- 游成脚本 -->
+    <!-- 游戏脚本 -->
     <script>
-        /* ================= 角色与元紀SVG 生成器================= */
+        /* ================= 角色与角色SVG生成器================= */
         
         // 团团 (小男子
 const svgBoy = `
@@ -458,7 +458,7 @@ const svgCloudItem = `
             </svg>
         `;
 
-        /* ================= 游成逻辑与关卡数捀================= */
+        /* ================= 游戏逻辑与关卡数据================= */
         let gameState = {
             g1Round: 0,
             g1Levels: [
@@ -479,13 +479,13 @@ const svgCloudItem = `
             g2Round: 0,
             g2Levels: [
                 { 
-                    f1Name: '练耳朵', f1Svg: '<svg viewBox="0 0 100 100" class="w-8 h-8"><polygon points="20,80 50,20 80,80" fill="#a3e635"/></svg>',
+                    f1Name: '绿耳朵', f1Svg: '<svg viewBox="0 0 100 100" class="w-8 h-8"><polygon points="20,80 50,20 80,80" fill="#a3e635"/></svg>',
                     f2Name: '机械尾巴', f2Svg: '<svg viewBox="0 0 100 100" class="w-8 h-8"><path d="M 20 80 L 50 80 L 50 40 L 80 40" stroke="#71717a" stroke-width="15" fill="none"/></svg>',
                     check: (c) => c.earColor === '#a3e635' && c.tailType === 'mech',
                     cats: [
                         { earColor: '#b45309', tailType: 'mech', bodyColor: '#cbd5e1', desc: '棕耳朵+机械尾巴' },
-                        { earColor: '#a3e635', tailType: 'normal', bodyColor: '#d97706', desc: '练耳朵+普通尾巴' },
-                        { earColor: '#a3e635', tailType: 'mech', bodyColor: '#94a3b8', eyes: 3, desc: '练耳朵+机械尾巴' },
+                        { earColor: '#a3e635', tailType: 'normal', bodyColor: '#d97706', desc: '绿耳朵+普通尾巴' },
+                        { earColor: '#a3e635', tailType: 'mech', bodyColor: '#94a3b8', eyes: 3, desc: '绿耳朵+机械尾巴' },
                         { earColor: '#b45309', tailType: 'normal', bodyColor: '#f59e0b', desc: '棕耳朵+普通尾巴' }
                     ]
                 },
@@ -506,9 +506,9 @@ const svgCloudItem = `
                     check: (c) => c.hasAntenna === true && c.earColor === '#b45309',
                     cats: [
                         { hasAntenna: true, earColor: '#b45309', bodyColor: '#64748b', desc: '有天线棕耳朵' },
-                        { hasAntenna: true, earColor: '#a3e635', bodyColor: '#64748b', desc: '有天线练耳朵' },
+                        { hasAntenna: true, earColor: '#a3e635', bodyColor: '#64748b', desc: '有天线绿耳朵' },
                         { hasAntenna: false, earColor: '#b45309', bodyColor: '#d97706', desc: '无天线棕耳朵' },
-                        { hasAntenna: false, earColor: '#a3e635', bodyColor: '#d97706', desc: '无天线练耳朵' }
+                        { hasAntenna: false, earColor: '#a3e635', bodyColor: '#d97706', desc: '无天线绿耳朵' }
                     ]
                 }
             ],
@@ -525,10 +525,10 @@ const svgCloudItem = `
 function setDialogue(character, text) {
             dialogText.innerHTML = text;
             if (character === 'robot') {
-                characterAvatar.innerHTML = svgRobot;
+                characterAvatar.innerHTML = '<img src="../../characters/characters/diandian.png" alt="点点" class="w-full h-full object-contain" />';
                 document.getElementById('dialogue-box').className = "bg-blue-50 p-4 border-b-2 border-blue-100 flex items-end gap-4 relative z-10 shrink-0 min-h-[120px]";
             } else {
-                characterAvatar.innerHTML = svgBoy;
+                characterAvatar.innerHTML = '<img src="../../characters/characters/tuantuan.png" alt="团团" class="w-full h-full object-contain" />';
                 document.getElementById('dialogue-box').className = "bg-orange-50 p-4 border-b-2 border-orange-100 flex items-end gap-4 relative z-10 shrink-0 min-h-[120px]";
             }
         }
@@ -579,7 +579,7 @@ const container = document.getElementById(containerId);
 function initMenu() {
             hideModal();
             switchView('view-menu');
-            setDialogue('robot', '欢迎来到第14课！<br>外星猫和地球猫太像了，我们要画strong class="text-blue-600">特征放大镜</strong>找出它们的不同。你想先从哪个战战开始？');
+            setDialogue('robot', '欢迎来到第14课！<br>外星猫和地球猫太像了，我们要用<strong class="text-blue-600">特征放大镜</strong>找出它们的不同。你想先从哪个关卡开始？');
         }
 
         // 路由到对应游戏
@@ -589,17 +589,17 @@ if(level === 1) initGame1();
             if(level === 3) initGame3();
         }
 
-        /* ------------- 游成 1 ------------- */
+        /* ------------- 游戏 1 ------------- */
         function initGame1() {
             gameState.g1Round = 0;
             switchView('view-game1');
-            setDialogue('robot', '我们来试一试！找出画面中有特别的那个特征 br>仔细看，目标是什么？');
+            setDialogue('robot', '我们来试一试！找出画面中有特别的那个特征 <br>仔细看，目标是什么？');
             loadG1Level();
         }
 
         function loadG1Level() {
             const levelData = gameState.g1Levels[gameState.g1Round];
-            document.getElementById('g1-target-text').innerText = ` ${levelData.prompt}】`;
+            document.getElementById('g1-target-text').innerText = ` ${levelData.prompt}`;
             renderProgress('g1-progress', gameState.g1Round, 3);
             
             const grid = document.getElementById('g1-grid');
@@ -646,7 +646,7 @@ let isProcessing = false;
             });
         }
 
-        /* ------------- 游成 2 ------------- */
+        /* ------------- 游戏 2 ------------- */
         function initGame2() {
             gameState.g2Round = 0;
             switchView('view-game2');
@@ -656,9 +656,9 @@ let isProcessing = false;
 
         function loadG2Level() {
             const levelData = gameState.g2Levels[gameState.g2Round];
-            document.getElementById('g2-f1-name').innerText = `特征1：$${levelData.f1Name}`;
+            document.getElementById('g2-f1-name').innerText = `特征1：${levelData.f1Name}`;
             document.getElementById('g2-f1-img').innerHTML = levelData.f1Svg;
-            document.getElementById('g2-f2-name').innerText = `特征2：$${levelData.f2Name}`;
+            document.getElementById('g2-f2-name').innerText = `特征2：${levelData.f2Name}`;
             document.getElementById('g2-f2-img').innerHTML = levelData.f2Svg;
             renderProgress('g2-progress', gameState.g2Round, 3);
             
@@ -707,16 +707,16 @@ let isProcessing = false;
             });
         }
 
-        /* ------------- 游成 3 ------------- */
+        /* ------------- 游戏 3 ------------- */
         function initGame3() {
             switchView('view-game3');
-            setDialogue('robot', '终极战战！观察扫描仪上的物品，对照上面的 特征清单 ，它是地球猫、外星猫，还是混淆项？');
+            setDialogue('robot', '终极关卡！观察扫描仪上的物品，对照上面的 特征清单 ，它是地球猫、外星猫，还是混淆项？');
             
             // 准备更丰富的8个物品列队，将外星猫的发光改为天线        
 gameState.g3Items = [
                 { type: 'earth', svg: generateCatSVG({eyes: 2, tailType: 'normal', bodyColor: '#d97706'}), name: '正常的猫' },
                 { type: 'alien', svg: generateCatSVG({eyes: 3, tailType: 'mech', bodyColor: '#64748b', hasAntenna: true}), name: '三眼天线猫' },
-                { type: 'none', svg: svgDog, name: '机器狗' }, // 强干所                { type: 'earth', svg: generateCatSVG({eyes: 2, tailType: 'normal', bodyColor: '#b45309', earColor: '#78350f'}), name: '深棕色的猫' },
+                { type: 'none', svg: svgDog, name: '机器狗' }, // 机器狗'], // 干扰项
                 { type: 'none', svg: svgFlower, name: '一朵小花' },
                 { type: 'alien', svg: generateCatSVG({eyes: 3, tailType: 'mech', bodyColor: '#0ea5e9', hasAntenna: true}), name: '蓝色外星猫' },
                 { type: 'none', svg: svgCloudItem, name: '云朵' },
@@ -800,13 +800,13 @@ setTimeout(() => {
             initMenu();
         }
 
-        /* 放大镜特效(仅在游成1和展示) */
+        /* 放大镜特效(仅在游戏1和展示) */
         const gameContainer = document.getElementById('game-container');
         const magGlass = document.getElementById('mag-glass');
 
         gameContainer.addEventListener('mousemove', (e) => {
             const rect = gameContainer.getBoundingClientRect();
-            // 如果在主菜单或游成隐藏
+            // 如果在主菜单或游戏隐藏
 if(document.getElementById('view-menu').classList.contains('hidden') === false || 
                document.getElementById('view-game3').classList.contains('hidden') === false) {
                 magGlass.style.display = 'none';

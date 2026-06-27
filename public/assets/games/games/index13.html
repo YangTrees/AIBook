@@ -66,9 +66,9 @@
         
         <div class="flex justify-center items-end mb-8 space-x-4">
             <!-- 团团 SVG -->
-            <div class="w-32 h-40 animate-float-delay" id="svg-tuantuan"></div>
+            <img src="../../characters/characters/tuantuan.png" alt="团团" class="w-32 h-40 object-contain animate-float-delay" />
             <!-- 点点 SVG -->
-            <div class="w-32 h-40 animate-float" id="svg-diandian"></div>
+            <img src="../../characters/characters/diandian.png" alt="点点" class="w-32 h-40 object-contain animate-float" />
         </div>
 
         <div class="flex flex-col md:flex-row gap-4 w-full max-w-3xl px-6">
@@ -87,7 +87,7 @@
         </div>
     </div>
 
-    <!-- 游成主界面-->
+    <!-- 游戏主界面-->
     <div id="game-screen" class="hidden absolute inset-0 flex flex-col bg-[#FFF9E6]">
         <!-- 顶部导航 -->
         <div class="h-16 bg-white/50 backdrop-blur-sm shadow-sm flex items-center justify-between px-4 z-10">
@@ -98,7 +98,7 @@
             <div class="w-20 text-right text-lg text-green-600 font-bold" id="score-display">0/0</div>
         </div>
 
-        <!-- 游成提示 -->
+        <!-- 游戏提示 -->
         <div class="text-center py-2 text-gray-600 font-bold text-lg px-4" id="game-desc">
             点点说：把相同的放在一起！
         </div>
@@ -114,7 +114,7 @@
         </div>
         
         <!-- 装饰点点 -->
-        <div class="absolute bottom-4 right-4 w-20 h-24 opacity-80 pointer-events-none" id="svg-diandian-small"></div>
+        <img src="../../characters/characters/diandian.png" alt="点点" class="absolute bottom-4 right-4 w-20 h-24 object-contain opacity-80 pointer-events-none" />
     </div>
 
     <!-- 成功弹窗 -->
@@ -122,12 +122,12 @@
         <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border-8 border-yellow-400 modal-enter relative">
             <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 text-6xl">🌟</div>
             <h2 class="text-3xl text-green-600 font-bold mb-4 mt-4">太棒啦！分类完成：</h2>
-            <p class="text-xl text-gray-700 mb-6">点点胸口亮起了一颗小星星：br>你学会了新本领！</p>
+            <p class="text-xl text-gray-700 mb-6">点点胸口亮起了一颗小星星：<br>你学会了新本领！</p>
             <div class="flex justify-center gap-4">
                 <button onclick="showHome()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-full font-bold text-lg shadow-md transition">
-                    回首项                </button>
+                    返回首页                </button>
                 <button onclick="nextLevel()" id="next-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-bold text-lg shadow-md shadow-blue-500/50 transition">
-                    下一兀                </button>
+                    下一关                </button>
             </div>
         </div>
     </div>
@@ -264,17 +264,17 @@ function shadeColor(color, percent) {
     }
 
     // 初始化固定SVG
-document.getElementById('svg-tuantuan').innerHTML = SVGs.tuantuan;
-    document.getElementById('svg-diandian').innerHTML = SVGs.diandian;
-    document.getElementById('svg-diandian-small').innerHTML = SVGs.diandian;
 
-    // --- 游成数据配置 ---
+    
+    
+
+    // --- 游戏数据配置 ---
 const LEVELS = {
         1: {
             title: "颜色大本营",
             desc: "3-5岁：把相同颜色的袜子放到对应的箱子里！",
             bins: [
-                { id: 'red', label: '线色袜子', color: '#FCA5A5' },
+                { id: 'red', label: '红色袜子', color: '#FCA5A5' },
                 { id: 'blue', label: '蓝色袜子', color: '#93C5FD' }
             ],
             generateItems: () => {
@@ -319,7 +319,7 @@ for(let i=0; i<5; i++) items.push({ id:`sock${i}`, matchId: 'sock', svg: SVGs.so
         }
     };
 
-    // --- 游成状态---
+    // --- 游戏状态 ---
 let currentLevel = 1;
     let totalItems = 0;
     let placedItems = 0;
@@ -353,7 +353,7 @@ const nextBtn = document.getElementById('next-btn');
             nextBtn.innerText = "再玩一次";
             nextBtn.onclick = () => startGame(1);
         } else {
-            nextBtn.innerText = "下一兀";
+            nextBtn.innerText = "下一关";
             nextBtn.onclick = () => nextLevel();
         }
 
