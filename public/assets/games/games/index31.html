@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超级搭档互动游乐围</title>
+    <script src="../../libs/libs/tailwind.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8fafc;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            user-select: none;
+        }
+        
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animations */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        
+        @keyframes fade-in-zoom {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in-zoom {
+            animation: fade-in-zoom 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slide-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slide-up 0.5s ease-out forwards;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+        .animate-pulse-ring {
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        /* Utility classes */
+        .hidden-view { display: none !important; }
+        .flex-view { display: flex !important; }
+        
+        /* Button Base */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:active:not(:disabled) { transform: scale(0.95); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+        .btn-primary { background: linear-gradient(to right, #60a5fa, #3b82f6); color: white; }
+        .btn-secondary { background: linear-gradient(to right, #4ade80, #22c55e); color: white; }
+        .btn-danger { background: linear-gradient(to right, #f87171, #ef4444); color: white; }
+        .btn-outline { background: white; color: #3b82f6; border: 4px solid #bfdbfe; }
+        .btn-outline:hover:not(:disabled) { border-color: #60a5fa; }
+
+        /* Game specific */
+        .grid-cell { transition: all 0.3s ease; }
+        .item-scale-up { transform: scale(1.25); filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.15)); }
+        .item-dim { opacity: 0.5; transform: scale(0.9); }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800">
+
+    <!-- Back Button (Hidden on Menu) -->
+    <div id="nav-area" class="fixed top-4 left-4 z-50 hidden-view">
+        <button onclick="goToMenu()" class="btn btn-outline !py-2 !px-4 text-sm !rounded-full bg-white/80 backdrop-blur">
+            ⬅️ 返回游成大厅
+        </button>
+    </div>
+
+    <main class="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+
+        <!-- View: Menu -->
+        <div id="view-menu" class="w-full max-w-4xl flex-col items-center text-center space-y-8 animate-fade-in-zoom flex-view">
+            <div class="relative">
+                <div class="absolute -inset-4 bg-yellow-300 rounded-full blur-xl opacity-30 animate-pulse"></div>
+                <h1 class="relative text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 drop-shadow-sm pb-2">
+                    超级搭档游乐围                </h1>
+            </div>
+            
+            <p class="text-xl text-gray-600 font-medium leading-relaxed">
+                欢迎来到第31课！今天我们要学乀strong>人机协作</strong> br/>
+                请选择一个你想战战的游成吧！
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-8">
+                <button onclick="startGame(1)" class="flex flex-col items-center p-8 bg-white border-4 border-orange-200 rounded-3xl card-shadow hover:scale-105 hover:border-orange-400 transition-all group cursor-pointer">
+                    <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform">🤖👦</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">分工大作成</h3>
+                    <p class="text-gray-500 text-sm">点点算得快，团团做决定！</p>
+                </button>
+
+                <button onclick="startGame(2)" class="flex flex-col items-center p-8 bg-white border-4 border-green-200 rounded-3xl card-shadow hover:scale-105 hover:border-green-400 transition-all group cursor-pointer">
+                    <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform">🗺️⬆︀</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">寻宝小指什</h3>
+                    <p class="text-gray-500 text-sm">发指令拿星星，试一试改一改！</p>
+                </button>
+
+                <button onclick="startGame(3)" class="flex flex-col items-center p-8 bg-white border-4 border-purple-200 rounded-3xl card-shadow hover:scale-105 hover:border-purple-400 transition-all group cursor-pointer">
+                    <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform">🍎🤖</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">点点帮帮忀</h3>
+                    <p class="text-gray-500 text-sm">人类定规则，AI来执行！</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- View: Game 1 -->
+        <div id="view-game1" class="w-full max-w-2xl flex-col items-center space-y-8 hidden-view animate-fade-in-zoom">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第关：谁来做？</h2>
+                <p class="text-gray-600 text-lg">点点找得快，人类做决定。帮他们分工吧！</p>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow border-4 border-blue-100 p-6 w-full text-center relative overflow-hidden">
+                <div id="g1-icon" class="text-6xl mb-4">🔢</div>
+                <h3 id="g1-text" class="text-2xl font-bold text-gray-800 mb-8">任务：秒钟算出一万道数学题</h3>
+                
+                <div class="flex justify-center gap-6">
+                    <button onclick="g1Select('Human')" class="flex-1 flex flex-col items-center p-6 bg-orange-100 rounded-2xl hover:bg-orange-200 transition-colors border-4 border-orange-300">
+                        <span class="text-6xl mb-2">👦</span>
+                        <span class="font-bold text-xl text-orange-700">交给了(团团)</span>
+                    </button>
+                    <button onclick="g1Select('AI')" class="flex-1 flex flex-col items-center p-6 bg-blue-100 rounded-2xl hover:bg-blue-200 transition-colors border-4 border-blue-300">
+                        <span class="text-6xl mb-2">🤖</span>
+                        <span class="font-bold text-xl text-blue-700">交给AI (点点)</span>
+                    </button>
+                </div>
+
+                <!-- Game 1 Overlay -->
+                <div id="g1-overlay" class="absolute inset-0 flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-10 hidden-view">
+                    <div id="g1-result-icon" class="text-7xl mb-4">✅</div>
+                    <p id="g1-result-title" class="text-2xl font-bold mb-2">选对啦！</p>
+                    <p id="g1-result-reason" class="text-lg text-gray-600 px-8">原因</p>
+                </div>
+            </div>
+            
+            <div id="g1-progress" class="flex gap-2">
+                <!-- Dots generated by JS -->
+            </div>
+        </div>
+
+        <!-- View: Game 2 -->
+        <div id="view-game2" class="w-full max-w-3xl flex-col items-center space-y-6 hidden-view animate-slide-up">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第关：试一试，改一攀</h2>
+                <p class="text-gray-600 text-lg">给点点发指令，拿到星星。走错没关系，可以撤销重来：</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-8 items-center w-full justify-center">
+                <!-- Grid Area -->
+                <div class="bg-white/80 p-4 rounded-3xl card-shadow border-4 border-blue-300 backdrop-blur">
+                    <div id="g2-grid" class="grid grid-cols-4 gap-2 relative">
+                        <!-- Grid cells generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Controls Area -->
+                <div class="flex flex-col items-center w-full sm:w-64 space-y-6">
+                    <div class="w-full bg-blue-50 p-4 rounded-2xl border-2 border-blue-200">
+                        <h3 class="font-bold text-gray-700 mb-2 text-center">指令序列</h3>
+                        <div id="g2-queue" class="flex flex-wrap gap-2 justify-center min-h-[3rem] p-2 bg-white rounded-lg border-2 border-gray-100 items-center">
+                            <span class="text-gray-400 text-sm">点击方向键添劀</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 w-48">
+                        <div></div>
+                        <button onclick="g2AddCommand('UP')" id="btn-up" class="btn btn-outline !p-4 text-2xl">⬆️</button>
+                        <div></div>
+                        <button onclick="g2AddCommand('LEFT')" id="btn-left" class="btn btn-outline !p-4 text-2xl">⬅️</button>
+                        <button onclick="g2AddCommand('DOWN')" id="btn-down" class="btn btn-outline !p-4 text-2xl">⬇️</button>
+                        <button onclick="g2AddCommand('RIGHT')" id="btn-right" class="btn btn-outline !p-4 text-2xl">➡️</button>
+                    </div>
+
+                    <div class="flex gap-2 w-full">
+                        <button onclick="g2RemoveCommand()" id="btn-undo" class="btn btn-danger flex-1 !py-2 !px-0 text-sm">🔄 撤销</button>
+                        <button onclick="g2Execute()" id="btn-exec" class="btn btn-primary flex-1 !py-2 !px-0 text-sm">⚪执行</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2 Overlays -->
+            <div id="g2-success" class="fixed inset-0 z-50 items-center justify-center bg-black/40 backdrop-blur-sm hidden-view">
+                <div class="text-center p-8 max-w-md bg-white rounded-3xl border-4 border-green-400 animate-fade-in-zoom flex flex-col items-center">
+                    <div class="text-7xl mb-4 animate-spin-slow">🌟</div>
+                    <h3 class="text-3xl font-bold text-green-500 mb-2">越来越像样了：</h3>
+                    <p class="text-gray-600 mb-6 text-lg">你给出的指令非常准确，点点成功拿到了星星：</p>
+                    <button onclick="endGame()" class="btn btn-primary w-full">进入复盘</button>
+                </div>
+            </div>
+
+            <div id="g2-fail" class="hidden-view flex-col items-center w-full animate-slide-up">
+                <div class="inline-flex items-center gap-2 px-6 py-3 bg-red-100 text-red-600 rounded-full font-bold shadow-sm">
+                    <span>❌哎呀走错了！别急，我们"试一试，再改一改"！</span>
+                    <button onclick="g2Reset()" class="ml-2 underline hover:text-red-800">重新开始</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Game 3 -->
+        <div id="view-game3" class="w-full max-w-3xl flex-col items-center space-y-6 hidden-view animate-fade-in-zoom">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-blue-600 mb-2">第关：人机协作大战成</h2>
+                <p class="text-gray-600 text-lg">人类决定规则，AI快速执行，有后由人类确认 </p>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow border-4 border-blue-100 p-6 w-full relative min-h-[400px] flex flex-col">
+                <!-- Phase 1: Set Rule -->
+                <div id="g3-phase-rule" class="flex-col items-center bg-blue-50 p-6 rounded-2xl border-2 border-blue-100 mb-6 transition-all">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">🧠 团团 (人类)：请制定规则</h3>
+                    <div class="flex gap-4">
+                        <button onclick="g3SelectRule('fruit')" id="rule-fruit" class="px-4 py-2 rounded-xl font-bold border-4 border-transparent bg-white hover:bg-gray-50 transition-all">
+                            收集水果 🍎
+                        </button>
+                        <button onclick="g3SelectRule('toy')" id="rule-toy" class="px-4 py-2 rounded-xl font-bold border-4 border-transparent bg-white hover:bg-gray-50 transition-all">
+                            收集玩具 🧸
+                        </button>
+                    </div>
+                    <button onclick="g3StartAI()" id="g3-btn-start" class="btn btn-primary mt-6" disabled>
+                        点点，按规则执行：⚙️
+                    </button>
+                </div>
+
+                <!-- Phase 2 & 3: Field -->
+                <div class="flex-1 bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-6 border-2 border-dashed border-gray-300 relative overflow-hidden">
+                    <div id="g3-grid" class="grid grid-cols-4 gap-6 relative z-10">
+                        <!-- Items injected by JS -->
+                    </div>
+
+                    <div id="g3-overlay-working" class="absolute inset-0 bg-white/60 backdrop-blur-sm z-20 items-center justify-center hidden-view">
+                        <div class="bg-white px-8 py-4 rounded-full card-shadow border-4 border-blue-400 font-bold text-2xl text-blue-600 animate-pulse flex items-center gap-3">
+                            ⚙️ 点点正在快速寻找中...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Confirm Box -->
+                <div id="g3-phase-confirm" class="mt-6 flex-col items-center bg-orange-50 p-6 rounded-2xl border-2 border-orange-200 hidden-view animate-slide-up">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">🧠 团团 (人类)：请确认结果</h3>
+                    <p class="text-gray-600 mb-4 text-center">点点已经找完了！人类是有终把关人，棕查一下找对了吗？</p>
+                    <div class="flex gap-4">
+                        <button onclick="g3Reset()" class="btn btn-outline">找错了，重来</button>
+                        <button onclick="endGame()" class="btn btn-secondary">棕查无误，确认！✅</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: End -->
+        <div id="view-end" class="w-full flex-col items-center text-center space-y-8 hidden-view animate-fade-in-zoom">
+            <div class="text-8xl text-yellow-400 animate-spin-slow">🌟</div>
+            <h1 class="text-4xl font-extrabold text-green-600">恭喜完成战战：</h1>
+            
+            <div class="max-w-md bg-yellow-50 border-4 border-yellow-200 rounded-3xl p-6 text-left card-shadow">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">复盘时刻</h3>
+                <ul class="space-y-3 text-lg text-gray-700 font-medium pl-4">
+                    <li>✅今天的关键词：strong>人机协作</strong></li>
+                    <li>✅规律：strong>先想规则，再动手</strong></li>
+                    <li>✅秘诀：strong>试一试，再改一攀</strong></li>
+                </ul>
+                <div class="mt-6 p-4 bg-white rounded-xl border border-gray-200 italic text-gray-600 text-center">
+                    "团团把今天的小作品收进档案袋，贴上『第31课』。点点胸口亮起一颗小星星：今天你学会了新本领！                 </div>
+            </div>
+            
+            <button onclick="goToMenu()" class="btn btn-primary !rounded-full px-8">
+                返回游成大厅重新选择
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // --- View Management ---
+const views = ['menu', 'game1', 'game2', 'game3', 'end'];
+        
+        function hideAllViews() {
+            views.forEach(v => {
+                document.getElementById(`view-${v}`).classList.remove('flex-view');
+                document.getElementById(`view-${v}`).classList.add('hidden-view');
+            });
+        }
+
+        function showView(viewName) {
+            hideAllViews();
+            document.getElementById(`view-${viewName}`).classList.remove('hidden-view');
+            document.getElementById(`view-${viewName}`).classList.add('flex-view');
+            
+            const navArea = document.getElementById('nav-area');
+            if (viewName === 'menu' || viewName === 'end') {
+                navArea.classList.remove('flex-view');
+                navArea.classList.add('hidden-view');
+            } else {
+                navArea.classList.remove('hidden-view');
+                navArea.classList.add('flex-view');
+            }
+        }
+
+        function goToMenu() {
+            showView('menu');
+            // Stop any running intervals/timeouts safely here if needed
+            g2Reset();
+            g3Reset();
+        }
+
+        function startGame(num) {
+            if (num === 1) { initGame1(); showView('game1'); }
+            if (num === 2) { initGame2(); showView('game2'); }
+            if (num === 3) { initGame3(); showView('game3'); }
+        }
+
+        function endGame() {
+            showView('end');
+        }
+
+        // --- Game 1 Logic ---
+const g1Tasks = [
+            { text: "1秒钟算出一万道数学题", answer: "AI", reason: "点点算得特别快！", icon: "🔢" },
+            { text: "安慰不开心的好朋友", answer: "Human", reason: "团团有温暖的感情，能理解朋友的心情", icon: "🤗" },
+            { text: "圈000本书里找出一个错别字", answer: "AI", reason: "点点的眼睛像超级放大镜，找东西可快了！", icon: "📖" },
+            { text: "决定周末去动物园还是游乐园？", answer: "Human", reason: "人类来做决定，AI来帮忙！", icon: "🤔" }
+        ];
+        let g1CurrentIndex = 0;
+        let g1Locked = false;
+
+        function initGame1() {
+            g1CurrentIndex = 0;
+            g1Locked = false;
+            g1RenderTask();
+        }
+
+        function g1RenderTask() {
+            const task = g1Tasks[g1CurrentIndex];
+            document.getElementById('g1-icon').innerText = task.icon;
+            document.getElementById('g1-text').innerText = "任务：" + task.text;
+            
+            const progress = document.getElementById('g1-progress');
+            progress.innerHTML = '';
+            for (let i = 0; i < g1Tasks.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = `w-4 h-4 rounded-full ${i === g1CurrentIndex ? 'bg-blue-500' : (i < g1CurrentIndex ? 'bg-green-500' : 'bg-gray-200')}`;
+                progress.appendChild(dot);
+            }
+        }
+
+        function g1Select(choice) {
+            if (g1Locked) return;
+            g1Locked = true;
+            
+            const task = g1Tasks[g1CurrentIndex];
+            const overlay = document.getElementById('g1-overlay');
+            const rIcon = document.getElementById('g1-result-icon');
+            const rTitle = document.getElementById('g1-result-title');
+            const rReason = document.getElementById('g1-result-reason');
+
+            overlay.classList.remove('hidden-view');
+            overlay.classList.add('flex-view');
+
+            if (choice === task.answer) {
+                // Success
+                overlay.className = "absolute inset-0 flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-10 flex-view text-green-500";
+                rIcon.innerText = "✅";
+                rTitle.innerText = "选对啦！";
+                rReason.innerText = task.reason;
+                
+                setTimeout(() => {
+                    overlay.classList.remove('flex-view');
+                    overlay.classList.add('hidden-view');
+                    if (g1CurrentIndex < g1Tasks.length - 1) {
+                        g1CurrentIndex++;
+                        g1RenderTask();
+                        g1Locked = false;
+                    } else {
+                        endGame();
+                    }
+                }, 2000);
+            } else {
+                // Error
+                overlay.className = "absolute inset-0 flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-10 flex-view text-red-500";
+                rIcon.innerText = "❌";
+                rTitle.innerText = "不太对哦，再想想！";
+                rReason.innerText = 'AI擅长快速处理，人类擅长思考和感受';
+                
+                setTimeout(() => {
+                    overlay.classList.remove('flex-view');
+                    overlay.classList.add('hidden-view');
+                    g1Locked = false;
+                }, 2000);
+            }
+        }
+
+        // --- Game 2 Logic ---
+const g2Size = 4;
+        const g2Initial = { x: 0, y: 0 };
+        const g2Goal = { x: 3, y: 3 };
+        const g2Rocks = [{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 1, y: 3 }];
+        
+        let g2Commands = [];
+        let g2Pos = { ...g2Initial };
+        let g2Status = 'idle'; // idle, running, fail
+let g2Timer = null;
+
+        function initGame2() {
+            g2Reset();
+        }
+
+        function g2RenderGrid() {
+            const grid = document.getElementById('g2-grid');
+            grid.innerHTML = '';
+            
+            for (let y = 0; y < g2Size; y++) {
+                for (let x = 0; x < g2Size; x++) {
+                    const isRobot = g2Pos.x === x && g2Pos.y === y;
+                    const isGoal = g2Goal.x === x && g2Goal.y === y;
+                    const isRock = g2Rocks.some(r => r.x === x && r.y === y);
+                    
+                    const cell = document.createElement('div');
+                    cell.className = "w-16 h-16 sm:w-20 sm:h-20 border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl flex items-center justify-center text-3xl sm:text-4xl grid-cell relative";
+                    
+                    if (isRock) cell.innerHTML += "<span>🪨</span>";
+                    if (isGoal && !isRobot) cell.innerHTML += "<span class='animate-pulse'>🌟</span>";
+                    if (isRobot) cell.innerHTML += "<span class='absolute z-10 drop-shadow-md text-4xl sm:text-5xl transition-transform duration-300'>🤖</span>";
+                    
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function g2RenderQueue(activeIndex = -1) {
+            const queue = document.getElementById('g2-queue');
+            queue.innerHTML = '';
+            
+            if (g2Commands.length === 0) {
+                queue.innerHTML = '<span class="text-gray-400 text-sm">点击方向键添加指什</span>';
+                return;
+            }
+            
+            g2Commands.forEach((cmd, i) => {
+                const el = document.createElement('div');
+                let highlight = activeIndex === i ? 'ring-2 ring-orange-400 bg-orange-100 scale-110' : '';
+                el.className = `p-1 px-2 bg-blue-100 rounded text-blue-600 font-bold transition-all ${highlight}`;
+                
+                if (cmd === 'UP') el.innerText = '⬆️';
+                if (cmd === 'DOWN') el.innerText = '⬇️';
+                if (cmd === 'LEFT') el.innerText = '⬅️';
+                if (cmd === 'RIGHT') el.innerText = '➡️';
+                
+                queue.appendChild(el);
+            });
+        }
+
+        function g2SetButtonsDisabled(disabled) {
+            ['btn-up', 'btn-left', 'btn-down', 'btn-right', 'btn-undo', 'btn-exec'].forEach(id => {
+                document.getElementById(id).disabled = disabled;
+            });
+            if (!disabled && g2Commands.length === 0) {
+                document.getElementById('btn-undo').disabled = true;
+                document.getElementById('btn-exec').disabled = true;
+            }
+        }
+
+        function g2AddCommand(cmd) {
+            if (g2Status !== 'idle') return;
+            if (g2Commands.length < 8) {
+                g2Commands.push(cmd);
+                g2RenderQueue();
+                g2SetButtonsDisabled(false);
+            }
+        }
+
+        function g2RemoveCommand() {
+            if (g2Status !== 'idle') return;
+            g2Commands.pop();
+            g2RenderQueue();
+            g2SetButtonsDisabled(false);
+        }
+
+        function g2Reset() {
+            clearTimeout(g2Timer);
+            g2Commands = [];
+            g2Pos = { ...g2Initial };
+            g2Status = 'idle';
+            document.getElementById('g2-fail').classList.remove('flex-view');
+            document.getElementById('g2-fail').classList.add('hidden-view');
+            document.getElementById('g2-success').classList.remove('flex-view');
+            document.getElementById('g2-success').classList.add('hidden-view');
+            g2RenderGrid();
+            g2RenderQueue();
+            g2SetButtonsDisabled(false);
+        }
+
+        function g2Execute() {
+            if (g2Commands.length === 0) return;
+            g2Status = 'running';
+            g2SetButtonsDisabled(true);
+            g2Pos = { ...g2Initial };
+            g2RenderGrid();
+            
+            let step = 0;
+            
+            function runStep() {
+                if (step < g2Commands.length) {
+                    g2RenderQueue(step);
+                    const cmd = g2Commands[step];
+                    let nx = g2Pos.x;
+                    let ny = g2Pos.y;
+                    
+                    if (cmd === 'UP' && ny > 0) ny -= 1;
+                    if (cmd === 'DOWN' && ny < g2Size - 1) ny += 1;
+                    if (cmd === 'LEFT' && nx > 0) nx -= 1;
+                    if (cmd === 'RIGHT' && nx < g2Size - 1) nx += 1;
+                    
+                    g2Pos = { x: nx, y: ny };
+                    g2RenderGrid();
+                    
+                    // Check Rock
+const hitRock = g2Rocks.some(r => r.x === nx && r.y === ny);
+                    if (hitRock) {
+                        g2Status = 'fail';
+                        setTimeout(() => {
+                            document.getElementById('g2-fail').classList.remove('hidden-view');
+                            document.getElementById('g2-fail').classList.add('flex-view');
+                        }, 300);
+                        return;
+                    }
+                    
+                    step++;
+                    g2Timer = setTimeout(runStep, 600);
+                } else {
+                    g2RenderQueue(-1); // Remove highlight
+if (g2Pos.x === g2Goal.x && g2Pos.y === g2Goal.y) {
+                        // Success
+setTimeout(() => {
+                            document.getElementById('g2-success').classList.remove('hidden-view');
+                            document.getElementById('g2-success').classList.add('flex-view');
+                        }, 300);
+                    } else {
+                        // Fail
+                        g2Status = 'fail';
+                        setTimeout(() => {
+                            document.getElementById('g2-fail').classList.remove('hidden-view');
+                            document.getElementById('g2-fail').classList.add('flex-view');
+                        }, 300);
+                    }
+                }
+            }
+            
+            runStep();
+        }
+
+        // --- Game 3 Logic ---
+const g3Items = [
+            { id: 1, type: 'fruit', emoji: '🍎' },
+            { id: 2, type: 'toy', emoji: '🧸' },
+            { id: 3, type: 'fruit', emoji: '🍌' },
+            { id: 4, type: 'vehicle', emoji: '🚗' },
+            { id: 5, type: 'toy', emoji: '🪀' },
+            { id: 6, type: 'fruit', emoji: '🍇' },
+            { id: 7, type: 'vehicle', emoji: '🚁' },
+            { id: 8, type: 'toy', emoji: '🤖' },
+        ];
+        let g3Rule = '';
+        let g3Selected = [];
+        let g3Interval = null;
+
+        function initGame3() {
+            g3Reset();
+        }
+
+        function g3RenderGrid() {
+            const grid = document.getElementById('g3-grid');
+            grid.innerHTML = '';
+            
+            g3Items.forEach(item => {
+                const isSel = g3Selected.includes(item.id);
+                const showCheck = isSel && document.getElementById('g3-phase-confirm').classList.contains('flex-view');
+                
+                const el = document.createElement('div');
+                el.className = `text-6xl flex justify-center items-center transition-all duration-500 grid-cell ${isSel ? 'item-scale-up' : (g3Selected.length > 0 ? 'item-dim' : '')}`;
+                
+                let html = `<div class="relative">${item.emoji}`;
+                if (isSel) {
+                    html += `<div class="absolute -inset-4 border-4 border-yellow-400 rounded-full animate-pulse-ring opacity-50"></div>`;
+                }
+                if (showCheck) {
+                    html += `<div class="absolute -top-2 -right-2 bg-green-500 rounded-full text-white w-6 h-6 flex items-center justify-center shadow-lg text-sm">✅</div>`;
+                }
+                html += `</div>`;
+                el.innerHTML = html;
+                grid.appendChild(el);
+            });
+        }
+
+        function g3SelectRule(rule) {
+            g3Rule = rule;
+            
+            // UI Update
+const btnFruit = document.getElementById('rule-fruit');
+            const btnToy = document.getElementById('rule-toy');
+            
+            btnFruit.className = `px-4 py-2 rounded-xl font-bold border-4 transition-all ${rule === 'fruit' ? 'border-orange-500 bg-orange-100 shadow-md transform scale-105' : 'border-transparent bg-white hover:bg-gray-50'}`;
+            btnToy.className = `px-4 py-2 rounded-xl font-bold border-4 transition-all ${rule === 'toy' ? 'border-orange-500 bg-orange-100 shadow-md transform scale-105' : 'border-transparent bg-white hover:bg-gray-50'}`;
+            
+            document.getElementById('g3-btn-start').disabled = false;
+        }
+
+        function g3StartAI() {
+            if (!g3Rule) return;
+            
+            // Phase change UI
+document.getElementById('g3-phase-rule').style.opacity = '0.5';
+            document.getElementById('g3-phase-rule').style.pointerEvents = 'none';
+            
+            document.getElementById('g3-overlay-working').classList.remove('hidden-view');
+            document.getElementById('g3-overlay-working').classList.add('flex-view');
+            
+            g3Selected = [];
+            const targets = g3Items.filter(i => i.type === g3Rule).map(i => i.id);
+            let count = 0;
+            
+            g3Interval = setInterval(() => {
+                if (count < targets.length) {
+                    g3Selected.push(targets[count]);
+                    g3RenderGrid();
+                    count++;
+                } else {
+                    clearInterval(g3Interval);
+                    setTimeout(() => {
+                        document.getElementById('g3-overlay-working').classList.remove('flex-view');
+                        document.getElementById('g3-overlay-working').classList.add('hidden-view');
+                        
+                        document.getElementById('g3-phase-confirm').classList.remove('hidden-view');
+                        document.getElementById('g3-phase-confirm').classList.add('flex-view');
+                        g3RenderGrid(); // Re-render to show checkmarks
+}, 500);
+                }
+            }, 500);
+        }
+
+        function g3Reset() {
+            clearInterval(g3Interval);
+            g3Rule = '';
+            g3Selected = [];
+            
+            // UI Reset Phase 1
+const ruleArea = document.getElementById('g3-phase-rule');
+            ruleArea.style.opacity = '1';
+            ruleArea.style.pointerEvents = 'auto';
+            document.getElementById('rule-fruit').className = 'px-4 py-2 rounded-xl font-bold border-4 border-transparent bg-white hover:bg-gray-50 transition-all';
+            document.getElementById('rule-toy').className = 'px-4 py-2 rounded-xl font-bold border-4 border-transparent bg-white hover:bg-gray-50 transition-all';
+            document.getElementById('g3-btn-start').disabled = true;
+            
+            // UI Reset Phase 2 & 3
+document.getElementById('g3-overlay-working').classList.remove('flex-view');
+            document.getElementById('g3-overlay-working').classList.add('hidden-view');
+            document.getElementById('g3-phase-confirm').classList.remove('flex-view');
+            document.getElementById('g3-phase-confirm').classList.add('hidden-view');
+            
+            g3RenderGrid();
+        }
+        
+    </script>
+</body>
+</html>

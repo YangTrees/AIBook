@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第12课：找bug的小修理师- 互动战战</title>
+    <style>
+        :root {
+            --primary-color: #5C9FE6;
+            --secondary-color: #F9E596;
+            --bg-color: #F4F9EB;
+            --text-color: #3B3B3B;
+            --wood-texture: #C89F70; 
+            --success-green: #68C16A;
+            --error-red: #E86B6B;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Microsoft YaHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23d6e3c9" fill-opacity="0.4"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>');
+        }
+
+        h1, h2 { text-align: center; color: #2C4A3B; margin: 0;}
+        
+        .container {
+            max-width: 900px; margin: 0 auto;
+            background-color: #fff; border-radius: 20px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08); padding: 30px;
+            border: 5px solid var(--wood-texture);
+        }
+
+        .header-banner {
+            text-align: center; margin-bottom: 20px;
+            background-color: var(--wood-texture); color: white; padding: 15px;
+            border-radius: 12px 12px 0 0; margin: -30px -30px 20px -30px;
+        }
+
+        .intro-text {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background-color: #F0F7FA; padding: 15px; border-radius: 15px;
+            border: 2px dashed var(--primary-color); margin-bottom: 25px;
+        }
+
+        /* Character CSS Art */
+        .diandian {
+            width: 50px; height: 40px; background: white; border-radius: 25px; position: relative;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1); border: 3px solid #D0E5F2; z-index: 20;
+        }
+        .diandian::before, .diandian::after {
+            content: ''; position: absolute; top: 10px;
+            width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%;
+        }
+        .diandian::before { left: 10px; } .diandian::after { right: 10px; }
+        .diandian .star { position: absolute; bottom: 3px; left: 18px; color: var(--secondary-color); font-size: 10px; }
+        .diandian .antenna { position: absolute; top: -10px; left: 23px; width: 3px; height: 10px; background: #ccc; }
+        .diandian .antenna::after {
+            content: ''; position: absolute; top: -5px; left: -2.5px; width: 8px; height: 8px;
+            background: var(--secondary-color); border-radius: 50%;
+        }
+        .tuantuan { font-size: 45px; }
+
+        /* Tabs & Controls */
+        .tabs { display: flex; justify-content: center; margin-bottom: 20px; gap: 10px; flex-wrap: wrap; }
+        .tab-btn {
+            background-color: #eee; border: 2px solid #ccc; padding: 10px 20px; border-radius: 20px;
+            cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s;
+        }
+        .tab-btn.active { background-color: var(--primary-color); color: white; border-color: #3A78C4; transform: scale(1.05); }
+
+        .game-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+            border-bottom: 2px dashed #ddd; padding-bottom: 10px;
+        }
+        .restart-btn {
+            background-color: #FFDEE9; color: #D8436A; border: 2px solid #FF9A9E;
+            padding: 8px 15px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 16px;
+            transition: all 0.2s; display: flex; align-items: center; gap: 5px;
+        }
+        .restart-btn:hover { background-color: #FFC0CB; transform: scale(1.05); }
+
+        .game-section { display: none; animation: fadeIn 0.4s; }
+        .game-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn {
+            background-color: var(--success-green); color: white; border: none; padding: 12px 25px;
+            font-size: 18px; border-radius: 10px; cursor: pointer; box-shadow: 0 4px #4cae4c;
+            display: block; margin: 20px auto; font-family: inherit; font-weight: bold; position: relative; z-index: 10;
+        }
+        .btn:active { transform: translateY(4px); box-shadow: none; }
+        
+        .feedback { text-align: center; font-size: 18px; font-weight: bold; min-height: 25px; margin-top: 15px;}
+
+        /* --- Game 1 --- */
+        .recipe-flow { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 30px 0; flex-wrap: wrap; }
+        .step-box {
+            background: white; border: 3px solid #ccc; border-radius: 15px; padding: 10px;
+            text-align: center; width: 110px; height: 110px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); position: relative;
+        }
+        .step-box.is-bug { border-color: var(--error-red); background-color: #FFF0F0; animation: wiggle 2s infinite; cursor: pointer; }
+        .step-box.fixed { border-color: var(--success-green); background-color: #F0FFF0; animation: none; cursor: default; }
+        .arrow { font-size: 30px; color: #888; }
+        .step-icon { font-size: 40px; margin-bottom: 5px;}
+        .step-text { font-size: 14px; font-weight: bold; }
+        .bug-label {
+            position: absolute; top: -15px; right: -15px; background: var(--error-red);
+            color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold;
+        }
+        .machine-result { font-size: 80px; text-align: center; min-height: 150px; margin-bottom: 20px; transition: transform 0.3s;}
+        .result-text { font-size: 20px; font-weight: bold; display: block; margin-top: 10px;}
+        
+        .fix-options { display: none; justify-content: center; gap: 15px; margin-top: 20px; margin-bottom: 20px;}
+        .option-btn { background: #fff; border: 2px solid var(--primary-color); padding: 10px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight:bold; }
+        .option-btn:hover { background: #E6F2FF; }
+        @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+
+        /* --- Game 2 (3x3 Grid) --- */
+        #game2-area { display: flex; gap: 30px; justify-content: center; align-items: flex-start; flex-wrap: wrap; margin-top:20px;}
+        .code-panel { background: #2C3E50; color: #ECF0F1; padding: 20px; border-radius: 15px; font-family: monospace; width: 320px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .code-line { margin: 10px 0; font-size: 18px; display: flex; align-items: center; }
+        .code-block { background: #34495E; padding: 5px 15px; border-radius: 5px; border: 1px solid #7F8C8D; margin-left: 10px; }
+        .code-block.buggy { background: var(--error-red); cursor: pointer; animation: pulseRed 1.5s infinite; font-weight:bold;}
+        .code-block.fixed { background: var(--success-green); cursor: default; animation: none; font-weight:bold;}
+        
+        .grid-3x3 {
+            display: grid; grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px);
+            gap: 5px; background: #e0ece0; padding: 10px; border-radius: 15px; border: 3px solid #8FBC8F; position: relative;
+        }
+        .grid-cell {
+            width: 70px; height: 70px; background: rgba(255,255,255,0.7); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 35px; border: 2px dashed #b2d8b2;
+        }
+        #robot-piece { position: absolute; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10; top: 10px; left: 10px; }
+        .zzz-anim { position: absolute; top: -30px; left: 10px; font-weight: bold; color: #4169E1; animation: floatZzz 1.5s infinite; display: none; font-size:20px; z-index: 30;}
+        
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(232, 107, 107, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(232, 107, 107, 0); } 100% { box-shadow: 0 0 0 0 rgba(232, 107, 107, 0); } }
+        @keyframes floatZzz { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px) scale(1.5); } }
+
+        /* --- Game 3 (Rich Factory) --- */
+        .factory-container { background: #FAFAFA; border: 4px solid var(--wood-texture); border-radius: 15px; padding: 20px; position: relative; max-width: 650px; margin: 0 auto; margin-top:20px;}
+        .machine-drawing { display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px; background: #E8F0F2; padding: 20px; border-radius: 10px; border: 2px dashed #B0C4DE; }
+        .part { display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+        .part-icon-box { font-size: 50px; position: relative; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; transition: all 0.3s;}
+        .gear-spin { animation: spin 2s linear infinite; }
+        .part-fx { position: absolute; top: -30px; font-size: 25px; opacity: 0; pointer-events: none; }
+        .fx-float { animation: floatUpFx 1.5s forwards; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes floatUpFx { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-30px); } }
+        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+
+        .test-panel { display: flex; justify-content: space-around; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .test-btn { background: #E0E0E0; border: 2px solid #aaa; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; display: flex; align-items: center; gap: 5px;}
+        .test-btn:hover { background: #d0d0d0; }
+        .status-light { width: 15px; height: 15px; border-radius: 50%; background: #ccc; margin-left: 5px; border: 2px solid #999; display: inline-block;}
+        .status-light.green { background: var(--success-green); border-color: #2E8B57; box-shadow: 0 0 10px var(--success-green); }
+        .status-light.red { background: var(--error-red); border-color: #8B0000; box-shadow: 0 0 10px var(--error-red); animation: flashRed 0.5s infinite alternate;}
+        @keyframes flashRed { from {opacity: 0.5;} to {opacity: 1;} }
+
+        .main-power { background: #FF9800; border: none; width: 100px; height: 100px; border-radius: 50%; color: white; font-size: 24px; font-weight: bold; margin: 20px auto; display: block; cursor: pointer; box-shadow: 0 8px #E65100; transition: all 0.1s; z-index: 10; position: relative;}
+        .main-power:active { transform: translateY(8px); box-shadow: 0 0px #E65100; }
+        .big-bulb { font-size: 60px; text-align: center; filter: grayscale(100%); transition: all 0.5s; }
+        .big-bulb.on { filter: grayscale(0%); text-shadow: 0 0 40px #FFD700; }
+
+        .repair-tool { display: none; text-align: center; background: #FFF0F0; padding: 15px; border: 3px dashed var(--error-red); border-radius: 10px; margin-top: 15px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h1>第12课：找bug的小修理师</h1>
+        <p>调试(Debugging) = 发现错误(找错) + 把它改对(修正)</p>
+    </div>
+
+    <div class="intro-text">
+        <span class="tuantuan">👦🏻</span> 
+        <div>
+            <strong>团团：</strong> "哎呀！机器又出新状况了，程序好像生病了。 br>
+            <strong>点点：</strong> "别急！程序里的错误叫做 <strong>Bug (虫子)</strong>。每次遇到的Bug都不一样，让我们耐心排查吧！         </div>
+        <div class="diandian"><div class="antenna"></div><div class="star">★</div></div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openGame('game1')">🍰 游成1: 捣蛋Bug</button>
+        <button class="tab-btn" onclick="openGame('game2')">🤖 游成2: 迷宫代码</button>
+        <button class="tab-btn" onclick="openGame('game3')">🔧 游成3: 机器大排查</button>
+    </div>
+
+    <!-- === Game 1: Recipe Bug === -->
+    <div id="game1" class="game-section active">
+        <div class="game-header">
+            <h2>战战1：配方里的"捣蛋Bug </h2>
+            <button class="restart-btn" onclick="initGame1()">🎲 换一兀</button>
+        </div>
+        <p style="text-align: center;">糟糕！机器的加工配方混进了一个捣蛋Bug br>请棕查配方，<strong>点击不合理的步骤（Bug：</strong>把它改过来！</p>
+        
+        <div class="recipe-flow">
+            <div class="step-box">
+                <div class="step-icon" id="g1-s1-icon">🥣</div>
+                <div class="step-text" id="g1-s1-text">1. 倒面粉</div>
+            </div>
+            <div class="arrow">➡️</div>
+            <div class="step-box is-bug" id="g1-bug" onclick="showFixOptions()">
+                <div class="bug-label">Bug!</div>
+                <div class="step-icon" id="g1-bug-icon">🪨</div>
+                <div class="step-text" id="g1-bug-text">2. 加石头</div>
+            </div>
+            <div class="arrow">➡️</div>
+            <div class="step-box">
+                <div class="step-icon" id="g1-s3-icon">♨️</div>
+                <div class="step-text" id="g1-s3-text">3. 烤一烤</div>
+            </div>
+        </div>
+
+        <div class="fix-options" id="g1-options">
+            <p style="width:100%; text-align:center; margin:0 0 10px 0; color:var(--primary-color);">要把Bug换成什么才对呢：</p>
+            <!-- Buttons injected by JS -->
+        </div>
+
+        <div class="machine-result" id="g1-result">
+            <span id="g1-res-icon">❌</span><br>
+            <span class="result-text" id="g1-res-text" style="color:#888;">(等待加工)</span>
+        </div>
+        
+        <button class="btn" id="g1-btn" onclick="runGame1()">🚀 运行配方机器</button>
+        <div class="feedback" id="g1-feedback"></div>
+    </div>
+
+    <!-- === Game 2: 3x3 Grid Debugging === -->
+    <div id="game2" class="game-section">
+        <div class="game-header">
+            <h2 id="g2-title">战战2：修理"发疯"的代码</h2>
+            <button class="restart-btn" onclick="initGame2()">🎲 换一兀</button>
+        </div>
+        <p style="text-align: center;">点点要在3x3的棋盘里躲避障碍拿到能量的⭕ br><strong>观察右侧代码，点击线色的Bug代码</strong>修正错误：</p>
+
+        <div id="game2-area">
+            <div>
+                <div class="grid-3x3" id="g2-grid">
+                    <!-- 9 cells generated by JS -->
+                    <div id="robot-piece" class="diandian">
+                        <div class="zzz-anim" id="robot-zzz">Zzz</div>
+                        <div class="antenna"></div><div class="star">★</div>
+                    </div>
+                </div>
+                <button class="btn" id="g2-btn" onclick="runGame2()" style="margin-top: 30px;">▶️ 测试运行程序</button>
+            </div>
+
+            <div class="code-panel">
+                <div style="color:#7F8C8D; margin-bottom:10px;">// 点点的移动程序</div>
+                <div class="code-line">1. 启动机器</div>
+                <div id="g2-code-steps">
+                    <!-- Steps injected here -->
+                </div>
+                <div class="code-line" id="g2-end-line">4. 结束程序</div>
+            </div>
+        </div>
+        <div class="feedback" id="g2-feedback"></div>
+    </div>
+
+    <!-- === Game 3: Rich Factory Debugging === -->
+    <div id="game3" class="game-section">
+        <div class="game-header">
+            <h2>战战3：齿轮工厂大排查</h2>
+            <button class="restart-btn" onclick="initGame3()">🔄 重新排查</button>
+        </div>
+        <p style="text-align: center;">机器停工了，可能是三个关键部件之一出了Bug：br>诀strong>逐个点击测试按钮</strong>，观察现象定位Bug并修复！</p>
+        
+        <div class="factory-container">
+            <div class="big-bulb" id="g3-bulb">💡</div>
+            
+            <div class="machine-drawing">
+                <div class="part" id="part-A">
+                    <div class="part-fx" id="fx-A">💨</div>
+                    <div class="part-icon-box" id="icon-A">⚙️</div>
+                    <div style="font-weight:bold;">动力齿轮</div>
+                </div>
+                <div class="arrow">〰️</div>
+                <div class="part" id="part-B">
+                    <div class="part-fx" id="fx-B">🛑</div>
+                    <div class="part-icon-box" id="icon-B">💻</div>
+                    <div style="font-weight:bold;">记忆芯片</div>
+                </div>
+                <div class="arrow">〰️</div>
+                <div class="part" id="part-C">
+                    <div class="part-fx" id="fx-C">⚪</div>
+                    <div class="part-icon-box" id="icon-C">📢</div>
+                    <div style="font-weight:bold;">发声喇叭</div>
+                </div>
+            </div>
+
+            <div class="test-panel">
+                <button class="test-btn" onclick="testPart('A')">🔍 测试齿轮 <div class="status-light" id="light-A"></div></button>
+                <button class="test-btn" onclick="testPart('B')">🔍 测试芯片 <div class="status-light" id="light-B"></div></button>
+                <button class="test-btn" onclick="testPart('C')">🔍 测试喇叭 <div class="status-light" id="light-C"></div></button>
+            </div>
+
+            <div class="repair-tool" id="g3-repair">
+                <h3 style="margin:5px 0; color:#B22222;">⚠️ 警报：发玀Bug：</h3>
+                <p style="margin:5px 0; font-weight:bold;" id="g3-repair-text">部件 X 坏了：</p>
+                <button class="btn" style="margin: 15px auto 5px auto; padding: 10px 20px; font-size:16px;" id="g3-fix-btn" onclick="fixGame3()">🛠︀修复它</button>
+            </div>
+
+            <button class="main-power" onclick="runGame3()">启动<br>电源</button>
+            <div class="feedback" id="g3-feedback" style="min-height: 50px;">请先进行排查：</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function openGame(gameId) {
+        document.querySelectorAll('.game-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(gameId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // ================== Game 1 Logic ==================
+const g1Scenarios = [
+        {
+            s1: { icon: '🥣', text: '1. 倒面粉' },
+            bug: { icon: '🪨', text: '2. 加石头', failIcon: '💩', failText: '泥巴坏' },
+            s3: { icon: '♨️', text: '3. 烤一烤' },
+            options: [
+                { icon: '🥚', text: '2. 加鸡蛋', correct: true },
+                { icon: '🧦', text: '2. 加袜子', correct: false }
+            ],
+            successIcon: '🎂', successText: '美味蛋糕'
+        },
+        {
+            s1: { icon: '🌱', text: '1. 播种子' },
+            bug: { icon: '🌶️', text: '2. 浇辣椒水', failIcon: '🥀', failText: '枯萎的花' },
+            s3: { icon: '☀️', text: '3. 晒太阳' },
+            options: [
+                { icon: '💧', text: '2. 浇清水', correct: true },
+                { icon: '🔥', text: '2. 烤小鱼', correct: false }
+            ],
+            successIcon: '🌻', successText: '漂亮向日葵'
+        },
+        {
+            s1: { icon: '👕', text: '1. 脏衣服' },
+            bug: { icon: '🖤', text: '2. 倒墨水', failIcon: '🖤', failText: '黑炭鱼' },
+            s3: { icon: '🌀', text: '3. 洗衣机转' },
+            options: [
+                { icon: '🧼', text: '2. 加洗衣液', correct: true },
+                { icon: '🧃', text: '2. 倒果汁', correct: false }
+            ],
+            successIcon: '✅', successText: '干净衣服'
+        }
+    ];
+
+    let currentG1 = null;
+    let g1Fixed = false;
+    let isG1Running = false;
+    let g1LevelIndex = 0;
+
+    function initGame1() {
+        if(isG1Running) return;
+        g1Fixed = false;
+        
+        currentG1 = g1Scenarios[g1LevelIndex % g1Scenarios.length];
+        g1LevelIndex++;
+        
+        const bugBox = document.getElementById('g1-bug');
+        bugBox.classList.add('is-bug');
+        bugBox.classList.remove('fixed');
+        bugBox.querySelector('.bug-label').style.display = 'block';
+        
+        document.getElementById('g1-s1-icon').innerText = currentG1.s1.icon;
+        document.getElementById('g1-s1-text').innerText = currentG1.s1.text;
+        document.getElementById('g1-bug-icon').innerText = currentG1.bug.icon;
+        document.getElementById('g1-bug-text').innerText = currentG1.bug.text;
+        document.getElementById('g1-s3-icon').innerText = currentG1.s3.icon;
+        document.getElementById('g1-s3-text').innerText = currentG1.s3.text;
+
+        document.getElementById('g1-res-icon').innerText = '❌';
+        document.getElementById('g1-res-text').innerText = '(等待加工)';
+        document.getElementById('g1-res-text').style.color = '#888';
+        
+        document.getElementById('g1-options').style.display = 'none';
+        document.getElementById('g1-feedback').innerText = "提示：点击闪烁的Bug格子，帮机器修改配方！";
+        document.getElementById('g1-feedback').style.color = "#333";
+        
+        const optsContainer = document.getElementById('g1-options');
+        optsContainer.innerHTML = '<p style="width:100%; text-align:center; margin:0 0 10px 0; color:var(--primary-color);">要把Bug换成什么才对呢：</p>';
+        currentG1.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `${opt.icon} ${opt.text}`;
+            btn.onclick = () => selectG1Option(opt);
+            optsContainer.appendChild(btn);
+        });
+    }
+
+    function showFixOptions() {
+        if(g1Fixed || isG1Running) return;
+        document.getElementById('g1-options').style.display = 'flex';
+        document.getElementById('g1-feedback').innerText = "请选择正确的步骤进行替换！";
+    }
+
+    function selectG1Option(opt) {
+        if (!opt.correct) {
+            document.getElementById('g1-feedback').innerText = "❌哎呀，这个替换也不对！再想想看！";
+            document.getElementById('g1-feedback').style.color = "var(--error-red)";
+            return;
+        }
+        
+        g1Fixed = true;
+        const bugBox = document.getElementById('g1-bug');
+        bugBox.classList.remove('is-bug');
+        bugBox.classList.add('fixed');
+        bugBox.querySelector('.bug-label').style.display = 'none';
+        
+        document.getElementById('g1-bug-icon').innerText = opt.icon;
+        document.getElementById('g1-bug-text').innerText = opt.text;
+        document.getElementById('g1-options').style.display = 'none';
+        
+        document.getElementById('g1-feedback').innerText = "✅修复成功！现在点击下方运行按钮试试看！";
+        document.getElementById('g1-feedback').style.color = "var(--success-green)";
+    }
+
+    function runGame1() {
+        if(isG1Running) return;
+        isG1Running = true;
+        const resultBox = document.getElementById('g1-result');
+        const feedback = document.getElementById('g1-feedback');
+        
+        resultBox.style.transform = 'scale(1.2)';
+        feedback.innerText = "机器轰隆隆运转中...";
+        feedback.style.color = "#333";
+        
+        setTimeout(() => {
+            resultBox.style.transform = 'scale(1)';
+            if(g1Fixed) {
+                document.getElementById('g1-res-icon').innerText = currentG1.successIcon;
+                document.getElementById('g1-res-text').innerText = `(${currentG1.successText})`;
+                document.getElementById('g1-res-text').style.color = "#4cae4c";
+                feedback.innerText = "🎉 耶！排除了Bug，机器成功运转！";
+                feedback.style.color = "var(--success-green)";
+            } else {
+                document.getElementById('g1-res-icon').innerText = currentG1.bug.failIcon;
+                document.getElementById('g1-res-text').innerText = `(${currentG1.bug.failText})`;
+                document.getElementById('g1-res-text').style.color = "#E86B6B";
+                feedback.innerText = `糟糕，配方里有Bug，做出了${currentG1.bug.failText}！快去修改！`;
+                feedback.style.color = "var(--error-red)";
+            }
+            isG1Running = false;
+        }, 800);
+    }
+
+    // ================== Game 2 Logic (3x3 Grid) ==================
+const CELL_SIZE = 75; // 70px width + 5px gap
+const OFFSET = 10; // padding
+const g2Levels = [
+        {
+            title: "关卡1：直达右辀",
+            start: {x: 0, y: 0}, target: {x: 2, y: 0}, obstacle: null,
+            steps: [
+                { text: "右移一格", bug: false, dx: 1, dy: 0 },
+                { text: "原地打转 (Bug)", bug: true, spin: true, fixText: "右移一格", fixDx: 1, fixDy: 0 }
+            ]
+        },
+        {
+            title: "关卡2：绕过石天",
+            start: {x: 0, y: 0}, target: {x: 2, y: 2}, obstacle: {x: 1, y: 1},
+            steps: [
+                { text: "下移两格", bug: false, dx: 0, dy: 2 },
+                { text: "呼呼大睡 (Bug)", bug: true, sleep: true, fixText: "右移两格", fixDx: 2, fixDy: 0 }
+            ]
+        },
+        {
+            title: "关卡3：迷宫折迀",
+            start: {x: 2, y: 0}, target: {x: 0, y: 2}, obstacle: {x: 1, y: 0},
+            steps: [
+                { text: "下移两格", bug: false, dx: 0, dy: 2 },
+                { text: "右移一格(Bug)", bug: true, dx: 1, dy: 0, fixText: "左移两格", fixDx: -2, fixDy: 0 }
+            ]
+        }
+    ];
+
+    let currentG2 = null;
+    let g2LevelIndex = 0;
+    let g2Fixed = false;
+    let isG2Running = false;
+
+    function initGame2() {
+        if(isG2Running) return;
+        g2Fixed = false;
+        currentG2 = g2Levels[g2LevelIndex % g2Levels.length];
+        g2LevelIndex++;
+        
+        document.getElementById('g2-title').innerText = currentG2.title;
+        
+        // Build Grid Map
+const grid = document.getElementById('g2-grid');
+        grid.innerHTML = '<div id="robot-piece" class="diandian"><div class="zzz-anim" id="robot-zzz">Zzz</div><div class="antenna"></div><div class="star">★</div></div>';
+        
+        for(let y=0; y<3; y++) {
+            for(let x=0; x<3; x++) {
+                let cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                if(x === currentG2.target.x && y === currentG2.target.y) cell.innerHTML = '⭕';
+                else if(currentG2.obstacle && x === currentG2.obstacle.x && y === currentG2.obstacle.y) cell.innerHTML = '🪨';
+                grid.appendChild(cell);
+            }
+        }
+        
+        // Position Robot
+const robot = document.getElementById('robot-piece');
+        robot.style.transform = 'rotate(0deg)';
+        robot.style.left = `${OFFSET + currentG2.start.x * CELL_SIZE}px`;
+        robot.style.top = `${OFFSET + currentG2.start.y * CELL_SIZE}px`;
+        document.getElementById('robot-zzz').style.display = 'none';
+
+        // Build Code Panel
+const stepsContainer = document.getElementById('g2-code-steps');
+        stepsContainer.innerHTML = '';
+        currentG2.steps.forEach((step, idx) => {
+            let lineNum = idx + 2;
+            let line = document.createElement('div');
+            line.className = 'code-line';
+            if(step.bug) {
+                line.innerHTML = `${lineNum}. <span class="code-block buggy" id="g2-bug" onclick="fixGame2()">${step.text}</span>`;
+            } else {
+                line.innerHTML = `${lineNum}. <span class="code-block">${step.text}</span>`;
+            }
+            stepsContainer.appendChild(line);
+        });
+        document.getElementById('g2-end-line').innerText = `${currentG2.steps.length + 2}. 结束程序`;
+
+        document.getElementById('g2-feedback').innerText = "观察地图和代码，点击线色Bug行修正它！";
+        document.getElementById('g2-feedback').style.color = "#333";
+    }
+
+    function fixGame2() {
+        if(g2Fixed || isG2Running) return;
+        g2Fixed = true;
+        const bugStep = currentG2.steps.find(s => s.bug);
+        const bugBlock = document.getElementById('g2-bug');
+        bugBlock.classList.remove('buggy');
+        bugBlock.classList.add('fixed');
+        bugBlock.innerText = bugStep.fixText + " (修复)";
+        document.getElementById('g2-feedback').innerText = "✅代码已修正！点击测试运行看看效果" ;
+        document.getElementById('g2-feedback').style.color = "var(--success-green)";
+    }
+
+    async function runGame2() {
+        if(isG2Running) return;
+        isG2Running = true;
+        const robot = document.getElementById('robot-piece');
+        const feedback = document.getElementById('g2-feedback');
+        
+        let currX = currentG2.start.x;
+        let currY = currentG2.start.y;
+        robot.style.transform = 'rotate(0deg)';
+        robot.style.left = `${OFFSET + currX * CELL_SIZE}px`;
+        robot.style.top = `${OFFSET + currY * CELL_SIZE}px`;
+        document.getElementById('robot-zzz').style.display = 'none';
+        
+        feedback.innerText = "程序运行一..";
+        feedback.style.color = "#333";
+        await new Promise(r => setTimeout(r, 600));
+
+        let hitObstacle = false;
+
+        for(let i=0; i<currentG2.steps.length; i++) {
+            let step = currentG2.steps[i];
+            let actionDx = step.bug && !g2Fixed ? (step.dx||0) : (step.bug && g2Fixed ? step.fixDx : (step.dx||0));
+            let actionDy = step.bug && !g2Fixed ? (step.dy||0) : (step.bug && g2Fixed ? step.fixDy : (step.dy||0));
+
+            if(step.bug && !g2Fixed && step.spin) {
+                robot.style.transform = `rotate(360deg)`;
+                feedback.innerText = `❌点点卡在原地打转了！代码有Bug。`;
+                feedback.style.color = "var(--error-red)";
+                break;
+            } else if(step.bug && !g2Fixed && step.sleep) {
+                document.getElementById('robot-zzz').style.display = 'block';
+                feedback.innerText = `❌点点竟然睡着了！代码有Bug。`;
+                feedback.style.color = "var(--error-red)";
+                break;
+            } else {
+                currX += actionDx;
+                currY += actionDy;
+                
+                // Boundary check
+                if(currX < 0 || currX > 2 || currY < 0 || currY > 2) {
+                    currX = Math.max(0, Math.min(2, currX));
+                    currY = Math.max(0, Math.min(2, currY));
+                    hitObstacle = true;
+                    feedback.innerText = `❌哎呀，点点撞墙了！坐标出错。`;
+                }
+                
+                robot.style.left = `${OFFSET + currX * CELL_SIZE}px`;
+                robot.style.top = `${OFFSET + currY * CELL_SIZE}px`;
+                await new Promise(r => setTimeout(r, 800));
+            }
+        }
+
+        if(currX === currentG2.target.x && currY === currentG2.target.y && g2Fixed) {
+            feedback.innerText = "🎉 调试成功！精确的指令让点点顺利拿到了能量星！";
+            feedback.style.color = "var(--success-green)";
+        } else if(g2Fixed && !hitObstacle) {
+             feedback.innerText = "运行结束，但好像没拿到星星？(逻辑棕柀";
+        }
+        
+        isG2Running = false;
+    }
+
+    // ================== Game 3 Logic ==================
+const partsMap = {
+        A: { name: '动力齿轮', okIcon: '💡', bugIcon: '💨', fixMsg: '🛠️加点润滑油' },
+        B: { name: '记忆芯片', okIcon: '💡', bugIcon: '🛑', fixMsg: '🔄 重启芯片' },
+        C: { name: '发声喇叭', okIcon: '🎵', bugIcon: '⚪', fixMsg: '🔌 接好电线' }
+    };
+    
+    let brokenPart = 'B'; 
+    let partsStatus = { A: 'untested', B: 'untested', C: 'untested' };
+    let g3Fixed = false;
+    let isG3Testing = false;
+
+    function initGame3() {
+        const keys = ['A', 'B', 'C'];
+        brokenPart = keys[Math.floor(Math.random() * keys.length)];
+        partsStatus = { A: 'untested', B: 'untested', C: 'untested' };
+        g3Fixed = false;
+
+        keys.forEach(p => {
+            document.getElementById(`light-${p}`).className = 'status-light';
+            const icon = document.getElementById(`icon-${p}`);
+            icon.style.color = '#333';
+            icon.classList.remove('gear-spin');
+            
+            const fx = document.getElementById(`fx-${p}`);
+            fx.classList.remove('fx-float');
+            fx.style.opacity = '0';
+        });
+        
+        document.getElementById('g3-bulb').className = 'big-bulb';
+        document.getElementById('g3-repair').style.display = 'none';
+        document.getElementById('g3-feedback').innerHTML = "提示：机器又停工了！请逐个点击测试排查 br><span style='font-size:14px;color:#666;'>由于每次坏的地方都不一样，记得都要测一遍哦：</span>";
+        document.getElementById('g3-feedback').style.color = "#333";
+    }
+
+    function triggerFx(part, isBug) {
+        const fx = document.getElementById(`fx-${part}`);
+        fx.innerText = isBug ? partsMap[part].bugIcon : partsMap[part].okIcon;
+        if(isBug) fx.style.color = "var(--error-red)"; else fx.style.color = "var(--success-green)";
+        
+        fx.classList.remove('fx-float');
+        void fx.offsetWidth; // trigger reflow
+        fx.classList.add('fx-float');
+    }
+
+    function testPart(part) {
+        if(isG3Testing) return;
+        isG3Testing = true;
+        const light = document.getElementById(`light-${part}`);
+        const iconBox = document.getElementById(`icon-${part}`);
+        
+        document.getElementById('g3-feedback').innerText = `正在测试 ${partsMap[part].name} ...`;
+        document.getElementById('g3-feedback').style.color = "#333";
+
+        setTimeout(() => {
+            if (part !== brokenPart || g3Fixed) {
+                // OK behavior
+                light.className = 'status-light green';
+                if(part === 'A') iconBox.classList.add('gear-spin');
+                triggerFx(part, false);
+                
+                document.getElementById('g3-feedback').innerText = `✅报告：{partsMap[part].name} 运转完全正常！`;
+                document.getElementById('g3-feedback').style.color = "var(--success-green)";
+                partsStatus[part] = 'ok';
+                setTimeout(() => { iconBox.classList.remove('gear-spin'); }, 1500);
+
+            } else {
+                // BUG behavior
+                light.className = 'status-light red';
+                iconBox.style.animation = 'shake 0.5s';
+                triggerFx(part, true);
+                
+                document.getElementById('g3-feedback').innerText = `❌警报：{partsMap[part].name} 出现故障，定位到Bug！`;
+                document.getElementById('g3-feedback').style.color = "var(--error-red)";
+                
+                document.getElementById('g3-repair-text').innerText = `${partsMap[part].name} 罢工了！`;
+                const fixBtn = document.getElementById('g3-fix-btn');
+                fixBtn.innerText = partsMap[part].fixMsg;
+                document.getElementById('g3-repair').style.display = 'block';
+                partsStatus[part] = 'bug';
+                
+                setTimeout(() => { iconBox.style.animation = ''; }, 500);
+            }
+            isG3Testing = false;
+        }, 800);
+    }
+
+    function fixGame3() {
+        g3Fixed = true;
+        document.getElementById('g3-repair').style.display = 'none';
+        
+        const iconBox = document.getElementById(`icon-${brokenPart}`);
+        iconBox.style.color = '#FFD700'; // Make it shiny gold
+document.getElementById(`light-${brokenPart}`).className = 'status-light'; // reset light
+document.getElementById('g3-feedback').innerText = `🛠︀修复完成！现在可以重新测试，或者直接启动总电源。`;
+        document.getElementById('g3-feedback').style.color = "var(--primary-color)";
+    }
+
+    function runGame3() {
+        const feedback = document.getElementById('g3-feedback');
+        
+        if (!g3Fixed && partsStatus[brokenPart] !== 'ok') { // If hasn't fixed the randomly selected broken part
+            feedback.innerText = "💥 启动失败！机器里还有Bug没排除。请老老实实逐个排查！";
+            feedback.style.color = "var(--error-red)";
+            const machine = document.querySelector('.machine-drawing');
+            machine.style.animation = 'shake 0.3s';
+            setTimeout(()=>machine.style.animation = '', 300);
+        } else {
+            document.getElementById('g3-bulb').classList.add('on');
+            document.getElementById('icon-A').classList.add('gear-spin');
+            document.getElementById('light-A').className = 'status-light green';
+            document.getElementById('light-B').className = 'status-light green';
+            document.getElementById('light-C').className = 'status-light green';
+            
+            triggerFx('A', false); triggerFx('B', false); triggerFx('C', false);
+            
+            feedback.innerText = "🎉 机器顺利启动运转！排柀-> 定位Bug -> 修复 -> 测试成功，你是一个完美的修理工！";
+            feedback.style.color = "var(--success-green)";
+        }
+    }
+
+    window.onload = function() {
+        initGame1();
+        initGame2();
+        initGame3();
+    };
+</script>
+
+</body>
+</html>

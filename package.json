@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "postbuild": "python ../copy_assets.py && python ../download_libs.py",
-    "lint": "eslint .",
+        "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {

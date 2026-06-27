@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>第5课《小方块拼出大世界》互动游成</title>
+    <script src="../../libs/libs/tailwind.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255, 239, 213, 0.7) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(224, 255, 255, 0.7) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 228, 225, 0.5) 0%, transparent 60%);
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Microsoft YaHei', sans-serif;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .grid-container { display: grid; }
+
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border-radius: 1rem;
+            border: 2px solid #e2e8f0;
+        }
+        .speech-bubble:after, .speech-bubble:before {
+            top: 100%; left: 50%; border: solid transparent;
+            content: " "; height: 0; width: 0; position: absolute; pointer-events: none;
+        }
+        .speech-bubble:after {
+            border-color: rgba(255, 255, 255, 0); border-top-color: #ffffff;
+            border-width: 8px; margin-left: -8px;
+        }
+        .speech-bubble:before {
+            border-color: rgba(226, 232, 240, 0); border-top-color: #e2e8f0;
+            border-width: 11px; margin-left: -11px;
+        }
+        .speech-bubble-orange:before { border-top-color: #fed7aa; }
+        .speech-bubble-blue:before { border-top-color: #bfdbfe; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <div id="app" class="flex-1 w-full max-w-6xl mx-auto p-4 md:p-8 relative"></div>
+
+    <script>
+        // --- 角色图片加载逻辑 ---
+const tuantuanImages = [
+            '../../characters/characters/tuantuan.png', '../../characters/characters/tuantuan01.png', '../../characters/characters/tuantuan02.png', '../../characters/characters/tuantuan03.png',
+            '../../characters/characters/tuantuan04.png', '../../characters/characters/tuantuan05.png', '../../characters/characters/tuantuan06.png'
+        ];
+        const diandianImages = [
+            '../../characters/characters/diandian.png', '../../characters/characters/diandian01.png', '../../characters/characters/diandian02.png', '../../characters/characters/diandian03.png',
+            '../../characters/characters/diandian04.png', '../../characters/characters/diandian05.png', '../../characters/characters/diandian06.png'
+        ];
+
+        function getRandomImage(images) {
+            return images[Math.floor(Math.random() * images.length)];
+        }
+
+        const tuantuanImage = getRandomImage(tuantuanImages);
+        const diandianImage = getRandomImage(diandianImages);
+
+        const svgRobot = `<img src="${diandianImage}" class="w-full h-full animate-float drop-shadow-lg object-contain" alt="点点" />`;
+        const svgBoy = `<img src="${tuantuanImage}" class="w-full h-full drop-shadow-lg object-contain" alt="团团" />`;
+
+        // 像素参考图
+const heart5x5 = ["01010","11111","11111","01110","00100"];
+        const heart10x10 = ["0011001100","0111111110","1111111111","1111111111","1111111111","0111111110","0011111100","0001111000","0000110000","0000000000"];
+        
+        const cat5x5 = ["10001","11111","12321","01410","01110"];
+        const cat15x15 = [
+            "001000000010000",
+            "001100000110000",
+            "001110001110000",
+            "001111111110000",
+            "001111111110000",
+            "001221112210000",
+            "001221112210000",
+            "001113331110000",
+            "001111111111000",
+            "004444444441100",
+            "001110001110110",
+            "001110001110010",
+            "001110001110010",
+            "001110001110010",
+            "000000000000000"
+        ];
+        
+        const apple5x5 = ["00320","01110","11111","11111","01110"];
+        const apple10x10 = [
+            "0000322000",
+            "0000320000",
+            "0001111000",
+            "0011111100",
+            "0111111110",
+            "0111111110",
+            "0111111110",
+            "0111111110",
+            "0011111100",
+            "0001111000"
+        ];
+
+        // 游成1 图案库
+const patterns5x5 = [
+            { name: '小爱心', data: heart5x5, colorMap: {'0':'transparent', '1':'#ef4444'} },
+            { name: '小猫咪', data: cat5x5, colorMap: {'0':'transparent', '1':'#fcd34d', '2':'#0ea5e9', '3':'#334155', '4':'#ef4444'} },
+            { name: '小树苗', data: ["00100","01110","11111","00200","00200"], colorMap: {'0':'transparent', '1':'#34d399', '2':'#78350f'} },
+            { name: '大笑脸', data: ["01110","12121","11111","12221","01110"], colorMap: {'0':'transparent', '1':'#fcd34d', '2':'#334155'} }
+        ];
+
+        const patterns10x10 = [
+            { name: '小房子', data: [
+                "0000110000",
+                "0001111000",
+                "0011111100",
+                "0111111110",
+                "1111111111",
+                "0022222200",
+                "0023323300",
+                "0023323300",
+                "0022442200",
+                "0022442200"
+            ], colorMap: {'0':'transparent', '1':'#ef4444', '2':'#fcd34d', '3':'#0ea5e9', '4':'#78350f'} },
+            { name: '线苹果', data: apple10x10, colorMap: {'0':'transparent', '1':'#ef4444', '2':'#34d399', '3':'#78350f'} },
+            { name: '调皮笑脸', data: [
+                "0001111000",
+                "0011111100",
+                "0111111110",
+                "1121111211",
+                "1121111211",
+                "1111111111",
+                "1112222111",
+                "0111221110",
+                "0011111100",
+                "0001111000"
+            ], colorMap: {'0':'transparent', '1':'#fcd34d', '2':'#334155'} }
+        ];
+
+        // 游成2 图库
+const game2Patterns = [
+            { name: '小猫', lowData: cat5x5, lowSize: 5, highData: cat15x15, highSize: 15, colorMap: {'0':'transparent', '1':'#fcd34d', '2':'#0ea5e9', '3':'#334155', '4':'#ef4444'} },
+            { name: '线苹果', lowData: apple5x5, lowSize: 5, highData: apple10x10, highSize: 10, colorMap: {'0':'transparent', '1':'#ef4444', '2':'#34d399', '3':'#78350f'} },
+            { name: '爱心', lowData: heart5x5, lowSize: 5, highData: heart10x10, highSize: 10, colorMap: {'0':'transparent', '1':'#ef4444'} }
+        ];
+
+        // 调色板
+const paletteColors = [
+            { hex: '#fcd34d', label: '黄' },
+            { hex: '#0ea5e9', label: '蓝' },
+            { hex: '#ef4444', label: '红' },
+            { hex: '#34d399', label: '绿' },
+            { hex: '#78350f', label: '棕' },
+            { hex: '#334155', label: '灰' },
+            { hex: '#ffffff', label: '擦除' }
+        ];
+
+        const app = document.getElementById('app');
+        let currentScene = 'menu';
+        
+        let game1Size = 10;
+        let game1Color = '#fcd34d';
+        let isDrawing = false;
+        let game1PatternIndex = 0;
+        
+        let game2PatternIndex = 0;
+
+        document.addEventListener('mouseup', () => isDrawing = false);
+        document.addEventListener('touchend', () => isDrawing = false);
+
+        function navigate(scene) {
+            currentScene = scene;
+            render();
+            window.scrollTo(0, 0);
+        }
+
+        function render() {
+            app.innerHTML = '';
+            if (currentScene === 'menu') renderMenu();
+            else if (currentScene === 'game1') renderGame1();
+            else if (currentScene === 'game2') renderGame2();
+        }
+
+        // --- 主页 ---
+        function renderMenu() {
+            app.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center text-center space-y-8 animate-fade-in mt-12 md:mt-24">
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-800 drop-shadow-md mb-2">小方块拼出大世界</h1>
+                    <p class="text-xl md:text-2xl text-slate-600 bg-white/60 px-6 py-2 rounded-full">欢迎来到第5课！让我们一起探<span class="text-blue-600 font-bold">像素</span>的秘密吧：</p>
+                    
+                    <div class="flex items-end justify-center space-x-6 md:space-x-16 my-10 relative">
+                        <div class="relative w-32 h-32 md:w-48 md:h-48">
+                            <div class="absolute -top-16 left-1/2 -translate-x-1/2 speech-bubble px-4 py-2 shadow-md border-slate-200 whitespace-nowrap text-sm md:text-base text-slate-700 font-bold">
+                                我是团团：<br>一起来当像素小画家吧！
+                            </div>
+                            ${svgBoy}
+                        </div>
+                        <div class="relative w-32 h-32 md:w-48 md:h-48">
+                            <div class="absolute -top-16 left-1/2 -translate-x-1/2 speech-bubble px-4 py-2 shadow-md border-slate-200 whitespace-nowrap text-sm md:text-base text-blue-600 font-bold">
+                                我是点点：<br>你发现方块里的秘密了吗？
+                            </div>
+                            ${svgRobot}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 mt-12 w-full max-w-2xl px-4">
+                        <button onclick="navigate('game1')" class="flex-1 px-6 py-5 bg-orange-400 hover:bg-orange-500 text-white rounded-2xl text-xl font-bold shadow-xl transform hover:-translate-y-1 transition active:scale-95 border-b-4 border-orange-600">
+                            🎨 游成1：像素小画家
+                        </button>
+                        <button onclick="navigate('game2')" class="flex-1 px-6 py-5 bg-blue-400 hover:bg-blue-500 text-white rounded-2xl text-xl font-bold shadow-xl transform hover:-translate-y-1 transition active:scale-95 border-b-4 border-blue-600">
+                            🔍 游成2：分辨率大发现                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 游成1 ---
+        function renderGame1() {
+            app.innerHTML = `
+                <div class="flex flex-col items-center w-full pb-12 animate-fade-in">
+                    <div class="w-full flex justify-between items-center mb-6">
+                        <button onclick="navigate('menu')" class="px-4 py-2 bg-white hover:bg-slate-100 shadow rounded-full font-bold text-slate-600 transition active:scale-95 border border-slate-200">
+                            ⬅返回主页
+                        </button>
+                        <h2 class="text-2xl md:text-3xl font-bold text-orange-600 bg-white/80 px-6 py-2 rounded-full shadow-sm">像素小画家</h2>
+                        <div class="w-24 hidden md:block"></div>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 items-start justify-center w-full max-w-5xl">
+                        
+                        <div class="flex flex-col items-center space-y-6 w-full md:w-1/4 order-2 md:order-1 mt-8 md:mt-0">
+                            <div class="relative hidden md:block w-32 h-32">
+                                <div class="absolute -top-16 -right-10 speech-bubble speech-bubble-blue px-3 py-2 shadow-md border-blue-200 whitespace-nowrap text-sm text-blue-700 font-bold z-10">
+                                    选适合自己的战战！<br>先试试拼个小图案吧？
+                                </div>
+                                ${svgRobot}
+                            </div>
+                            
+                            <div class="bg-white/90 p-4 rounded-2xl shadow-lg border border-slate-100 text-center w-full max-w-[250px]">
+                                <h3 class="font-bold text-lg mb-3 text-slate-700">🎨 选画布尺寸</h3>
+                                <div class="flex justify-center gap-2 mb-4">
+                                    <button onclick="setGame1Size(5)" class="flex-1 py-1 rounded-full text-sm font-bold transition border-b-2 ${game1Size===5 ? 'bg-blue-500 text-white border-blue-700' : 'bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200'}">5×5 简单</button>
+                                    <button onclick="setGame1Size(10)" class="flex-1 py-1 rounded-full text-sm font-bold transition border-b-2 ${game1Size===10 ? 'bg-orange-500 text-white border-orange-700' : 'bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200'}">10×10 进阶</button>
+                                </div>
+                                <div class="w-full h-px bg-slate-200 my-4"></div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="font-bold text-sm text-slate-600">目标：<span id="pattern-name" class="text-blue-600">加载中</span></h3>
+                                    <button onclick="nextPattern()" class="text-xs text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 font-bold transition flex items-center gap-1 border border-blue-100">
+                                        换一一🔄
+                                    </button>
+                                </div>
+                                <div class="flex justify-center mb-2">
+                                    <div id="ref-pattern-grid" class="grid-container w-28 h-28 border-2 border-slate-300 bg-slate-50"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center relative z-10 w-full md:w-auto order-1 md:order-2">
+                            <p class="text-slate-500 font-bold mb-4 bg-white/60 px-4 py-1 rounded-full">💡 选中颜色后，在格子滑动即可涂色</p>
+                            <div class="bg-white p-4 md:p-6 border-8 border-amber-100 rounded-xl shadow-2xl relative z-10">
+                                <div id="paint-grid" class="grid-container w-[280px] h-[280px] md:w-[360px] md:h-[360px] bg-slate-50 border-2 border-slate-300"></div>
+                            </div>
+                            <div class="w-full flex justify-between px-16 md:px-20 -mt-2 z-0 relative">
+                                <div class="w-5 h-24 bg-amber-700 rounded-b-lg shadow-inner"></div>
+                                <div class="w-5 h-24 bg-amber-700 rounded-b-lg shadow-inner"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center w-full md:w-1/4 order-3 mt-8 md:mt-0 space-y-6">
+                            <div class="bg-white/90 p-4 rounded-2xl shadow-lg border border-slate-100 w-full max-w-[250px]">
+                                <h3 class="font-bold text-center mb-4 text-slate-700">🎨 调色板</h3>
+                                <div class="grid grid-cols-2 gap-3 mb-6" id="color-palette"></div>
+                                <button onclick="clearGrid()" class="w-full py-3 bg-red-50 hover:bg-red-100 text-red-500 rounded-xl font-bold transition active:scale-95 border border-red-200 flex items-center justify-center gap-1 shadow-sm">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    清空画板
+                                </button>
+                                <div class="w-full h-px bg-slate-200 my-4"></div>
+                                <button onclick="finishGame1()" class="w-full py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold transition active:scale-95 shadow-md flex items-center justify-center gap-2 text-lg">
+                                    <span>✅</span> 完成作品
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            initPaintGrid();
+            renderPalette();
+            renderCurrentPattern();
+        }
+
+        function setGame1Size(size) {
+            game1Size = size;
+            game1PatternIndex = 0;
+            renderGame1();
+        }
+
+        function nextPattern() {
+            const patterns = game1Size === 5 ? patterns5x5 : patterns10x10;
+            game1PatternIndex = (game1PatternIndex + 1) % patterns.length;
+            renderCurrentPattern();
+        }
+
+        function renderCurrentPattern() {
+            const patterns = game1Size === 5 ? patterns5x5 : patterns10x10;
+            const currentPattern = patterns[game1PatternIndex];
+            const nameEl = document.getElementById('pattern-name');
+            if(nameEl) nameEl.innerText = currentPattern.name;
+            drawPixelArrayStatic('ref-pattern-grid', currentPattern.data, game1Size, true, currentPattern.colorMap);
+        }
+
+        function finishGame1() {
+            const cells = document.querySelectorAll('#paint-grid > div');
+            const patterns = game1Size === 5 ? patterns5x5 : patterns10x10;
+            const currentPattern = patterns[game1PatternIndex];
+            const expectedData = currentPattern.data;
+            const colorMap = currentPattern.colorMap;
+
+            let hasColor = false;
+            let isCorrect = true;
+
+            cells.forEach((cell, index) => {
+                const row = Math.floor(index / game1Size);
+                const col = index % game1Size;
+                const charCode = expectedData[row][col];
+                
+                let expectedHex = (colorMap[charCode] || 'transparent').toLowerCase();
+                let currentHex = (cell.dataset.hex || 'transparent').toLowerCase();
+
+                // 把白色笔触视为透明擦除
+if (currentHex === '#ffffff') currentHex = 'transparent';
+                if (expectedHex === '#ffffff') expectedHex = 'transparent';
+
+                if (currentHex !== 'transparent') hasColor = true;
+                if (currentHex !== expectedHex) isCorrect = false;
+            });
+
+            if (!hasColor) showSuccessModal('empty');
+            else if (isCorrect) showSuccessModal('success');
+            else showSuccessModal('wrong');
+        }
+
+        function showSuccessModal(status) {
+            let title, msg, btnText, emoji, btnAction, borderClass, textClass, btnClass;
+
+            if (status === 'success') {
+                emoji = '<div class="text-7xl mb-4 animate-bounce">🎊</div>';
+                title = "太棒啦！战战成功！";
+                msg = "你用小小的像素方块，完美拼出了目标图案！团团和点点都为你点赞！";
+                btnText = "继续下一个战成➡️";
+                btnAction = "nextPatternAndClear()";
+                borderClass = "border-green-100";
+                textClass = "text-green-600";
+                btnClass = "bg-green-500 hover:bg-green-600";
+            } else if (status === 'wrong') {
+                emoji = '<div class="text-7xl mb-4">🤔</div>';
+                title = "好像有点不一样哦";
+                msg = "仔细对照一下目标图案的颜色和位置，找出不同并修改吧！";
+                btnText = "继续修改";
+                btnAction = "closeSuccessModal()";
+                borderClass = "border-orange-100";
+                textClass = "text-orange-600";
+                btnClass = "bg-orange-500 hover:bg-orange-600";
+            } else {
+                emoji = '<div class="text-7xl mb-4">🖌︀</div>';
+                title = "好像忘记涂色啦？";
+                msg = "你的画板还是空白的哦，选一个喜欢的颜色，在格子上画画看吧！";
+                btnText = "去涂色";
+                btnAction = "closeSuccessModal()";
+                borderClass = "border-blue-100";
+                textClass = "text-slate-800";
+                btnClass = "bg-blue-500 hover:bg-blue-600";
+            }
+
+            const modalHtml = `
+                <div id="success-modal" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in" onclick="closeSuccessModal()">
+                    <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full transform scale-100 transition-transform text-center relative border-4 ${borderClass}" onclick="event.stopPropagation()">
+                        ${emoji}
+                        <h3 class="text-2xl font-bold ${textClass} mb-4">${title}</h3>
+                        <p class="text-lg text-slate-600 mb-8 font-medium">${msg}</p>
+                        <button onclick="${btnAction}" class="w-full py-4 ${btnClass} text-white rounded-xl font-bold text-lg shadow-md transition active:scale-95">
+                            ${btnText}
+                        </button>
+                    </div>
+                </div>
+            `;
+            const div = document.createElement('div');
+            div.innerHTML = modalHtml;
+            document.body.appendChild(div.firstElementChild);
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('success-modal');
+            if(modal) {
+                modal.style.opacity = '0';
+                modal.style.transition = 'opacity 0.2s';
+                setTimeout(() => modal.remove(), 200);
+            }
+        }
+
+        function nextPatternAndClear() {
+            closeSuccessModal();
+            clearGrid();
+            nextPattern();
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('color-palette');
+            if(!palette) return;
+            palette.innerHTML = paletteColors.map(c => `
+                <div onclick="setGame1Color('${c.hex}')" 
+                     class="h-12 rounded-xl cursor-pointer border-4 shadow-sm transform hover:scale-105 transition flex items-center justify-center text-xs font-bold text-slate-600"
+                     style="background-color: ${c.hex === '#ffffff' ? '#f8fafc' : c.hex}; border-color: ${game1Color === c.hex ? '#475569' : 'transparent'};">
+                     ${c.label}
+                </div>
+            `).join('');
+        }
+
+        function setGame1Color(hex) {
+            game1Color = hex;
+            renderPalette();
+        }
+
+        function clearGrid() {
+            const cells = document.querySelectorAll('#paint-grid > div');
+            cells.forEach(cell => {
+                cell.style.backgroundColor = 'transparent';
+                cell.dataset.hex = 'transparent';
+            });
+        }
+
+        function initPaintGrid() {
+            const grid = document.getElementById('paint-grid');
+            if(!grid) return;
+            grid.style.gridTemplateColumns = `repeat(${game1Size}, 1fr)`;
+            grid.innerHTML = '';
+            
+            for(let i=0; i<game1Size * game1Size; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'pixel-cell border-[0.5px] border-slate-200/80 cursor-pointer select-none touch-none';
+                cell.dataset.hex = 'transparent';
+                
+                const applyColor = (e) => {
+                    const target = e.target;
+                    target.style.backgroundColor = game1Color === '#ffffff' ? 'transparent' : game1Color; 
+                    target.dataset.hex = game1Color === '#ffffff' ? 'transparent' : game1Color; 
+                };
+
+                cell.addEventListener('mousedown', (e) => { isDrawing = true; applyColor(e); });
+                cell.addEventListener('mouseenter', (e) => { if(isDrawing) applyColor(e); });
+                
+                cell.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    isDrawing = true;
+                    applyColor(e);
+                }, {passive: false});
+                
+                cell.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if(!isDrawing) return;
+                    const touch = e.touches[0];
+                    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                    if(target && target.classList.contains('pixel-cell')) {
+                        target.style.backgroundColor = game1Color === '#ffffff' ? 'transparent' : game1Color; 
+                        target.dataset.hex = game1Color === '#ffffff' ? 'transparent' : game1Color; 
+                    }
+                }, {passive: false});
+
+                grid.appendChild(cell);
+            }
+        }
+
+        // --- 游成2 ---
+        function renderGame2() {
+            const currentPattern = game2Patterns[game2PatternIndex];
+            
+            app.innerHTML = `
+                <div class="flex flex-col items-center w-full pb-12 animate-fade-in">
+                    <div class="w-full flex justify-between items-center mb-8">
+                        <button onclick="navigate('menu')" class="px-4 py-2 bg-white hover:bg-slate-100 shadow rounded-full font-bold text-slate-600 transition active:scale-95 border border-slate-200">
+                            ⬅返回主页
+                        </button>
+                        <h2 class="text-2xl md:text-3xl font-bold text-blue-600 bg-white/80 px-6 py-2 rounded-full shadow-sm">分辨率大发现</h2>
+                        <button onclick="nextGame2Pattern()" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 shadow rounded-full font-bold text-blue-600 transition active:scale-95 border border-blue-200 flex items-center gap-1">
+                            换个图案 🔄
+                        </button>
+                    </div>
+                    
+                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800 mb-12 bg-white px-8 py-3 rounded-full shadow-md border-b-4 border-slate-200">
+                        你更喜欢哪一一{currentPattern.name}？为什么？
+                    </h3>
+                    
+                    <div class="flex flex-col lg:flex-row justify-center items-end gap-16 lg:gap-24 mb-16 w-full max-w-5xl">
+                        
+                        <div class="flex flex-col items-center relative w-full lg:w-auto">
+                            <div class="absolute -top-24 left-1/2 -translate-x-1/2 z-20">
+                                <div class="speech-bubble speech-bubble-blue px-4 py-2 text-center text-sm font-bold text-slate-600 mb-2 whitespace-nowrap shadow-md">
+                                    方块少，画面<br>看起来一格一格的...
+                                </div>
+                            </div>
+                            <div class="absolute -top-12 -left-12 md:-left-20 w-24 h-24 z-20">${svgRobot}</div>
+                            
+                            <div class="bg-white p-4 border-8 border-amber-100 rounded-xl shadow-xl relative z-10 transform transition hover:-translate-y-2 cursor-pointer group" onclick="showZoomModal('low')">
+                                <div id="pic-low" class="grid-container w-48 h-48 md:w-64 md:h-64 border-2 border-slate-300 bg-slate-50 group-hover:border-blue-400 transition-colors"></div>
+                                <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
+                                    <span class="bg-white px-4 py-2 rounded-full font-bold text-blue-600 shadow-md transform scale-110">放大看看🔍</span>
+                                </div>
+                            </div>
+                            <div class="w-full flex justify-between px-10 md:px-14 -mt-2 z-0 relative">
+                                <div class="w-4 md:w-5 h-20 md:h-28 bg-amber-700 rounded-b-lg shadow-inner"></div>
+                                <div class="w-4 md:w-5 h-20 md:h-28 bg-amber-700 rounded-b-lg shadow-inner"></div>
+                            </div>
+                            <p class="mt-4 text-lg font-bold text-slate-600 bg-white px-6 py-2 rounded-full shadow-md border-2 border-slate-100">
+                                5 × 5 分辨率                            </p>
+                        </div>
+
+                        <div class="flex flex-col items-center relative w-full lg:w-auto mt-20 lg:mt-0">
+                            <div class="absolute -top-24 left-1/2 -translate-x-1/2 z-20">
+                                <div class="speech-bubble speech-bubble-orange px-4 py-2 text-center text-sm font-bold text-orange-600 mb-2 whitespace-nowrap shadow-md">
+                                    方块多，画面<br>变得好清楚呀：                                </div>
+                            </div>
+                            <div class="absolute -top-6 -right-10 md:-right-20 w-24 h-24 z-20">${svgBoy}</div>
+                            
+                            <div class="bg-white p-4 border-8 border-amber-100 rounded-xl shadow-xl relative z-10 transform transition hover:-translate-y-2 cursor-pointer group" onclick="showZoomModal('high')">
+                                <div id="pic-high" class="grid-container w-48 h-48 md:w-64 md:h-64 border-2 border-slate-300 bg-slate-50 group-hover:border-orange-400 transition-colors"></div>
+                                <div class="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
+                                    <span class="bg-white px-4 py-2 rounded-full font-bold text-orange-600 shadow-md transform scale-110">放大看看🔍</span>
+                                </div>
+                            </div>
+                            <div class="w-full flex justify-between px-10 md:px-14 -mt-2 z-0 relative">
+                                <div class="w-4 md:w-5 h-20 md:h-28 bg-amber-700 rounded-b-lg shadow-inner"></div>
+                                <div class="w-4 md:w-5 h-20 md:h-28 bg-amber-700 rounded-b-lg shadow-inner"></div>
+                            </div>
+                            <p class="mt-4 text-lg font-bold text-orange-600 bg-orange-50 px-6 py-2 rounded-full shadow-md border-2 border-orange-200">
+                                ${currentPattern.highSize} × ${currentPattern.highSize} 分辨率                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl w-full max-w-3xl border-4 border-blue-50 relative overflow-hidden mt-8">
+                        <div class="absolute -right-16 -top-16 w-48 h-48 bg-yellow-100 rounded-full opacity-50 pointer-events-none"></div>
+                        <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-blue-100 rounded-full opacity-50 pointer-events-none"></div>
+                        
+                        <h3 class="text-2xl font-bold text-center mb-6 text-blue-800 relative z-10 flex items-center justify-center gap-2">
+                            <span>📖</span> 课后复盘小知识                        </h3>
+                        <ul class="space-y-5 text-lg text-slate-700 relative z-10 font-medium">
+                            <li class="flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <span class="w-8 h-8 rounded-full bg-blue-200 text-blue-700 flex items-center justify-center font-black shrink-0">1</span>
+                                <span>图片里的每一个小方块，叫做<strong class="text-blue-600 text-xl">像素</strong> </span>
+                            </li>
+                            <li class="flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <span class="w-8 h-8 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center font-black shrink-0">2</span>
+                                <span>小方块的数量，叫做<strong class="text-orange-600 text-xl">分辨率</strong> </span>
+                            </li>
+                            <li class="flex items-start gap-4 bg-yellow-50 p-4 rounded-xl border border-yellow-200 shadow-sm mt-4">
+                                <span class="text-3xl shrink-0">✅</span>
+                                <span class="font-bold text-slate-800 pt-1">
+                                    小结：<span class="text-orange-600">方块越多（分辨率越高），画面就越清楚：</span>
+                                    <br><span class="text-slate-500 text-base mt-1 inline-block">（点点提醒：如果把低分辨率图片强行放大，只会把小方块放大，并不会变清楚哦！）</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            drawPixelArrayStatic('pic-low', currentPattern.lowData, currentPattern.lowSize, true, currentPattern.colorMap);
+            drawPixelArrayStatic('pic-high', currentPattern.highData, currentPattern.highSize, true, currentPattern.colorMap);
+        }
+        
+        function nextGame2Pattern() {
+            game2PatternIndex = (game2PatternIndex + 1) % game2Patterns.length;
+            renderGame2();
+        }
+
+        function drawPixelArrayStatic(elementId, dataArray, size, withBorders = true, customColors = null) {
+            const container = document.getElementById(elementId);
+            if(!container) return;
+            container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            container.innerHTML = '';
+            
+            const colors = customColors || {};
+
+            dataArray.forEach(row => {
+                for(let char of row) {
+                    const cell = document.createElement('div');
+                    if (withBorders) cell.className = 'border-[0.5px] border-slate-300/50';
+                    cell.style.backgroundColor = colors[char] || 'transparent';
+                    container.appendChild(cell);
+                }
+            });
+        }
+
+        function showZoomModal(type) {
+            const isLow = type === 'low';
+            const currentPattern = game2Patterns[game2PatternIndex];
+            
+            const data = isLow ? currentPattern.lowData : currentPattern.highData;
+            const size = isLow ? currentPattern.lowSize : currentPattern.highSize;
+            const title = isLow ? `${currentPattern.lowSize} × ${currentPattern.lowSize} 低分辨率` : `${currentPattern.highSize} × ${currentPattern.highSize} 高分辨率`;
+            const msg = isLow 
+                ? '哎呀，放大后方块变得像积木一样大：<br>还是不清楚！这证明了：<span class="text-red-500">放大不等于更清楚哦</span>'
+                : '真棒！放大后能清楚地看到一个个小方块，<br>因为它的<span class="text-orange-600">小方块（像素）数量很多！</span>';
+            
+            const modalHtml = `
+                <div id="zoom-modal" class="fixed inset-0 bg-slate-900/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in" onclick="closeZoomModal()">
+                    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-2xl max-w-lg w-full transform scale-100 transition-transform relative" onclick="event.stopPropagation()">
+                        <div class="flex justify-between items-center mb-6 border-b pb-4">
+                            <h3 class="text-2xl font-bold text-slate-800">🔍 放大查看：{title}</h3>
+                            <button onclick="closeZoomModal()" class="text-slate-400 hover:text-slate-700 text-4xl leading-none">&times;</button>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 border-4 border-slate-200 rounded-2xl flex justify-center overflow-hidden relative group">
+                            <div id="modal-grid" class="grid-container border-none w-[250px] h-[250px] md:w-[320px] md:h-[320px]"></div>
+                        </div>
+                        
+                        <p class="mt-6 text-center text-lg md:text-xl text-slate-700 font-bold bg-amber-50 p-4 rounded-xl border border-amber-200 shadow-inner">
+                            ${msg}
+                        </p>
+                        
+                        <button onclick="closeZoomModal()" class="mt-6 w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold text-lg shadow-md transition active:scale-95">
+                            我明白了
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            const div = document.createElement('div');
+            div.innerHTML = modalHtml;
+            document.body.appendChild(div.firstElementChild);
+            
+            drawPixelArrayStatic('modal-grid', data, size, false, currentPattern.colorMap);
+        }
+
+        function closeZoomModal() {
+            const modal = document.getElementById('zoom-modal');
+            if(modal) {
+                modal.style.opacity = '0';
+                modal.style.transition = 'opacity 0.2s';
+                setTimeout(() => modal.remove(), 200);
+            }
+        }
+
+        window.onload = () => render();
+    </script>
+</body>
+</html>

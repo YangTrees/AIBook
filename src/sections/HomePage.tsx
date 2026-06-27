@@ -32,7 +32,7 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
           borderRadius: 32,
           overflow: 'hidden',
           /* 标题栏背景图 + 渐变叠加，确保文字可读 */
-          background: 'linear-gradient(135deg, rgba(74,158,232,0.55) 0%, rgba(124,142,232,0.45) 40%, rgba(176,106,216,0.4) 100%), url(/assets/backgrounds/title_bg.jpg) center center / cover no-repeat',
+          background: 'linear-gradient(135deg, rgba(74,158,232,0.55) 0%, rgba(124,142,232,0.45) 40%, rgba(176,106,216,0.4) 100%), url(/assets/backgrounds/backgrounds/title_bg.jpg) center center / cover no-repeat',
           boxShadow: '0 16px 48px rgba(74, 158, 232, 0.22)',
           padding: '44px 64px',
           position: 'relative',

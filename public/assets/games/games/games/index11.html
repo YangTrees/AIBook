@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>披萨流水线大战战</title>
+<style>
+    :root {
+        --primary-color: #F4A460; /* 披萨饼皮色*/
+        --secondary-color: #FF6347; /* 番茄酱色 */
+        --accent-color: #FFD700; /* 芝士色*/
+        --bg-color: #FFF8E7; /* 米黄色背晀*/
+        --text-color: #5D4037; /* 深棕色文子*/
+        --font-family: 'Comic Sans MS', 'Microsoft YaHei', cursive, sans-serif; /* 卡通字体*/
+    }
+
+    body {
+        font-family: var(--font-family);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-image: url('AI人工智能启蒙绘本课程大纲 (11)_02.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    h1, h2 {
+        text-align: center;
+        color: var(--secondary-color);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.95);
+        margin: 20px;
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        background-color: #FFF0C8;
+        border-radius: 30px;
+        padding: 5px;
+        flex-wrap: wrap;
+    }
+
+    .nav-tab {
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        background-color: #FFDAB9;
+        border: 2px solid transparent;
+    }
+
+    .nav-tab.active {
+        background-color: var(--secondary-color);
+        color: white;
+        border-color: var(--primary-color);
+        transform: scale(1.05);
+    }
+
+    .game-section {
+        display: none;
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .game-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .character-area {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .character {
+        width: 100px;
+        height: auto;
+        filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+    }
+
+    .dialogue-box {
+        background-color: #fff;
+        border: 3px solid var(--primary-color);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 0 15px;
+        flex-grow: 1;
+        position: relative;
+        text-align: center;
+        font-weight: bold;
+        color: var(--text-color);
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .step-pipeline-game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 15px;
+        border: 4px solid var(--primary-color);
+        box-sizing: border-box;
+    }
+
+    .station-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .station-box {
+        width: 100px;
+        height: 120px;
+        background-color: #f5f5f5;
+        border: 3px dashed #bbb;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .station-box.active {
+        background-color: #FFF8E7;
+        border: 3px solid var(--secondary-color);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .station-name {
+        background-color: #ddd;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 9px 9px 0 0;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .station-box.active .station-name {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .station-tool {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+        opacity: 0.2;
+        transition: opacity 0.3s;
+    }
+
+    .station-box.active .station-tool {
+        opacity: 0.8;
+    }
+
+    /* 移动披萨的动画样开*/
+    .step-pizza-anim {
+        position: absolute;
+        width: 100px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        transition: left 0.5s ease-in-out, opacity 0.5s;
+        z-index: 10;
+        top: 0;
+        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    }
+
+    .station-arrow {
+        font-size: 24px;
+        color: #ccc;
+    }
+
+    #btn-step-advance {
+        padding: 15px 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        box-shadow: 0 6px 0 #c48248;
+        transition: transform 0.1s, box-shadow 0.1s;
+    }
+    
+    #btn-step-advance:active {
+        transform: translateY(6px);
+        box-shadow: none;
+    }
+
+    .step-float-text {
+        position: absolute;
+        top: 40px;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--secondary-color);
+        animation: floatUpStep 0.8s ease-out forwards;
+        pointer-events: none;
+        white-space: nowrap;
+        text-shadow: 1px 1px 0px #fff, -1px -1px 0px #fff, 1px -1px 0px #fff, -1px 1px 0px #fff;
+        z-index: 10;
+    }
+
+    @keyframes floatUpStep {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-30px); opacity: 0; }
+    }
+
+    .working-animation {
+        animation: workBump 0.3s ease-in-out;
+    }
+
+    @keyframes workBump {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    .pipeline-game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .stats-panel {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .conveyor-system {
+        width: 100%;
+        height: 180px;
+        background-color: #e0e0e0;
+        border: 4px solid #757575;
+        border-radius: 15px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .work-zone {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 10px;
+        font-weight: bold;
+        color: #333;
+        border-left: 2px dashed rgba(0,0,0,0.2);
+        border-right: 2px dashed rgba(0,0,0,0.2);
+    }
+
+    .zone-sauce { left: 25%; width: 25%; background-color: rgba(255, 99, 71, 0.15); }
+    .zone-topping { left: 50%; width: 25%; background-color: rgba(255, 215, 0, 0.15); }
+    .zone-oven { left: 80%; width: 20%; background-color: #5D4037; color: white; border-radius: 0 10px 10px 0; justify-content: center; font-size: 1.5rem;}
+
+    .belt-texture {
+        position: absolute;
+        bottom: 0;
+        width: 200%;
+        height: 30px;
+        background: repeating-linear-gradient(90deg, #616161, #616161 20px, #424242 20px, #424242 40px);
+        animation: rollBelt 2s linear infinite;
+        animation-play-state: paused;
+    }
+
+    @keyframes rollBelt {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50px); }
+    }
+
+    .moving-pizza {
+        position: absolute;
+        bottom: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        z-index: 10;
+        transition: transform 0.1s;
+    }
+
+    .p-dough { background-color: #F4A460; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1); }
+    .p-sauced { background-color: #FF6347; border: 5px solid #F4A460; }
+    .p-topped {
+        background-color: #FF6347;
+        border: 5px solid #F4A460;
+        background-image: radial-gradient(circle at 30% 30%, #FFD700 5px, transparent 6px),
+                          radial-gradient(circle at 70% 60%, #FFD700 5px, transparent 6px),
+                          radial-gradient(circle at 50% 50%, #4CAF50 5px, transparent 6px);
+    }
+
+    .controls {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        padding: 15px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s;
+        box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+        color: white;
+    }
+    .action-btn:active {
+        transform: translateY(6px);
+        box-shadow: none;
+    }
+    .btn-dough { background-color: #F4A460; color: #5D4037; }
+    .btn-sauce { background-color: #FF6347; }
+    .btn-topping { background-color: #FFB300; }
+    
+    .floating-text {
+        position: absolute;
+        font-weight: bold;
+        font-size: 1.2rem;
+        z-index: 20;
+        animation: floatUp 1s ease-out forwards;
+        pointer-events: none;
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-40px); opacity: 0; }
+    }
+
+    .classifier-game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .categories {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 30px;
+        gap: 15px;
+    }
+
+    .category-box {
+        flex: 1;
+        min-height: 200px;
+        border: 4px dashed var(--primary-color);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        background-color: #FFFBE6;
+        transition: background-color 0.3s;
+    }
+    
+    .category-box.drag-over {
+        background-color: #e8f5e9;
+        border-color: #4CAF50;
+    }
+
+    .task-cards-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        min-height: 100px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #f0f0f0;
+        width: 100%;
+    }
+    
+    .task-card {
+        background-color: #fff;
+        border: 2px solid var(--secondary-color);
+        border-radius: 10px;
+        padding: 10px;
+        width: 140px;
+        text-align: center;
+        cursor: grab;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+        .controls { flex-direction: column; align-items: center; }
+        .action-btn { width: 90%; }
+        .categories { flex-direction: column; }
+        .pipeline-row { flex-wrap: wrap; justify-content: center; }
+        .dispense-btn { width: 100%; margin: 0 0 10px 0; }
+        .track-container { width: 100%; margin: 0 0 10px 0; }
+        .end-zone { width: 100%; margin: 0; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍕 披萨流水线大战战 🤖</h1>
+
+    <div class="character-area">
+        <img src="AI人工智能启蒙绘本课程大纲 (11)_10.jpg" alt="团团" class="character" style="clip-path: circle(40% at 30% 50%);">
+        <div class="dialogue-box" id="guide-dialogue">
+            欢迎来到披萨工厂！我是团团，那是点点。我们一起来完成任务吧！
+        </div>
+        <img src="AI人工智能启蒙绘本课程大纲 (11)_05.jpg" alt="点点" class="character" style="clip-path: circle(40% at 75% 50%);">
+    </div>
+
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="showGame(1)">1. 阶梯调度台</div>
+        <div class="nav-tab" onclick="showGame(2)">2. 疯狂加工台</div>
+        <div class="nav-tab" onclick="showGame(3)">3. 智慧小侦探</div>
+    </div>
+
+    <div id="game1" class="game-section active">
+        <h2>🏭 体验流水线(阶梯重叠)</h2>
+        <p style="text-align: center; margin-bottom: 20px;">点击"推进"按钮。观察不同工位是怎么<b>同时工作</b>的！这就是重叠！</p>
+
+        <div class="step-pipeline-game">
+            <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 15px; color: #4CAF50;">
+                🎯 目标：制体<span style="color:var(--secondary-color);">5</span> 个披营(<span id="step-score">0</span>/5)
+            </div>
+
+            <!-- 强制不换行，保证水平位移动画准确无误 -->
+            <div class="station-container" id="g1-station-container" style="position: relative; z-index: 1; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 15px;">
+                <!-- 底部履带背景 -->
+                <div style="position:absolute; top:70px; left:20px; right:20px; height:8px; background:#ccc; border-radius:4px; z-index:-1;"></div>
+                
+                <div class="station-box" id="step-box-0">
+                    <div class="station-name">1. 揉面区</div>
+                    <div class="station-tool">👐</div>
+                </div>
+                <div class="station-arrow" style="flex-shrink:0;">➡️</div>
+                <div class="station-box" id="step-box-1">
+                    <div class="station-name">2. 抹酱区</div>
+                    <div class="station-tool">🖌︀</div>
+                </div>
+                <div class="station-arrow" style="flex-shrink:0;">➡️</div>
+                <div class="station-box" id="step-box-2">
+                    <div class="station-name">3. 撒料区</div>
+                    <div class="station-tool">🧂</div>
+                </div>
+                <div class="station-arrow" style="flex-shrink:0;">➡️</div>
+                <div class="station-box" id="step-box-3">
+                    <div class="station-name">4. 烤箱区</div>
+                    <div class="station-tool">🔥</div>
+                </div>
+
+                <!-- 披萨动态移动轨道层 -->
+                <div id="step-pizza-track" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></div>
+            </div>
+            
+            <button id="btn-step-advance" onclick="advanceStepPipeline()">➡放入新面团并推进</button>
+            
+            <div class="completed-area" style="margin-top: 20px; text-align: center;">
+                <div id="step-pizzas" style="font-size: 2.5rem; margin-top: 10px; min-height: 40px; display:flex; flex-wrap:wrap; justify-content:center; max-width: 400px; gap: 5px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game2" class="game-section">
+        <h2>🏭 疯狂加工台(战战时机)</h2>
+        <p style="text-align: center; margin-bottom: 10px;">不断加面团，在披萨经过对应区域时点击操作按钮：</p>
+        
+        <div class="pipeline-game">
+            <div class="stats-panel">
+                <div style="color:var(--secondary-color);">⏰时间: <span id="time-left">45</span>s</div>
+                <button id="start-btn" onclick="startGame2()" style="padding:5px 20px; border-radius:15px; border:none; background:#4CAF50; color:white; font-weight:bold; cursor:pointer;">▶️ 开始流水线</button>
+                <div style="color:#4CAF50;">🍕 成功: <span id="pizza-score">0</span></div>
+            </div>
+
+            <div class="conveyor-system" id="belt-container">
+                <div class="zone-sauce work-zone">🍅 抹酱区</div>
+                <div class="zone-topping work-zone">🧀 撒料区</div>
+                <div class="zone-oven work-zone">🔥 烤箱</div>
+                <div class="belt-texture" id="belt-texture"></div>
+                <!-- 动态披萨会在这里生成-->
+            </div>
+
+            <div class="controls">
+                <button class="action-btn btn-dough" onclick="addDough()">➡1. 放面团</button>
+                <button class="action-btn btn-sauce" onclick="applySauce()">🍅 2. 涂酱料</button>
+                <button class="action-btn btn-topping" onclick="applyTopping()">🧀 3. 撒配料</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game3" class="game-section">
+        <h2>🕵︀智慧小侦探</h2>
+        <p style="text-align: center;">哪些必须按顺序？哪些可以同时做？</p>
+        
+        <div class="classifier-game">
+            <div class="categories">
+                <div class="category-box" ondrop="dropTask(event, 'serial')" ondragover="allowDrop(event)" ondragenter="this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+                    <h3>➡️ 必须按顺庀(串行)</h3>
+                    <div id="serial-tasks-container" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+                </div>
+                <div class="category-box" ondrop="dropTask(event, 'parallel')" ondragover="allowDrop(event)" ondragenter="this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+                    <h3>🔀 可以一起做 (并行)</h3>
+                    <div id="parallel-tasks-container" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+                </div>
+            </div>
+            
+            <div class="task-cards-container" id="task-pool"></div>
+             <div style="margin-top: 15px; font-size: 1.2rem; font-weight: bold; color: var(--secondary-color);">
+                 ⭕得分: <span id="score">0</span>
+             </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const dialogueElement = document.getElementById('guide-dialogue');
+
+    function showGame(gameId) {
+        document.querySelectorAll('.game-section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById('game' + gameId).classList.add('active');
+        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.nav-tab')[gameId - 1].classList.add('active');
+
+        if(gameId === 1) {
+            dialogueElement.textContent = "团团：试着一步步推进流水线！目标是制体个披萨。看，它们是怎么同时处理的！";
+            resetGame1();
+        } else if (gameId === 2) {
+            dialogueElement.textContent = "点点：升级版流水线！你可以连续放多个面团。等面团跑到区域里，赶紧点对应按钮！";
+            resetGame2();
+        } else if (gameId === 3) {
+            dialogueElement.textContent = "点点：有些事情可以同时做，这样更有效率哦。你能分得清吗？";
+            resetGame3();
+        }
+    }
+
+    // ================= 游成1逻辑 (阶梯重叠流水线 =================
+let stepPizzas = [];
+    let stepScoreCount = 0;
+    const stepTarget = 5;
+    let isAdvancing = false;
+
+    // 获取工位的相对左侧坐标，用于计算CSS移动距离
+function getStationLeft(index) {
+        if (index === -1) return -100; // 屏幕外左侧进兀
+const container = document.getElementById('g1-station-container');
+        if (index === 4) return container.scrollWidth + 50; // 屏幕外右侧出厅
+const box = document.getElementById(`step-box-${index}`);
+        if(!box) return 0;
+        return box.offsetLeft;
+    }
+
+    function advanceStepPipeline() {
+        if (isAdvancing || stepScoreCount >= stepTarget) return;
+        isAdvancing = true;
+
+        // 1. 让所有轨道上的披萨向右移动一个工体(触发 CSS Transition)
+        stepPizzas.forEach(p => {
+            p.step++;
+            p.el.style.left = getStationLeft(p.step) + 'px';
+        });
+
+        // 2. 放入新的面团 (前提是总数还没达到5个目格
+const totalPizzasInSystem = stepScoreCount + stepPizzas.length;
+        if (totalPizzasInSystem < stepTarget) {
+            let newPizza = {
+                id: Date.now(),
+                step: 0,
+                el: document.createElement('div')
+            };
+            newPizza.el.className = 'step-pizza-anim';
+            newPizza.el.textContent = '🥟'; // 初始形态：面团
+newPizza.el.style.left = getStationLeft(-1) + 'px'; // 初始在屏幕外隐藏
+document.getElementById('step-pizza-track').appendChild(newPizza.el);
+            
+            // 触发一次重绘，强迫浏览器应用初始的 left 位置，让接下来的动画生效
+newPizza.el.offsetWidth; 
+            
+            newPizza.el.style.left = getStationLeft(0) + 'px'; // 动画平滑移入第一格        
+stepPizzas.push(newPizza);
+} else {
+            // 面团总数已达标，改变按钮提示，让玩家继续点击清空流水线
+document.getElementById('btn-step-advance').innerHTML = '➡️ 继续推进履带';
+        }
+
+        // 3. 等待披萨移动动画结束(0.5秀后，更新材料状态和工位反馈
+setTimeout(() => {
+            updateStepStates();
+            isAdvancing = false;
+        }, 500);
+    }
+
+    function updateStepStates() {
+        const emojis = ['🥟', '🍅', '🧀', '🍕']; // 各环节形态，烤箱出来直接是完美的披萨
+const actions = ['正在揉面!', '正在抹酱!', '正在撒料!', '正在烤箱!'];
+        
+        // 先重置所有工位样式，消除上一轮的光亮
+for(let i=0; i<4; i++) {
+            const box = document.getElementById(`step-box-${i}`);
+            box.classList.remove('active', 'working-animation');
+        }
+
+        // 倒序遍历处理披萨状态（为了安全删除元素：
+for (let i = stepPizzas.length - 1; i >= 0; i--) {
+            let p = stepPizzas[i];
+            
+            if (p.step === 4) {
+                // 披萨出了烤箱 (离开流水线
+p.el.remove();
+                stepPizzas.splice(i, 1);
+                stepScoreCount++;
+                
+                // 在底部展示烤好的披萨记录
+const doneP = document.createElement('span');
+                doneP.textContent = '🍕';
+                doneP.style.animation = 'fadeIn 0.5s ease-in';
+                document.getElementById('step-pizzas').appendChild(doneP);
+                document.getElementById('step-score').textContent = stepScoreCount;
+            } else {
+                // 披萨停在某个工位上，更新它的材料图标外观
+p.el.textContent = emojis[p.step];
+                
+                // 激活对应的机器工位，跳动并浮出文字反馈
+const box = document.getElementById(`step-box-${p.step}`);
+                if (box) {
+                    box.classList.add('active');
+                    // 用极小的延迟重新触发CSS动画跳动
+setTimeout(() => box.classList.add('working-animation'), 10);
+                    showFloatText(box, actions[p.step]);
+                }
+            }
+        }
+
+        checkGame1Progress();
+    }
+
+    // 修复：新增缺失的悬浮文字动画函数，防止程序报错卡歀
+function showFloatText(box, text) {
+const msg = document.createElement('div');
+        msg.className = 'step-float-text';
+        msg.textContent = text;
+        box.appendChild(msg);
+        // 动画时长0.8秒后移除该元紀
+setTimeout(() => msg.remove(), 800);
+    }
+
+    function checkGame1Progress() {
+        if (stepScoreCount >= stepTarget) {
+            dialogueElement.textContent = "点点：太棒了！我们利用【流水线重叠】，超快地完成了5个披萨的订单！🎉";
+            const btn = document.getElementById('btn-step-advance');
+            btn.innerHTML = '🔁 重新战战';
+            btn.onclick = resetGame1;
+            btn.style.backgroundColor = '#4CAF50';
+            btn.style.boxShadow = '0 6px 0 #388E3C';
+        } else {
+            // 根据当前轨道上有多少个披萨同时在运作，给出相应的知识点讲觀
+const workingStations = stepPizzas.length;
+            if (workingStations === 1) {
+                dialogueElement.textContent = "团团：只有个面团在处理，后面的机器都在空等，这就是【串行】。继续点击推进！";
+            } else if (workingStations === 2) {
+                dialogueElement.textContent = "点点：看：号和2号机器【同时】在处理不同的面团！这就是【阶梯重叠】！";
+            } else if (workingStations === 3) {
+                dialogueElement.textContent = "团团：三个环节一起开动了！没人闲着，效率大大提高！";
+            } else if (workingStations >= 4) {
+                dialogueElement.textContent = "点点：火力全开！流水线满载！所有工序完全【重叠】，这就是工厂高效的秘密！";
+            }
+        }
+    }
+
+    function resetGame1() {
+        // 清理界面和残留数捀    
+stepPizzas.forEach(p => p.el.remove());
+        stepPizzas = [];
+        stepScoreCount = 0;
+        isAdvancing = false;
+        
+        document.getElementById('step-score').textContent = '0';
+        document.getElementById('step-pizzas').innerHTML = '';
+        
+        for(let i=0; i<4; i++) {
+            document.getElementById(`step-box-${i}`).classList.remove('active', 'working-animation');
+        }
+
+        // 恢复推进按钮的初始状态
+const btn = document.getElementById('btn-step-advance');
+        btn.innerHTML = '➡放入新面团并推进';
+        btn.onclick = advanceStepPipeline;
+        btn.style.backgroundColor = 'var(--primary-color)';
+        btn.style.boxShadow = '0 6px 0 #c48248';
+        
+        dialogueElement.textContent = "团团：试着一步步推进流水线！目标是制体个披萨。看，它们是怎么同时处理的！";
+    }
+
+    // ================= 游成2逻辑 (动态重叠流水线) =================
+let g2Running = false;
+    let g2Timer;
+    let g2TimeLeft = 45;
+    let g2Score = 0;
+    let pizzas = [];
+    let animationId;
+    const speed = 0.3; // 传送带速度
+function startGame2() {
+        if(g2Running) return;
+        g2Running = true;
+        g2TimeLeft = 45;
+        g2Score = 0;
+        pizzas.forEach(p => p.el.remove());
+        pizzas = [];
+        
+        document.getElementById('pizza-score').textContent = g2Score;
+        document.getElementById('time-left').textContent = g2TimeLeft;
+        document.getElementById('start-btn').style.display = 'none';
+        document.getElementById('belt-texture').style.animationPlayState = 'running';
+        dialogueElement.textContent = "团团：流水线开动！快按[放面团]！看准它们经过有色区域时加工！";
+
+        g2Timer = setInterval(() => {
+            g2TimeLeft--;
+            document.getElementById('time-left').textContent = g2TimeLeft;
+            if(g2TimeLeft <= 0) endGame2();
+        }, 1000);
+        
+        gameLoop();
+    }
+
+    function addDough() {
+        if(!g2Running) return;
+        const belt = document.getElementById('belt-container');
+        const el = document.createElement('div');
+        el.className = 'moving-pizza p-dough';
+        el.style.left = '0%';
+        belt.appendChild(el);
+        pizzas.push({ el: el, pos: 0, state: 'dough' });
+    }
+
+    function applySauce() {
+        if(!g2Running) return;
+        let acted = false;
+        pizzas.forEach(p => {
+            // 在抹酱区 (25% ~ 50%)
+if (p.pos >= 20 && p.pos <= 45 && p.state === 'dough') {
+                p.state = 'sauced';
+                p.el.className = 'moving-pizza p-sauced';
+                showFloatingMsg(p.el, '✔️ 抹酱!', '#FF6347');
+                acted = true;
+            }
+        });
+        if(!acted) dialogueElement.textContent = "点点：哎呀，按空了！等面团进入线色区域再按！";
+    }
+
+    function applyTopping() {
+        if(!g2Running) return;
+        let acted = false;
+        pizzas.forEach(p => {
+            // 在撒料区 (50% ~ 75%)
+if (p.pos >= 45 && p.pos <= 70 && p.state === 'sauced') {
+                p.state = 'topped';
+                p.el.className = 'moving-pizza p-topped';
+                showFloatingMsg(p.el, '✔️ 撒料!', '#FFD700');
+                acted = true;
+            }
+        });
+        if(!acted) dialogueElement.textContent = "点点：注意！只能给涂过酱的披萨撒料，且要在黄色区域内！";
+    }
+
+    function gameLoop() {
+        if(!g2Running) return;
+        
+        for (let i = pizzas.length - 1; i >= 0; i--) {
+            let p = pizzas[i];
+            p.pos += speed;
+            p.el.style.left = p.pos + '%';
+
+            // 进入烤箱区
+if (p.pos > 82) {
+                p.el.remove();
+                if (p.state === 'topped') {
+                    g2Score++;
+                    document.getElementById('pizza-score').textContent = g2Score;
+                    dialogueElement.textContent = "团团：太棒啦！成功烤出一个完美披萨！🍕";
+                } else {
+                    dialogueElement.textContent = "点点：警告！有半成品进烤箱烤焦了！要走完所有步骤哦！🔍";
+                }
+                pizzas.splice(i, 1);
+            }
+        }
+        animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function endGame2() {
+        g2Running = false;
+        clearInterval(g2Timer);
+        cancelAnimationFrame(animationId);
+        document.getElementById('start-btn').style.display = 'inline-block';
+        document.getElementById('start-btn').textContent = '🔁 再玩一次';
+        document.getElementById('belt-texture').style.animationPlayState = 'paused';
+        dialogueElement.textContent = `时间到！你总共做出了${g2Score} 个完美披萨！你的流水线管理能力真强！`;
+    }
+
+    function showFloatingMsg(el, text, color) {
+        const msg = document.createElement('div');
+        msg.className = 'floating-text';
+        msg.textContent = text;
+        msg.style.color = color;
+        msg.style.left = el.style.left;
+        msg.style.bottom = '80px';
+        document.getElementById('belt-container').appendChild(msg);
+        setTimeout(() => msg.remove(), 1000);
+    }
+
+    function resetGame2() {
+        g2Running = false;
+        clearInterval(g2Timer);
+        cancelAnimationFrame(animationId);
+        pizzas.forEach(p => p.el.remove());
+        pizzas = [];
+        document.getElementById('belt-texture').style.animationPlayState = 'paused';
+        document.getElementById('start-btn').style.display = 'inline-block';
+        document.getElementById('start-btn').textContent = '▶️ 开始流水线';
+        document.getElementById('time-left').textContent = '45';
+        document.getElementById('pizza-score').textContent = '0';
+    }
+
+    // ================= 游成3逻辑 (分类) =================
+const taskData = [
+        { id: 't1', text: '和面 👉 烤披萨', type: 'serial', icon: '🥟🔥' },
+        { id: 't2', text: '洗草莓 & 洗苹果', type: 'parallel', icon: '🍓🍎' },
+        { id: 't3', text: '穿袜子 👉 穿鞋子', type: 'serial', icon: '🧦👟' },
+        { id: 't4', text: '妈妈切菜 & 我洗碗', type: 'parallel', icon: '🔪🥣' }
+    ];
+    let g3Score = 0;
+
+    function initGame3() {
+        const pool = document.getElementById('task-pool');
+        pool.innerHTML = '';
+        taskData.forEach(t => {
+            const el = document.createElement('div');
+            el.className = 'task-card';
+            el.draggable = true;
+            el.id = t.id;
+            el.dataset.type = t.type;
+            el.innerHTML = `<div style="font-size:24px;">${t.icon}</div>${t.text}`;
+            el.addEventListener('dragstart', e => e.dataTransfer.setData('text', e.target.id));
+            pool.appendChild(el);
+        });
+    }
+
+    function allowDrop(e) {
+        e.preventDefault();
+    }
+
+    function dropTask(e, type) {
+        e.preventDefault();
+        e.currentTarget.classList.remove('drag-over');
+        const id = e.dataTransfer.getData("text");
+        const card = document.getElementById(id);
+        if(!card) return;
+
+        if (card.dataset.type === type) {
+            e.currentTarget.querySelector('div').appendChild(card);
+            card.draggable = false;
+            card.style.borderColor = '#4CAF50';
+            card.style.backgroundColor = '#E8F5E9';
+            g3Score += 10;
+            document.getElementById('score').textContent = g3Score;
+            dialogueElement.textContent = "团团：答对啦！分类非常准确！⭕";
+        } else {
+            dialogueElement.textContent = "点点：嗯...再想想？比如穿鞋子，能和穿袜子同时进行吗？🤖";
+            card.style.borderColor = 'red';
+            setTimeout(()=> card.style.borderColor = 'var(--secondary-color)', 1000);
+        }
+
+        if (document.getElementById('task-pool').children.length === 0) {
+            dialogueElement.textContent = `全部完成！你得了 ${g3Score} 分！你已经完全掌握了【并行】与【串行】的秘密啦！🏆`;
+        }
+    }
+
+    function resetGame3() {
+        g3Score = 0;
+        document.getElementById('score').textContent = g3Score;
+        document.getElementById('serial-tasks-container').innerHTML = '';
+        document.getElementById('parallel-tasks-container').innerHTML = '';
+        initGame3();
+    }
+
+    // 初始化
+showGame(1);
+</script>
+</body>
+</html>

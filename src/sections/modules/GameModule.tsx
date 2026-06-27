@@ -10,7 +10,7 @@ export default function GameModule({ courseId, numStr }: GameModuleProps) {
   const [hasError, setHasError] = useState(false);
   const [showGame, setShowGame] = useState(false);
 
-  const gameSrc = `./assets/games/index${numStr}.html`;
+  const gameSrc = `./assets/games/games/index${numStr}.html`;
 
   if (!showGame) {
     return (
@@ -47,7 +47,7 @@ export default function GameModule({ courseId, numStr }: GameModuleProps) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
             {[
               { icon: '🎨', text: '专为本节课设计的趣味互动游戏' },
-              { icon: '🧸', text: '游戏内角色已替换为团团/点点' },
+              { icon: '🧸', text: '跟团团点点一起复盘游戏' },
               { icon: '🏆', text: '通过游戏巩固本节课核心知识点' },
             ].map((item) => (
               <div key={item.text} style={{
@@ -99,7 +99,7 @@ export default function GameModule({ courseId, numStr }: GameModuleProps) {
           <div style={{ fontSize: 52, marginBottom: 12 }}>🎮</div>
           <p style={{ fontWeight: 800, fontSize: 20, color: 'var(--kid-gray-700)', marginBottom: 8 }}>游戏加载中</p>
           <p style={{ fontSize: 15, color: 'var(--kid-gray-400)', marginBottom: 6 }}>游戏文件路径：{gameSrc}</p>
-          <p style={{ fontSize: 13, color: 'var(--kid-gray-300)' }}>请确认游戏资源已正确放置在 assets/games/ 目录</p>
+          <p style={{ fontSize: 13, color: 'var(--kid-gray-300)' }}>请确认游戏资源已正确放置在 assets/games/games/ 目录</p>
         </div>
       ) : (
         <div style={{
@@ -148,7 +148,7 @@ export default function GameModule({ courseId, numStr }: GameModuleProps) {
         border: '1px solid var(--kid-green-100)',
       }}>
         <p style={{ fontSize: 14, color: 'var(--kid-gray-400)' }}>
-          💡 游戏内团团、点点角色已替换为专属形象素材
+          💡 跟团团点点一起复盘游戏
         </p>
       </div>
     </div>

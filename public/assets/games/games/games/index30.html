@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第30课：同样努力却分数不合- AI公平实验宀</title>
+    <script src="../../libs/libs/tailwind.min.js"></script>
+    <style>
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in { animation: popIn 0.5s ease-out forwards; }
+
+        @keyframes feedFloat {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-50px) scale(0.5); opacity: 0; }
+        }
+        .feed-animation { animation: feedFloat 0.6s ease-out forwards; }
+
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .balloon-float { animation: floatUpDown 2s ease-in-out infinite; }
+
+        .transition-all-custom { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4 font-sans text-gray-800">
+
+    <div class="bg-white rounded-3xl shadow-xl w-full max-w-lg overflow-hidden border-4 border-indigo-200 relative">
+        
+        <!-- 顶部标题 -->
+        <div class="bg-indigo-500 text-white p-4 text-center rounded-t-2xl shadow-md z-10 relative">
+            <h1 class="text-2xl font-bold tracking-wider">🤖 AI公平实验宀</h1>
+            <p class="text-indigo-100 text-sm mt-1">第30课《同样努力却分数不同 </p>
+        </div>
+
+        <div class="p-6">
+            
+            <!-- ====== 关卡 1 ====== -->
+            <div id="level1" class="space-y-4 pop-in">
+                <div class="text-center mb-6">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第1 关(3-5岁)</span>
+                    <h2 class="text-xl font-bold text-gray-700">能量打气筀🎈</h2>
+                    <p class="text-gray-500 text-sm">蓝衣点点的分数气球没气了：br/><strong class="text-yellow-600">不断点击充气，让他们的气球一样大：</strong></p>
+                </div>
+
+                <div class="flex justify-around items-end bg-sky-50 p-6 rounded-2xl h-56 relative border-2 border-sky-100">
+                    <!-- 团团 -->
+                    <div class="text-center w-5/12 flex flex-col items-center justify-end h-full z-10">
+                        <div class="w-24 h-24 bg-red-400 rounded-full flex items-center justify-center text-white font-black text-3xl shadow-lg relative balloon-float">
+                            100
+                            <!-- 气球练-->
+                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-400 rotate-45"></div>
+                            <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-300"></div>
+                        </div>
+                        <div class="w-12 h-12 bg-white rounded-full border-2 border-red-300 flex items-center justify-center text-2xl mt-8 z-10 shadow-sm">🧑🦀</div>
+                        <p class="font-bold text-gray-600 mt-1 text-sm">线衣团团</p>
+                    </div>
+                    
+                    <!-- 点点 -->
+                    <div class="text-center w-5/12 flex flex-col items-center justify-end h-full z-10">
+                        <!-- 可缩放的气球 -->
+                        <div id="blueBalloonWrapper" class="transition-all duration-300 transform origin-bottom balloon-float" style="transform: scale(0.6);">
+                            <div class="w-24 h-24 bg-blue-400 rounded-full flex items-center justify-center text-white font-black text-3xl shadow-lg relative">
+                                <span id="blueBalloonScore">50</span>
+                                <!-- 气球练-->
+                                <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-blue-400 rotate-45"></div>
+                                <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-300"></div>
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-white rounded-full border-2 border-blue-300 flex items-center justify-center text-2xl mt-8 z-10 shadow-sm">👦</div>
+                        <p class="font-bold text-gray-600 mt-1 text-sm">蓝衣点点</p>
+                    </div>
+                </div>
+
+                <button id="pumpBtn" onclick="pumpEnergy()" class="mt-4 w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black text-xl py-4 rounded-xl shadow-[0_6px_0_#b45309] active:shadow-[0_0px_0_#b45309] active:translate-y-2 transition-all flex items-center justify-center gap-2">
+                    ⚪注入公平能量：                </button>
+
+                <div id="msg1" class="hidden text-center mt-4 pop-in">
+                    <p class="text-green-500 font-bold text-xl mb-3">🎉 满分啦！气球一样大了！</p>
+                    <button onclick="nextLevel(2)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 w-full">进入下一兀👉</button>
+                </div>
+            </div>
+
+            <!-- ====== 关卡 2 ====== -->
+            <div id="level2" class="hidden space-y-4 pop-in">
+                <div class="text-center mb-6">
+                    <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第2 兀(6-7岁)</span>
+                    <h2 class="text-xl font-bold text-gray-700">喂养AI大脑 🧠</h2>
+                    <p class="text-gray-500 text-sm">AI只认识线衣服。点击下方按钀br/>给AI喂食 <strong class="text-blue-500">蓝衣有</strong> 数据直到平衡：</p>
+                </div>
+
+                <div class="bg-gray-50 p-5 rounded-2xl text-center relative border-2 border-gray-100">
+                    <div class="text-6xl mb-4 transition-transform duration-300" id="aiBrain">🤖</div>
+                    
+                    <div class="space-y-4 mt-6">
+                        <div class="flex items-center">
+                            <span class="w-16 text-sm font-bold text-gray-600">线衣有</span>
+                            <div class="flex-1 bg-gray-200 h-6 rounded-full overflow-hidden mx-2 shadow-inner">
+                                <div class="bg-red-400 h-full w-[80%] flex items-center justify-end pr-3 text-xs text-white font-bold">8什</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-16 text-sm font-bold text-gray-600">蓝衣有</span>
+                            <div class="flex-1 bg-gray-200 h-6 rounded-full overflow-hidden mx-2 shadow-inner relative">
+                                <div id="blueDataBar" class="bg-blue-400 h-full w-[20%] transition-all duration-500 flex items-center justify-end pr-3 text-xs text-white font-bold">2什</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="feedAnimArea" class="absolute top-10 left-1/2 -translate-x-1/2 text-4xl opacity-0 pointer-events-none z-20">👕</div>
+                </div>
+
+                <button id="feedBtn" onclick="feedAI()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-105 active:scale-95 text-lg flex items-center justify-center gap-2">
+                    <span class="text-2xl">👕</span> 喂入1件蓝衣数捀                </button>
+
+                <div id="msg2" class="hidden text-center mt-4 pop-in">
+                    <p class="text-green-500 font-bold text-xl mb-3">⚖️ 数据一样多了，AI变聪明了：</p>
+                    <button onclick="nextLevel(3)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 w-full">进入终极战战 👉</button>
+                </div>
+            </div>
+
+            <!-- ====== 关卡 3 ====== -->
+            <div id="level3" class="hidden space-y-4 pop-in">
+                <div class="text-center mb-2">
+                    <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide mb-2">第3 兀(8-9岁)</span>
+                    <h2 class="text-xl font-bold text-gray-700">修理规则天平 ⚖️</h2>
+                    <p class="text-gray-500 text-sm">把"颜色偏见"向左滑动消陀br/>观察两端分数是如何达到平衡的：</p>
+                </div>
+
+                <div class="bg-blue-50/50 p-6 rounded-2xl border-2 border-indigo-50">
+                    
+                    <!-- 可视化物理天幕-->
+                    <div class="relative w-full h-48 mx-auto mt-2 flex justify-center items-end">
+                        
+                        <!-- 中心底座与支柀-->
+                        <div class="absolute bottom-0 w-24 h-3 bg-slate-700 rounded-t-lg z-10"></div>
+                        <div class="absolute bottom-3 w-4 h-28 bg-slate-600 z-10"></div>
+                        <div class="absolute bottom-[116px] w-6 h-6 bg-slate-800 rounded-full z-30 shadow-md"></div>
+                        
+                        <!-- 天平横梁 (随偏见值旋轀 -->
+                        <div id="scaleBeam" class="absolute bottom-[122px] w-64 h-3 bg-amber-600 rounded-full origin-center transition-all duration-300 ease-out z-20 shadow-lg flex justify-between items-center" style="transform: rotate(-20deg);">
+                            
+                            <!-- 左端：线衣托盀(反向旋转保持垂直) -->
+                            <div id="trayRed" class="absolute -left-6 -top-2 w-12 flex flex-col items-center origin-top transition-all duration-300 ease-out" style="transform: rotate(20deg);">
+                                <!-- 吊绳 -->
+                                <div class="w-0.5 h-14 bg-gray-400"></div>
+                                <!-- 托盘 -->
+                                <div class="w-16 bg-red-100 border-b-8 border-red-400 rounded-b-xl flex flex-col items-center justify-center shadow-lg relative pb-1">
+                                    <span class="text-3xl -mt-5">😎</span>
+                                    <span class="font-black text-red-600 text-lg">100别</span>
+                                </div>
+                            </div>
+
+                            <!-- 右端：蓝衣托盀(反向旋转保持垂直) -->
+                            <div id="trayBlue" class="absolute -right-6 -top-2 w-12 flex flex-col items-center origin-top transition-all duration-300 ease-out" style="transform: rotate(20deg);">
+                                <!-- 吊绳 -->
+                                <div class="w-0.5 h-14 bg-gray-400"></div>
+                                <!-- 托盘 -->
+                                <div class="w-16 bg-blue-100 border-b-8 border-blue-400 rounded-b-xl flex flex-col items-center justify-center shadow-lg relative pb-1">
+                                    <span id="faceBlue" class="text-3xl -mt-5">😢</span>
+                                    <span id="scaleBlueScore" class="font-black text-blue-600 text-lg transition-all duration-300">50别</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 控制叀-->
+                    <div class="mt-8 text-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <label class="block text-gray-600 font-bold mb-3 flex justify-between items-center px-2">
+                            <span>颜色偏见干扰:</span>
+                            <span id="biasValue" class="text-red-500 text-2xl font-black bg-red-50 px-3 py-1 rounded-lg border border-red-100">100%</span>
+                        </label>
+                        <input type="range" id="biasSlider" min="0" max="100" value="100" oninput="updateBalance()" class="w-full h-4 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-500 shadow-inner">
+                        <div class="flex justify-between text-xs text-gray-400 mt-2 font-bold px-1">
+                            <span>0% (绝对公平)</span>
+                            <span>100% (极度偏心)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="msg3" class="hidden text-center mt-6 pop-in">
+                    <div class="text-6xl mb-2">⚖️✅</div>
+                    <p class="text-green-500 font-bold text-2xl mb-1">战战圆满成功：</p>
+                    <p class="text-gray-500 text-sm">你不仅找出了偏见，还学会了修复规则！</p>
+                    <button onclick="location.reload()" class="mt-5 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 w-full text-lg">再玩一次🔄</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ================= 关卡 1 逻辑：打气筒 =================
+let pumpClicks = 0;
+        function pumpEnergy() {
+            if (pumpClicks >= 5) return; // 满分 100
+pumpClicks++;
+            
+            // 每次点击增加 10 分，什50 开始
+const currentScore = 50 + (pumpClicks * 10);
+            document.getElementById('blueBalloonScore').innerText = currentScore;
+            
+            // 气球体积变大动画 (缩放比例什0.6 别1.0)
+const newScale = 0.6 + (pumpClicks * 0.08);
+            document.getElementById('blueBalloonWrapper').style.transform = `scale(${newScale})`;
+
+            // 成功棕浀
+if (pumpClicks >= 5) {
+                const btn = document.getElementById('pumpBtn');
+                btn.disabled = true;
+                btn.classList.add('hidden');
+                document.getElementById('msg1').classList.remove('hidden');
+            }
+        }
+
+        // ================= 关卡 2 逻辑：喂数据 =================
+let blueCount = 2;
+        function feedAI() {
+            if(blueCount >= 8) return;
+            
+            const btn = document.getElementById('feedBtn');
+            const aiIcon = document.getElementById('aiBrain');
+            const animArea = document.getElementById('feedAnimArea');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'scale-95');
+
+            // 触发飞入动画
+animArea.classList.remove('feed-animation');
+            void animArea.offsetWidth; // 重绘
+animArea.classList.add('feed-animation');
+
+            aiIcon.innerText = "😲"; // AI 张嘴
+            aiIcon.style.transform = "scale(1.1)";
+
+            setTimeout(() => {
+                blueCount++;
+                aiIcon.innerText = "😋"; // AI 吃到
+                
+                // 更新进度条UI
+const bar = document.getElementById('blueDataBar');
+                const percent = (blueCount / 8) * 80;
+                bar.style.width = percent + '%';
+                bar.innerText = blueCount + '什;
+
+                if(blueCount < 8) {
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75', 'scale-95');
+                    setTimeout(() => {
+                        aiIcon.innerText = "🤖";
+                        aiIcon.style.transform = "scale(1)";
+                    }, 400); 
+                } else {
+                    // 通关
+aiIcon.innerText = "🥰";
+                    aiIcon.style.transform = "scale(1.2)";
+                    btn.classList.add('hidden');
+                    document.getElementById('msg2').classList.remove('hidden');
+                }
+            }, 500);
+        }
+
+        // ================= 关卡 3 逻辑：物理跷跷板 =================
+        function updateBalance() {
+            const slider = document.getElementById('biasSlider');
+            const bias = slider.value; // 0 别100
+            
+            // 1. 更新文本面板
+const biasLabel = document.getElementById('biasValue');
+            biasLabel.innerText = bias + '%';
+            
+            if (bias > 50) {
+                biasLabel.className = 'text-red-500 text-2xl font-black bg-red-50 px-3 py-1 rounded-lg border border-red-100';
+            } else if (bias > 0) {
+                biasLabel.className = 'text-yellow-600 text-2xl font-black bg-yellow-50 px-3 py-1 rounded-lg border border-yellow-100';
+            } else {
+                biasLabel.className = 'text-green-500 text-2xl font-black bg-green-50 px-3 py-1 rounded-lg border border-green-100';
+            }
+
+            // 2. 根据偏见计算蓝衣得分 (偏见100 -> 所0别
+const blueScore = 100 - (bias / 2); 
+            document.getElementById('scaleBlueScore').innerText = Math.round(blueScore) + "别";
+
+            // 3. 物理天平旋转联动
+            // 设定有大倾斜角为 20度 
+            // 偏见100%时，旋转 -20庀(左端下降，右端上单
+            // 偏见0%时，旋转 0庀(水平平衡)
+const rotationDegree = (bias / 100) * -20;
+            
+            // 旋转横梁
+document.getElementById('scaleBeam').style.transform = `rotate(${rotationDegree}deg)`;
+            
+            // 托盘反向旋转，以保持"吊篮"在重力下的垂直状态
+document.getElementById('trayRed').style.transform = `rotate(${-rotationDegree}deg)`;
+            document.getElementById('trayBlue').style.transform = `rotate(${-rotationDegree}deg)`;
+
+            // 4. 面部表情变化
+const faceBlue = document.getElementById('faceBlue');
+            if (bias == 0) {
+                faceBlue.innerText = "😎";
+            } else if (bias < 50) {
+                faceBlue.innerText = "😐";
+            } else {
+                faceBlue.innerText = "😢";
+            }
+
+            // 5. 通关棕浀            if(bias == 0) {
+                slider.disabled = true;
+                slider.classList.add('opacity-50');
+                document.getElementById('msg3').classList.remove('hidden');
+            }
+        }
+
+        // ================= 页面切换 =================
+        function nextLevel(num) {
+            document.getElementById('level1').classList.add('hidden');
+            document.getElementById('level2').classList.add('hidden');
+            document.getElementById('level3').classList.add('hidden');
+            
+            const target = document.getElementById('level' + num);
+            target.classList.remove('hidden');
+            
+            target.classList.remove('pop-in');
+            void target.offsetWidth; // 触发重绘
+target.classList.add('pop-in');
+        }
+    </script>
+</body>
+</html>

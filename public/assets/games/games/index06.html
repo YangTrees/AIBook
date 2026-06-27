@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第6课《红绿蓝灯的合唱团》</title>
+    <style>
+        :root {
+            --primary-bg: #e0f7fa;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --btn-red: #ff5252;
+            --btn-green: #4caf50;
+            --btn-blue: #448aff;
+            --accent-yellow: #ffeb3b;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'PingFang SC', 'Microsoft YaHei', cursive, sans-serif;
+            /* 模拟绘本里的蓝天草地背景 */
+            background: linear-gradient(180deg, #e1f5fe 0%, #b3e5fc 40%, #c8e6c9 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #0277bd;
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #e64a19;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            font-weight: bold;
+            background: rgba(255,255,255,0.7);
+            padding: 5px 20px;
+            border-radius: 20px;
+        }
+
+        .game-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #fff;
+        }
+
+        .game-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 3px dashed #b2ebf2;
+            padding-bottom: 15px;
+        }
+
+        .game-title {
+            font-size: 1.8em;
+            color: #00838f;
+            margin: 0 20px;
+            font-weight: bold;
+        }
+
+        .character-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            z-index: 10;
+        }
+
+        .dialogue-box {
+            background: #fff;
+            border: 3px solid #81d4fa;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #0277bd;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        .dialogue-box strong {
+            color: #ff9800;
+        }
+
+        /* Game 1: 叠一叠 */
+        .blend-stage {
+            background: #000; /* 改为纯黑背景以呈现有完美的光学混合效果*/
+            border-radius: 20px;
+            height: 350px;
+            position: relative;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 500px;
+            border: 8px solid #cfd8dc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            overflow: hidden; /* 防止光晕溢出舞台 */
+        }
+
+        .light-circle {
+            width: 220px; /* 适当放大光圈，让重叠区域更大更清晰 */
+            height: 220px;
+            border-radius: 50%;
+            position: absolute;
+            mix-blend-mode: screen; /* 关键的光学混合效果*/
+            transition: opacity 0.4s ease, transform 0.3s ease;
+            opacity: 0;
+            filter: blur(10px); /* 增加一点模糊显得更柔和 */
+        }
+
+        /* 调整三原色光圈的位置形成品字形交融 */
+        #light-r { background: rgb(255, 0, 0); top: 30px; left: 50%; transform: translateX(-50%); }
+        #light-g { background: rgb(0, 255, 0); top: 130px; left: calc(50% - 65px); transform: translateX(-50%); }
+        #light-b { background: rgb(0, 0, 255); top: 130px; left: calc(50% + 65px); transform: translateX(-50%); }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .switch-btn {
+            padding: 15px 35px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            color: white;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+            transition: all 0.1s;
+            font-family: inherit;
+        }
+        
+        .switch-btn:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        .btn-r { background-color: var(--btn-red); box-shadow: 0 6px 0 #d32f2f; }
+        .btn-g { background-color: var(--btn-green); box-shadow: 0 6px 0 #388e3c; }
+        .btn-b { background-color: var(--btn-blue); box-shadow: 0 6px 0 #1976d2; }
+        
+        .switch-btn.off {
+            background-color: #e0e0e0;
+            color: #9e9e9e;
+            box-shadow: 0 6px 0 #bdbdbd;
+        }
+
+        /* Game 2: 配方单*/
+        .recipe-card-area {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+
+        .card-side {
+            background: #fff;
+            border: 3px solid #ffca28;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        /* 模拟活页本的铁环 */
+        .card-side::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 30px;
+            background-image: radial-gradient(circle, #9e9e9e 4px, transparent 5px);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+        }
+
+        .color-preview {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            border-radius: 20px;
+            border: 4px dashed #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fafafa;
+        }
+
+        .shape {
+            transition: color 0.2s;
+        }
+
+        .star-shape {
+            width: 100px;
+            height: 100px;
+            background: currentColor;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+        
+        .circle-shape {
+            width: 100px;
+            height: 100px;
+            background: currentColor;
+            border-radius: 50%;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2);
+        }
+
+        .slider-group {
+            margin: 15px 0;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .slider-group label {
+            font-weight: bold;
+            font-size: 1.2em;
+            width: 40px;
+        }
+
+        .slider-group span {
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 45px;
+            text-align: right;
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+
+        input[type=range] {
+            flex-grow: 1;
+            margin: 0 10px;
+            height: 12px;
+            -webkit-appearance: none;
+            background: #e0e0e0;
+            border-radius: 6px;
+            outline: none;
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: currentColor;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .slider-r { color: var(--btn-red); }
+        .slider-g { color: var(--btn-green); }
+        .slider-b { color: var(--btn-blue); }
+
+        .success-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            border-radius: 20px;
+        }
+
+        .success-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .success-title {
+            font-size: 3em;
+            color: #ff4081;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px #ffb400;
+            margin-bottom: 10px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-next {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+            transition: transform 0.2s;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        
+        .btn-next:hover {
+            transform: scale(1.05);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .recipe-card-area { flex-direction: column; align-items: center; }
+            .controls { flex-direction: column; align-items: center; }
+            .switch-btn { width: 80%; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>🤖 AI人工智能启蒙绘本</h1>
+    <div class="subtitle">第6课《红绿蓝灯的合唱团》</div>
+
+    <!-- =============== 游戏1：红绿蓝叠一叠 =============== -->
+    <div class="game-container">
+        <div class="game-header">
+            <img id="tuantuan-game1" class="character-img" src="" alt="团团" />
+            <div class="game-title">游戏1：红绿蓝叠一叠</div>
+            <img id="diandian-game1" class="character-img" src="" alt="点点" />
+        </div>
+
+        <div class="dialogue-box">
+            <strong>点点：</strong>红加绿会变成什么？绿加蓝呢？点击下方的按钮打开灯光，我们在中间的舞台看一看吧！        </div>
+
+        <div class="blend-stage">
+            <div id="light-r" class="light-circle"></div>
+            <div id="light-g" class="light-circle"></div>
+            <div id="light-b" class="light-circle"></div>
+            <div style="color: rgba(255,255,255,0.4); position: absolute; bottom: 15px; font-size: 0.9em; letter-spacing: 2px;">光学混合舞台</div>
+        </div>
+
+        <div class="controls">
+            <button class="switch-btn btn-r off" onclick="toggleLight('r', this)">🔴 红灯 (关)</button>
+            <button class="switch-btn btn-g off" onclick="toggleLight('g', this)">🟢 绿灯 (关)</button>
+            <button class="switch-btn btn-b off" onclick="toggleLight('b', this)">🔵 蓝灯 (关)</button>
+        </div>
+    </div>
+
+
+    <!-- =============== 游戏2：配方卡 =============== -->
+    <div class="game-container" id="game2-section">
+        <div class="game-header">
+            <img id="tuantuan-game2" class="character-img" src="" alt="团团" />
+            <div class="game-title">游戏2：我的颜色配方卡</div>
+            <img id="diandian-game2" class="character-img" src="" alt="点点" />
+        </div>
+
+        <div class="dialogue-box" id="guide-text">
+            <strong>团团：</strong>我们来调色吧！左右拖动下面的"亮度旋钮"，把右边的颜色调得和左边的一模一样！<br>
+            <span style="font-size:0.9em; color:#666;">（💡提示：紫色需要很多红光和蓝色的光混合哦）</span>
+        </div>
+
+        <div class="recipe-card-area">
+            <!-- 左侧：目标颜色卡 -->
+            <div class="card-side">
+                <h3 style="color:#7b1fa2; margin-top:0; font-size:1.5em;">目标配方</h3>
+                <div class="color-preview" style="background-color: transparent; border: none;">
+                    <div id="target-shape" class="shape star-shape" style="color: rgb(150, 0, 200);"></div>
+                </div>
+                <div id="target-name" style="font-size:1.4em; font-weight:bold; color:#7b1fa2;">紫色星星</div>
+            </div>
+
+            <!-- 右侧：我的调色盘 -->
+            <div class="card-side">
+                <h3 style="color:#0277bd; margin-top:0; font-size:1.5em;">我的配方</h3>
+                <div class="color-preview">
+                    <!-- 用户调整的颜色形状-->
+                    <div id="user-shape" class="shape star-shape" style="color: rgb(0,0,0);"></div>
+                </div>
+                
+                <!-- 亮度滑块 (0-255 映射一0-100%) -->
+                <div class="slider-group slider-r">
+                    <label>R</label>
+                    <input type="range" id="slider-r" min="0" max="255" value="0" oninput="updateColor()">
+                    <span id="val-r">0%</span>
+                </div>
+                <div class="slider-group slider-g">
+                    <label>G</label>
+                    <input type="range" id="slider-g" min="0" max="255" value="0" oninput="updateColor()">
+                    <span id="val-g">0%</span>
+                </div>
+                <div class="slider-group slider-b">
+                    <label>B</label>
+                    <input type="range" id="slider-b" min="0" max="255" value="0" oninput="updateColor()">
+                    <span id="val-b">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 通关提示层-->
+        <div id="success-screen" class="success-overlay">
+            <div class="success-title">✅调色成功：✅</div>
+            <div style="font-size: 1.2em; color:#555; margin-bottom:20px;">太棒了！配方已记录到你的专属档案袋！</div>
+            <button id="next-btn" class="btn-next" onclick="nextLevel()">挑战下一关 ➡️</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 角色图片加载逻辑 ---
+const tuantuanImages = [
+            '../../characters/characters/tuantuan.png', '../../characters/characters/tuantuan01.png', '../../characters/characters/tuantuan02.png', '../../characters/characters/tuantuan03.png',
+            '../../characters/characters/tuantuan04.png', '../../characters/characters/tuantuan05.png', '../../characters/characters/tuantuan06.png'
+        ];
+        const diandianImages = [
+            '../../characters/characters/diandian.png', '../../characters/characters/diandian01.png', '../../characters/characters/diandian02.png', '../../characters/characters/diandian03.png',
+            '../../characters/characters/diandian04.png', '../../characters/characters/diandian05.png', '../../characters/characters/diandian06.png'
+        ];
+
+        function getRandomImage(images) {
+            return images[Math.floor(Math.random() * images.length)];
+        }
+
+        function initCharacters() {
+            const tuantuanImg = getRandomImage(tuantuanImages);
+            const diandianImg = getRandomImage(diandianImages);
+            document.getElementById('tuantuan-game1').src = tuantuanImg;
+            document.getElementById('tuantuan-game2').src = tuantuanImg;
+            document.getElementById('diandian-game1').src = diandianImg;
+            document.getElementById('diandian-game2').src = diandianImg;
+            // 初始化游戏2目标形状和颜色
+            const levelData = levels[currentLevel - 1];
+            const targetShape = document.getElementById('target-shape');
+            if (targetShape) {
+                targetShape.className = `shape ${levelData.shapeClass}`;
+                targetShape.style.color = `rgb(${levelData.targetRGB.r}, ${levelData.targetRGB.g}, ${levelData.targetRGB.b})`;
+            }
+        }
+
+        // ================== 游戏1 逻辑 ==================
+        function toggleLight(color, btn) {
+            const light = document.getElementById('light-' + color);
+            const isOn = btn.classList.contains('off');
+            
+            if (isOn) {
+                // 打开灯
+                btn.classList.remove('off');
+                light.style.opacity = '1';
+                if(color === 'r') btn.innerText = "🔴 红灯 (开)";
+                if(color === 'g') btn.innerText = "🟢 绿灯 (开)";
+                if(color === 'b') btn.innerText = "🔵 蓝灯 (开)";
+            } else {
+                // 关闭灯
+                btn.classList.add('off');
+                light.style.opacity = '0';
+                if(color === 'r') btn.innerText = "🔴 红灯 (关)";
+                if(color === 'g') btn.innerText = "🟢 绿灯 (关)";
+                if(color === 'b') btn.innerText = "🔵 蓝灯 (关)";
+            }
+        }
+
+        // ================== 游戏2 逻辑 ==================
+let currentLevel = 1;
+        
+        // 关卡数据定义
+const levels = [
+            {
+                targetRGB: { r: 160, g: 20, b: 200 },
+                shapeClass: 'star-shape',
+                name: '紫色星星',
+                nameColor: '#7b1fa2',
+                hint: '（💡提示：紫色需要很多红光和蓝色的光混合哦）'
+            },
+            {
+                targetRGB: { r: 255, g: 180, b: 0 },
+                shapeClass: 'circle-shape',
+                name: '橙黄圆球',
+                nameColor: '#f57f17',
+                hint: '（💡提示：试试把红光开到最大，绿光开一大半，蓝光全关掉！）'
+            },
+            {
+                targetRGB: { r: 0, g: 255, b: 255 },
+                shapeClass: 'star-shape',
+                name: '青色海星',
+                nameColor: '#00b8d4',
+                hint: '（💡提示：青色是大海的颜色，需要绿光和蓝光一起照亮！）'
+            }
+        ];
+
+        let target = levels[0].targetRGB; 
+        const tolerance = 40; // 容错范围：-255之间相差40以内算成功）
+function updateColor() {
+            // 获取当前滑块的倀
+const r = parseInt(document.getElementById('slider-r').value);
+            const g = parseInt(document.getElementById('slider-g').value);
+            const b = parseInt(document.getElementById('slider-b').value);
+
+            // 更新百分比显礀
+document.getElementById('val-r').innerText = Math.round((r/255)*100) + '%';
+            document.getElementById('val-g').innerText = Math.round((g/255)*100) + '%';
+            document.getElementById('val-b').innerText = Math.round((b/255)*100) + '%';
+
+            // 更新用户图形的颜色
+const userShape = document.getElementById('user-shape');
+            userShape.style.color = `rgb(${r}, ${g}, ${b})`;
+
+            // 棕查是否通关
+checkWin(r, g, b);
+        }
+
+        function checkWin(r, g, b) {
+            const diffR = Math.abs(r - target.r);
+            const diffG = Math.abs(g - target.g);
+            const diffB = Math.abs(b - target.b);
+
+            // 如果RGB三个通道的误差都在允许范围内，则触发成功
+if (diffR <= tolerance && diffG <= tolerance && diffB <= tolerance) {
+                document.getElementById('success-screen').classList.add('show');
+                // 如果是有后一关，修改按钮文字
+if(currentLevel >= levels.length) {
+                    const btn = document.getElementById('next-btn');
+                    btn.innerText = "🎉 全部完成！重新开始";
+                }
+            }
+        }
+
+        function nextLevel() {
+            // 隐藏成功提示
+document.getElementById('success-screen').classList.remove('show');
+            
+            // 进入下一关或重置
+currentLevel++;
+            if (currentLevel > levels.length) {
+                currentLevel = 1; // 循环回到第一关
+}
+const levelData = levels[currentLevel - 1];
+            target = levelData.targetRGB;
+            
+            // 更新目标图形UI
+const targetShape = document.getElementById('target-shape');
+            targetShape.className = `shape ${levelData.shapeClass}`;
+            targetShape.style.color = `rgb(${target.r}, ${target.g}, ${target.b})`;
+            
+            const targetName = document.getElementById('target-name');
+            targetName.innerText = levelData.name;
+            targetName.style.color = levelData.nameColor;
+
+            // 更新提示诀
+            document.getElementById('guide-text').innerHTML = 
+                `<strong>团团：</strong>太厉害了！现在来挑战"${levelData.name}"吧！<br>
+                <span style="font-size:0.9em; color:#666;">${levelData.hint}</span>`;
+            
+            // 重置用户图形UI
+const userShape = document.getElementById('user-shape');
+            userShape.className = `shape ${levelData.shapeClass}`;
+            
+            // 重置滑块
+document.getElementById('slider-r').value = 0;
+            document.getElementById('slider-g').value = 0;
+            document.getElementById('slider-b').value = 0;
+            
+            // 刷新颜色和显礀
+            updateColor();
+
+            // 页面平滑滚动到游戏区域
+document.getElementById('game2-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 页面加载时初始化
+window.onload = function() {
+            updateColor();
+            initCharacters();
+        };
+
+            </script>
+</body>
+</html>

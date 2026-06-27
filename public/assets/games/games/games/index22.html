@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>第22课：从边边角角到整张脸- 互动系统</title>
+    <script src="../../libs/libs/tailwind.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft YaHei';
+            background-color: #f8fafc;
+            touch-action: pan-y;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .canvas-container {
+            touch-action: none; /* 防止画布区域滚动或缩攀*/
+        }
+        canvas {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .bounce-in { animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes bounceIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .shake-active:active { animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-6 px-4 md:py-8">
+
+    <!-- 顶部标题 -->
+    <header class="text-center mb-6 max-w-2xl">
+        <h1 class="text-2xl md:text-4xl font-bold text-orange-600 mb-2">✅第22课：从边边角角到整张脸✅</h1>
+        <p class="text-slate-600 text-sm md:text-lg">亲自操作，体骀AI 的"逐层抽象"！</p>
+    </header>
+
+    <!-- 年龄段切换卡牀-->
+    <div class="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 w-full max-w-3xl">
+        <button onclick="switchGame(1)" id="btn-tab-1" class="tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-500 text-white shadow-md hover:bg-orange-600 text-sm md:text-base flex-1 min-w-[120px]">👶 3-5页</button>
+        <button onclick="switchGame(2)" id="btn-tab-2" class="tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-100 text-orange-700 hover:bg-orange-200 text-sm md:text-base flex-1 min-w-[120px]">🧒 6-7页</button>
+        <button onclick="switchGame(3)" id="btn-tab-3" class="tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-100 text-orange-700 hover:bg-orange-200 text-sm md:text-base flex-1 min-w-[120px]">👦 8-9页</button>
+    </div>
+
+    <!-- 主展示区 -->
+    <div class="w-full max-w-3xl bg-white rounded-3xl p-4 md:p-8 shadow-xl bounce-in">
+        
+        <!-- 状态提示文子-->
+        <div class="text-center mb-4 min-h-[60px]">
+            <h2 id="stage-title" class="text-lg md:text-xl font-bold text-slate-800">第一层：看线条</h2>
+            <p id="stage-desc" class="text-slate-500 text-sm md:text-base mt-1">散落的边边角角，你能看出这是什么吗：</p>
+        </div>
+
+        <!-- 画布容器 -->
+        <div class="canvas-container relative w-full aspect-[4/3] md:aspect-video rounded-2xl overflow-hidden bg-slate-50 border-2 border-slate-200 mb-6 flex justify-center items-center">
+            <canvas id="gameCanvas" class="w-full h-full block rounded-xl cursor-crosshair"></canvas>
+            
+            <!-- 动态悬浮提示-->
+            <div id="canvas-hint" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 text-white px-4 py-1.5 rounded-full text-xs md:text-sm backdrop-blur-sm pointer-events-none transition-opacity duration-300 w-max max-w-[90%] text-center">
+                👆 点击画面中的碎片：            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="flex justify-center gap-3 md:gap-4">
+            <button onclick="resetStage()" class="px-4 md:px-6 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors text-sm md:text-base">
+                🔄 重置本层
+            </button>
+            <button onclick="forceNextStage()" id="next-btn" class="shake-active px-6 md:px-8 py-3 rounded-xl font-bold text-white bg-blue-500 hover:bg-blue-600 shadow-md hover:shadow-blue-500/30 transition-all text-sm md:text-base">
+                强制进入下一层⏰            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- 核心状态---
+let currentGame = 1;
+        let currentStage = 1;
+        let time = 0;
+        let targetBlur = 30;
+        let currentBlur = 30;
+        
+        // --- 词库与图庀---
+const g1FaceList = [
+            { name: 'smile', color: '#fbbf24', desc: '开心的笑脸' },
+            { name: 'sad', color: '#60a5fa', desc: '伤心的哭脸 },
+            { name: 'surprised', color: '#f87171', desc: '惊讶的表情 }
+        ];
+        let g1FaceIndex = 0;
+
+        const g2WordList = ['🐶', '🍎', '🚗', '🐱', '🌍', '🍔'];
+        const g2TextList = ['小狗🐶', '苹果🍎', '汽车🚗', '小猫🐱', '地球🌍', '汉堡🍔'];
+        let g2WordIndex = 0;
+
+        const g3WordList = [
+            { level1: ['一', '一', '一', '一', '一', '一', '一', '乀'], level2: ['有', '有'], level3: '果 },
+            { level1: ['一', '𠃍', '一', '一', '一', '㇀, '一', '一'], level2: ['旀', '有'], level3: '的 },
+            { level1: ['一', '一', '一', '一', '一', '乀'], level2: ['了', '有'], level3: '伀 }
+        ];
+        let g3WordIndex = 0;
+
+        // --- 画布与交互系练---
+const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let animFrame;
+        let pointer = { x: -1000, y: -1000, isDown: false };
+        let canvasW = 0, canvasH = 0;
+        
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.logicalWidth = rect.width;
+            canvas.logicalHeight = rect.height;
+            canvasW = rect.width;
+            canvasH = rect.height;
+        }
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initStageData(); // Resize 时重新初始化位置防止飞出屏幕天
+});
+
+        function updatePointer(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            pointer.x = clientX - rect.left;
+            pointer.y = clientY - rect.top;
+        }
+
+        canvas.addEventListener('pointerdown', (e) => {
+            pointer.isDown = true;
+            updatePointer(e);
+            handleInteraction(pointer.x, pointer.y);
+            canvas.setPointerCapture(e.pointerId);
+        });
+        canvas.addEventListener('pointermove', (e) => {
+            if(pointer.isDown || currentGame === 2) updatePointer(e);
+        });
+        canvas.addEventListener('pointerup', () => { pointer.isDown = false; pointer.x = -1000; pointer.y = -1000; });
+        canvas.addEventListener('pointercancel', () => { pointer.isDown = false; pointer.x = -1000; pointer.y = -1000; });
+
+        // --- 游成内部实体管理 ---
+let g1Items = []; 
+        let g3Items = []; 
+        let particles = [];
+
+        function initStageData() {
+            const cx = canvasW / 2;
+            const cy = canvasH / 2;
+            
+            if (currentGame === 1) {
+                if (currentStage === 1) {
+                    const face = g1FaceList[g1FaceIndex].name;
+                    // 使用相对中心的偏移量 (targetOffsetX/Y)
+if (face === 'smile') {
+                        g1Items = [
+                            { type: 'dot', x: 50, y: 50, vx: 2, vy: 1.5, targetOffsetX: -40, targetOffsetY: -20, collected: false },
+                            { type: 'dot', x: canvasW-50, y: 100, vx: -1.5, vy: 2, targetOffsetX: 40, targetOffsetY: -20, collected: false },
+                            { type: 'arc_smile_L', x: 100, y: canvasH-50, vx: 2, vy: -1.5, targetOffsetX: 0, targetOffsetY: 10, collected: false },
+                            { type: 'arc_smile_R', x: canvasW-100, y: canvasH-50, vx: -2, vy: -2, targetOffsetX: 0, targetOffsetY: 10, collected: false }
+                        ];
+                    } else if (face === 'sad') {
+                        g1Items = [
+                            { type: 'lineL', x: 50, y: 50, vx: 2, vy: 1.5, targetOffsetX: -40, targetOffsetY: -15, collected: false },
+                            { type: 'lineR', x: canvasW-50, y: 100, vx: -1.5, vy: 2, targetOffsetX: 40, targetOffsetY: -15, collected: false },
+                            { type: 'arc_sad_L', x: 100, y: canvasH-50, vx: 2, vy: -1.5, targetOffsetX: 0, targetOffsetY: 30, collected: false },
+                            { type: 'arc_sad_R', x: canvasW-100, y: canvasH-50, vx: -2, vy: -2, targetOffsetX: 0, targetOffsetY: 30, collected: false }
+                        ];
+                    } else if (face === 'surprised') {
+                        g1Items = [
+                            { type: 'dot', x: 50, y: 50, vx: 2, vy: 1.5, targetOffsetX: -40, targetOffsetY: -20, collected: false },
+                            { type: 'dot', x: canvasW-50, y: 100, vx: -1.5, vy: 2, targetOffsetX: 40, targetOffsetY: -20, collected: false },
+                            { type: 'circle', x: 100, y: canvasH-50, vx: 2, vy: -1.5, targetOffsetX: 0, targetOffsetY: 20, collected: false },
+                            { type: 'blush', x: canvasW-100, y: canvasH-50, vx: -2, vy: -2, targetOffsetX: 0, targetOffsetY: 0, collected: false }
+                        ];
+                    }
+                }
+            } else if (currentGame === 3) {
+                if (currentStage === 1) {
+                    const chars = g3WordList[g3WordIndex].level1;
+                    const half = Math.ceil(chars.length / 2);
+                    const spacing = Math.min(50, canvasW / (chars.length + 1));
+                    const startX = cx - (chars.length - 1) / 2 * spacing;
+                    
+                    g3Items = chars.map((char, index) => {
+                        return {
+                            char: char,
+                            x: startX + index * spacing,
+                            y: cy - 30 + (Math.random() - 0.5) * 80,
+                            baseY: cy - 30 + (Math.random() - 0.5) * 80,
+                            popped: false,
+                            targetOffsetX: index < half ? -80 : 80 
+                        };
+                    });
+                } else if (currentStage === 2) {
+                    const rads = g3WordList[g3WordIndex].level2;
+                    g3Items = [
+                        { char: rads[0], x: cx - 80, targetOffsetX: -40, clicked: false },
+                        { char: rads[1], x: cx + 80, targetOffsetX: 40, clicked: false }
+                    ];
+                }
+            }
+            updateHint();
+        }
+
+        // --- 交互逻辑处理器---
+        function handleInteraction(x, y) {
+            if (currentGame === 1) {
+                if (currentStage === 1) {
+                    let allCollected = true;
+                    g1Items.forEach(item => {
+                        if (!item.collected) {
+                            let hitX = item.x, hitY = item.y;
+                            if (item.type === 'arc_smile_L') { hitX -= 20; hitY += 20; }
+                            if (item.type === 'arc_smile_R') { hitX += 20; hitY += 20; }
+                            if (item.type === 'arc_sad_L') { hitX -= 20; hitY -= 20; }
+                            if (item.type === 'arc_sad_R') { hitX += 20; hitY -= 20; }
+                            
+                            const dist = Math.hypot(hitX - x, hitY - y);
+                            if (dist < 60) {
+                                item.collected = true; 
+                                createExplosion(hitX, hitY, '#94a3b8', 10);
+                            }
+                            allCollected = false;
+                        }
+                    });
+                    if (allCollected || g1Items.every(i => i.collected)) {
+                        setTimeout(() => forceNextStage(), 1200); 
+                    }
+                } else if (currentStage >= 2) {
+                    forceNextStage();
+                }
+            } 
+            else if (currentGame === 2) {
+                forceNextStage();
+            }
+            else if (currentGame === 3) {
+                if (currentStage === 1) {
+                    g3Items.forEach(item => {
+                        if (!item.popped && Math.hypot(item.x - x, item.y - y) < 40) {
+                            item.popped = true;
+                            createExplosion(item.x, item.y, '#94a3b8', 15);
+                        }
+                    });
+                    if (g3Items.every(i => i.popped)) {
+                        setTimeout(() => forceNextStage(), 1200);
+                    }
+                } else if (currentStage === 2) {
+                    g3Items.forEach(item => {
+                        if (!item.clicked && Math.abs(item.x - x) < 60 && Math.abs(canvasH/2 - y) < 80) {
+                            item.clicked = true;
+                            createExplosion(item.x, canvasH/2, '#3b82f6', 15);
+                        }
+                    });
+                    if (g3Items.every(i => i.clicked)) {
+                        setTimeout(() => forceNextStage(), 1000);
+                    }
+                } else if (currentStage === 3) {
+                    forceNextStage();
+                }
+            }
+        }
+
+        // --- 流程控制 ---
+        function switchGame(gameId) {
+            currentGame = gameId;
+            currentStage = 1;
+            particles = []; 
+            if(gameId === 1) { g1FaceIndex = 0; }
+            if(gameId === 2) { currentBlur = 30; targetBlur = 30; g2WordIndex = 0; }
+            if(gameId === 3) { g3WordIndex = 0; }
+            
+            for(let i=1; i<=3; i++) {
+                const btn = document.getElementById(`btn-tab-${i}`);
+                if(i === gameId) {
+                    btn.className = "tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-500 text-white shadow-md hover:bg-orange-600 text-sm md:text-base flex-1 min-w-[120px]";
+                } else {
+                    btn.className = "tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-100 text-orange-700 hover:bg-orange-200 text-sm md:text-base flex-1 min-w-[120px]";
+                }
+            }
+            
+            initStageData();
+            updateUI();
+        }
+
+        function forceNextStage() {
+            if (currentStage < 3) {
+                currentStage++;
+                if(currentStage === 3) createExplosion(canvasW/2, canvasH/2, currentGame === 2 ? '#22c55e' : (currentGame === 3 ? '#10b981' : '#fbbf24'), 40);
+            } else {
+                currentStage = 1; 
+                particles = [];
+                if (currentGame === 1) g1FaceIndex = (g1FaceIndex + 1) % g1FaceList.length;
+                if (currentGame === 2) g2WordIndex = (g2WordIndex + 1) % g2WordList.length;
+                if (currentGame === 3) g3WordIndex = (g3WordIndex + 1) % g3WordList.length;
+            }
+            initStageData();
+            updateUI();
+        }
+
+        function resetStage() {
+            initStageData();
+            particles = [];
+            updateUI();
+        }
+
+        function updateHint() {
+            const hint = document.getElementById('canvas-hint');
+            if(currentGame === 1 && currentStage === 1) hint.innerText = "👆 点击抓住这些乱飞的表情碎片！";
+            else if(currentGame === 1 && currentStage === 2) hint.innerText = "👆 五官拼好了！再点击屏幕加上脸庞！";
+            else if(currentGame === 1 && currentStage === 3) hint.innerText = "🎉 组合成功！点击屏幕战战下一个表情";
+            else if(currentGame === 2 && currentStage < 3) hint.innerText = "👆 点击画面注入算力，拨开模糊寻找真相！";
+            else if(currentGame === 2 && currentStage === 3) hint.innerText = "🎉 识别成功！点击屏幕识别下一个物体";
+            else if(currentGame === 3 && currentStage === 1) hint.innerText = "👆 点击戳破气泡，提取里面的笔画！";
+            else if(currentGame === 3 && currentStage === 2) hint.innerText = "👆 点击屏幕两边的部件，让它们组合！";
+            else hint.innerText = "🎉 组合成功！点击屏幕战战下一个字";
+        }
+
+        function updateUI() {
+            const texts = {
+                1: [
+                    { title: "第层：散落的特征, desc: "你能抓住乱飞的碎片吗： },
+                    { title: "第层：拼出五官", desc: "底层特征组合成了更高级的部件（眼睛、嘴巴）  },
+                    { title: "第层：认出表情：, desc: `加上轮廓，AI 终于认出这是一个 {g1FaceList[g1FaceIndex].desc}】！` }
+                ],
+                2: [
+                    { title: "层级 1：基确像素层, desc: "算力不足，只能看到一团模糊。你能猜出是什么吗： },
+                    { title: "层级 2：特征提取层", desc: "算力提升，轮廓开始清晰。你心里有答案了吗？" },
+                    { title: "层级 3：语义识别层", desc: `真相大白！原来是 {g2TextList[g2WordIndex]}】！` }
+                ],
+                3: [
+                    { title: "第一层：离散的笔画, desc: "戳破气泡，释放有基确的符号元素  },
+                    { title: "第二层：偏旁部首", desc: "笔画组合成了具有一点意义的部件"  },
+                    { title: "第三层：完整汉字", desc: "高度抽象：量变引起质变，合成高阶汉字： }
+                ]
+            };
+            
+            document.getElementById('stage-title').innerText = texts[currentGame][currentStage - 1].title;
+            document.getElementById('stage-desc').innerText = texts[currentGame][currentStage - 1].desc;
+            
+            if(currentGame === 2) {
+                targetBlur = currentStage === 1 ? 30 : (currentStage === 2 ? 10 : 0);
+            }
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (currentStage === 3) {
+                nextBtn.innerText = "进入下一个战成⏰;
+                nextBtn.className = "shake-active px-6 md:px-8 py-3 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md transition-all text-sm md:text-base";
+            } else {
+                nextBtn.innerText = "强制进入下一层⏰;
+                nextBtn.className = "shake-active px-6 md:px-8 py-3 rounded-xl font-bold text-slate-500 bg-slate-200 hover:bg-slate-300 shadow-sm transition-all text-sm md:text-base";
+            }
+        }
+
+        // --- 特效系统 ---
+        function createExplosion(x, y, baseColor, count = 30) {
+            const colors = [baseColor, '#f59e0b', '#3b82f6', '#10b981', '#ec4899'];
+            for(let i=0; i<count; i++) {
+                particles.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 15,
+                    vy: (Math.random() - 0.5) * 15 - 5,
+                    life: 1.0,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 6 + 3
+                });
+            }
+        }
+
+        // --- 主渲染管线---
+        function draw() {
+            time += 0.05;
+            const w = canvasW;
+            const h = canvasH;
+            const cx = w / 2;
+            const cy = h / 2;
+
+            ctx.clearRect(0, 0, w, h);
+
+            if (currentGame === 1) drawGame1(cx, cy, w, h);
+            if (currentGame === 2) drawGame2(cx, cy, w, h);
+            if (currentGame === 3) drawGame3(cx, cy, w, h);
+
+            // 绘制粒子
+for(let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.vy += 0.5; p.life -= 0.02;
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                if(p.life <= 0) particles.splice(i, 1);
+            }
+            ctx.globalAlpha = 1.0;
+
+            animFrame = requestAnimationFrame(draw);
+        }
+
+        // 渲染G1
+function drawGame1(cx, cy, w, h) {
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            
+            if (currentStage === 1) {
+                g1Items.forEach(item => {
+                    if (!item.collected) {
+                        item.x += item.vx; item.y += item.vy;
+                        if(item.x < 40 || item.x > w-40) item.vx *= -1;
+                        if(item.y < 40 || item.y > h-40) item.vy *= -1;
+                    } else {
+                        // 使用相对中心点追踀
+const destX = cx + item.targetOffsetX;
+                        const destY = cy + item.targetOffsetY;
+                        item.x += (destX - item.x) * 0.15;
+                        item.y += (destY - item.y) * 0.15;
+                    }
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = item.type === 'blush' ? '#ef4444' : '#334155';
+                    ctx.fillStyle = '#334155';
+                    
+                    if (item.type === 'dot') {
+                        ctx.arc(item.x, item.y, 10, 0, Math.PI*2); ctx.fill();
+                    } else if (item.type === 'lineL') {
+                        ctx.moveTo(item.x - 15, item.y - 5); ctx.lineTo(item.x + 15, item.y + 5);
+                    } else if (item.type === 'lineR') {
+                        ctx.moveTo(item.x - 15, item.y + 5); ctx.lineTo(item.x + 15, item.y - 5);
+                    } else if (item.type === 'arc_smile_L') {
+                        ctx.arc(item.x, item.y, 40, Math.PI/2, Math.PI, false);
+                    } else if (item.type === 'arc_smile_R') {
+                        ctx.arc(item.x, item.y, 40, 0, Math.PI/2, false);
+                    } else if (item.type === 'arc_sad_L') {
+                        ctx.arc(item.x, item.y, 40, Math.PI, Math.PI*1.5, false);
+                    } else if (item.type === 'arc_sad_R') {
+                        ctx.arc(item.x, item.y, 40, Math.PI*1.5, Math.PI*2, false);
+                    } else if (item.type === 'circle') {
+                        ctx.arc(item.x, item.y, 15, 0, Math.PI*2, false);
+                    } else if (item.type === 'blush') {
+                        ctx.moveTo(item.x - 20, item.y); ctx.lineTo(item.x, item.y);
+                        ctx.moveTo(item.x + 20, item.y); ctx.lineTo(item.x + 40, item.y);
+                    }
+                    ctx.stroke();
+
+                    // 绘制未收集的提示圈
+if (!item.collected) {
+                        ctx.beginPath();
+                        let promptX = item.x, promptY = item.y;
+                        if (item.type === 'arc_smile_L') { promptX -= 20; promptY += 20; }
+                        if (item.type === 'arc_smile_R') { promptX += 20; promptY += 20; }
+                        if (item.type === 'arc_sad_L') { promptX -= 20; promptY -= 20; }
+                        if (item.type === 'arc_sad_R') { promptX += 20; promptY -= 20; }
+                        
+                        ctx.arc(promptX, promptY, 30 + Math.sin(time*5)*5, 0, Math.PI*2);
+                        ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                        ctx.lineWidth = 8;
+                    }
+                });
+            } 
+            else if (currentStage >= 2) {
+                const faceObj = g1FaceList[g1FaceIndex];
+                const bounce = currentStage === 3 ? Math.abs(Math.sin(time * 3)) * -10 : 0;
+                
+                // 根据屏幕高度动态计算脸庞大尀
+const faceRadius = Math.min(100, h * 0.35);
+
+                if (currentStage === 3) {
+                    ctx.fillStyle = faceObj.color;
+                    ctx.beginPath(); ctx.arc(cx, cy + bounce, faceRadius, 0, Math.PI * 2); ctx.fill();
+                }
+                
+                ctx.fillStyle = '#334155';
+                ctx.strokeStyle = '#334155';
+                
+                if (faceObj.name === 'sad') {
+                    ctx.beginPath(); ctx.moveTo(cx - 55, cy - 20 + bounce); ctx.lineTo(cx - 25, cy - 10 + bounce); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(cx + 25, cy - 10 + bounce); ctx.lineTo(cx + 55, cy - 20 + bounce); ctx.stroke();
+                } else {
+                    ctx.beginPath(); ctx.arc(cx - 40, cy - 20 + bounce, 10, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(cx + 40, cy - 20 + bounce, 10, 0, Math.PI * 2); ctx.fill();
+                }
+                
+                ctx.lineWidth = 10;
+                ctx.beginPath();
+                if (faceObj.name === 'smile') {
+                    ctx.arc(cx, cy + 10 + bounce, 40, 0, Math.PI, false);
+                } else if (faceObj.name === 'sad') {
+                    ctx.arc(cx, cy + 30 + bounce, 40, Math.PI, Math.PI*2, false);
+                } else if (faceObj.name === 'surprised') {
+                    ctx.arc(cx, cy + 20 + bounce, 15, 0, Math.PI*2, false);
+                    ctx.stroke();
+                    ctx.lineWidth = 8;
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.beginPath(); ctx.moveTo(cx - 60, cy + bounce); ctx.lineTo(cx - 40, cy + bounce); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(cx + 40, cy + bounce); ctx.lineTo(cx + 60, cy + bounce); 
+                }
+                ctx.stroke();
+            }
+        }
+
+        // 渲染G2
+function drawGame2(cx, cy, w, h) {
+            currentBlur += (targetBlur - currentBlur) * 0.1;
+
+            ctx.save();
+            ctx.filter = `blur(${currentBlur}px)`;
+            
+            const scale = 1 + Math.sin(time*2)*0.02;
+            const fontSize = Math.min(160, h * 0.5); // 动态字体大尀            ctx.translate(cx, cy);
+ctx.scale(scale, scale);
+            ctx.font = `${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(g2WordList[g2WordIndex], 0, 0);
+            ctx.restore();
+            
+            if(currentStage < 3) {
+                const scanY = (time * 50) % h;
+                ctx.fillStyle = 'rgba(34, 197, 94, 0.15)';
+                ctx.fillRect(0, scanY, w, 20);
+                
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(0, scanY + 10, w, 2);
+                
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.1)';
+                ctx.lineWidth = 1;
+                for(let i=0; i<w; i+=40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+            }
+        }
+
+        // 渲染G3
+function drawGame3(cx, cy, w, h) {
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            if (currentStage === 1) {
+                ctx.font = 'bold 36px "Microsoft YaHei"'; 
+                g3Items.forEach((item, index) => {
+                    if (!item.popped) {
+                        item.y = item.baseY + Math.sin(time*3 + index)*10;
+                        
+                        ctx.beginPath(); ctx.arc(item.x, item.y, 30, 0, Math.PI*2);
+                        ctx.fillStyle = 'rgba(59, 130, 246, 0.1)'; ctx.fill();
+                        ctx.strokeStyle = 'rgba(59, 130, 246, 0.5)'; ctx.lineWidth=2; ctx.stroke();
+                        
+                        ctx.fillStyle = '#334155';
+                        ctx.fillText(item.char, item.x, item.y);
+                    } else {
+                        const targetX = cx + item.targetOffsetX;
+                        item.x += (targetX - item.x) * 0.15;
+                        item.y += (cy - item.y) * 0.15;
+                        
+                        const offsetX = (index % 2 === 0 ? -10 : 10) + (index % 3 === 0 ? -5 : 5);
+                        const offsetY = (index % 3 === 0 ? -10 : 10) + (index % 2 === 0 ? -5 : 5);
+                        
+                        ctx.fillStyle = '#64748b';
+                        ctx.fillText(item.char, item.x + offsetX, item.y + offsetY);
+                    }
+                });
+            } 
+            else if (currentStage === 2) {
+                const fontSize = Math.min(80, w / 4);
+                ctx.font = `bold ${fontSize}px "Microsoft YaHei"`;
+                ctx.fillStyle = '#3b82f6';
+                
+                g3Items.forEach(item => {
+                    const destX = cx + item.targetOffsetX;
+                    if (item.clicked) {
+                        item.x += (destX - item.x) * 0.15;
+                    } else {
+                        item.x += Math.sin(time*10)*0.5;
+                    }
+                    
+                    if(!item.clicked) {
+                        ctx.strokeStyle = 'rgba(59,130,246,0.3)';
+                        ctx.lineWidth = 2;
+                        ctx.setLineDash([5, 5]);
+                        ctx.strokeRect(item.x - fontSize*0.6, cy - fontSize*0.7, fontSize*1.2, fontSize*1.4);
+                        ctx.setLineDash([]);
+                    }
+                    ctx.fillText(item.char, item.x, cy);
+                });
+                
+                ctx.globalAlpha = 0.5 + Math.sin(time*5)*0.5;
+                ctx.font = '50px Arial'; ctx.fillStyle = '#94a3b8';
+                ctx.fillText('+', cx, cy - 10);
+                ctx.globalAlpha = 1.0;
+            } 
+            else if (currentStage === 3) {
+                const finalChar = g3WordList[g3WordIndex].level3;
+                const scale = 1 + Math.abs(Math.sin(time * 3)) * 0.05;
+                const fontSize = Math.min(140, w / 2.5); // 动态字体防止手机溢净                
+ctx.save();
+                ctx.translate(cx, cy - 10);
+                ctx.scale(scale, scale);
+                ctx.font = `bold ${fontSize}px "Microsoft YaHei"`;
+                ctx.fillStyle = '#10b981';
+                ctx.shadowColor = '#6ee7b7';
+                ctx.shadowBlur = 30 + Math.sin(time*10)*20;
+                ctx.fillText(finalChar, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        // 初始化启劀
+setTimeout(() => {
+            resizeCanvas();
+            initStageData();
+            updateUI();
+            draw();
+        }, 100);
+
+    </script>
+</body>
+</html>

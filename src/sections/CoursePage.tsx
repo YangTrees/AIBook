@@ -184,7 +184,7 @@ export default function CoursePage({ courseId, onBack }: CoursePageProps) {
         );
 
       case 3: {
-        const videoPath = `./assets/videos/${numStr}/video.mp4`;
+        const videoPath = `./assets/videos/videos/${numStr}/video.mp4`;
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <div style={{

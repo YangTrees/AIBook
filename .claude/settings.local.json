@@ -3,7 +3,33 @@
     "allow": [
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Skill(run)",
+      "Bash(npm run *)",
+      "Bash(npx playwright *)",
+      "PowerShell($lessons = @\\(15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32\\); foreach \\($l in $lessons\\) { $folder = \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\dist\\\\assets\\\\knowledge\\\\$\\($l.ToString\\('00'\\)\\)\"; if \\(Test-Path $folder\\) { $imgs = @\\(Get-ChildItem $folder -File | Select-Object Name\\); Write-Host \"Lesson $l : $\\($imgs.Count\\) images - $\\($imgs[0].Name\\)\" } else { Write-Host \"Lesson $l : FOLDER NOT FOUND\" } })",
+      "PowerShell($content = Get-Content \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\src\\\\data\\\\courseData.ts\" -Raw; $matches = [System.Text.RegularExpressions.Regex]::Matches\\($content, '\"id\": \\\\d+,'\\); $ids = $matches | ForEach-Object { [int]\\($_.Value -replace '\"id\": \\(\\\\d+\\),', '$1'\\) } | Sort-Object; Write-Host \"Total courses found: $\\($ids.Count\\)\"; Write-Host \"IDs: $\\($ids -join ', '\\)\")",
+      "PowerShell(Get-ChildItem \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\dist\\\\assets\" -Directory | ForEach-Object { $count = @\\(Get-ChildItem $_.FullName -Recurse -File\\).Count; [PSCustomObject]@{Folder=$_.Name; Files=$count} } | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\public\\\\assets\" -Directory | ForEach-Object { $count = @\\(Get-ChildItem $_.FullName -Recurse -File\\).Count; [PSCustomObject]@{Folder=$_.Name; Files=$count} } | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Get-ChildItem \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\dist\\\\assets\" -Directory | ForEach-Object { $c = @\\(Get-ChildItem $_.FullName -Recurse -File\\).Count; \"$\\($_.Name\\): $c files\" }; Write-Host \"---\"; $total = @\\(Get-ChildItem \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\dist\\\\assets\" -Recurse -File\\).Count; Write-Host \"Total files in dist/assets: $total\")",
+      "PowerShell(Get-ChildItem \"D:\\\\桌面\\\\AI绘本\\\\2.0\\\\课程网站\\\\dist\\\\assets\" -Directory | ForEach-Object { $c = @\\(Get-ChildItem $_.FullName -Recurse -File\\).Count; \"$\\($_.Name\\): $c files\" })",
+      "PowerShell(Get-ChildItem \"D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\dist\\\\assets\" -Directory | ForEach-Object { $c = @\\(Get-ChildItem $_.FullName -Recurse -File\\).Count; \"$\\($_.Name\\): $c files\" }; Write-Host \"---\"; Write-Host \"Total: $\\(\\(Get-ChildItem 'D:\\\\PROJECTS\\\\_AI\\\\AIBook_CC\\\\dist\\\\assets' -Recurse -File\\).Count\\) files\")",
+      "PowerShell($folders = 1..32 | ForEach-Object { $_.ToString\\(\"D2\"\\) }; foreach \\($f in $folders\\) { $count = \\(Get-ChildItem \"D:\\\\桌面\\\\AI绘本\\\\2.0\\\\课程网站\\\\dist\\\\assets\\\\knowledge\\\\knowledge\\\\$f\" -File | Measure-Object\\).Count; Write-Output \"$f`: $count\" })",
+      "PowerShell(git *)",
+      "Bash(grep -c \"\\\\\\\\.\\\\\\\\./characters/characters\" public/assets/games/games/index01.html)",
+      "Bash(curl *)",
+      "Bash(sed -i 's/线色/红色/g' public/assets/games/games/index04.html)",
+      "Bash(sed -i 's/线圆/红圆/g' public/assets/games/games/index04.html)",
+      "Bash(sed -i 's/线色/红光/g' public/assets/games/games/index06.html)",
+      "Bash(sed -i 's/线光/红光/g' public/assets/games/games/index06.html)",
+      "Bash(sed -i 's/练光/绿光/g' public/assets/games/games/index06.html)",
+      "Bash(sed -i 's/开到有大/开到最大/g' public/assets/games/games/index06.html)",
+      "Bash(sed -i 's/战战：让照片更清晰/关卡1：让照片更清晰/g' public/assets/games/games/index08.html)",
+      "Bash(sed -i 's/战战：雾气遮一遮/关卡2：雾气遮一遮/g' public/assets/games/games/index08.html)",
+      "Bash(sed -i 's/战战3：拼流程图/关卡3：拼流程图/g' public/assets/games/games/index08.html)",
+      "Bash(sed -i 's/完成了战战/完成了关卡/g' public/assets/games/games/index08.html)",
+      "Bash(sed -i 's/这个级别的战战/这个级别的关卡/g' public/assets/games/games/index08.html)"
     ]
   }
 }

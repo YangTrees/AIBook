@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI鹦鹉互动游成雀</title>
+    <script src="../../libs/libs/tailwind.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+
+        body {
+            font-family: 'ZCOOL KuaiLe', 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0fdf4;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        /* 气泡动画 */
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px solid;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1), inset 0 -5px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.1s;
+            animation: floatUp linear forwards;
+        }
+        
+        .bubble:active { transform: scale(0.9); }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        .pop-anim {
+            animation: pop 0.3s ease-out forwards;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* 扭蛋机闪烁效果*/
+        .flash-text {
+            animation: flash 0.1s infinite alternate;
+        }
+        @keyframes flash {
+            from { color: #f59e0b; transform: scale(1); }
+            to { color: #ef4444; transform: scale(1.05); }
+        }
+
+        /* 错误震动 */
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* 隐藏滚动条*/
+        ::-webkit-scrollbar { display: none; }
+
+        #main-menu, .game-panel {
+            display: none;
+        }
+
+        .game-panel {
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+            position: relative;
+        }
+
+        #main-menu.active-panel, .game-panel.active-panel {
+            display: flex;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased selection:bg-green-300">
+
+    <!-- 主菜单-->
+    <div id="main-menu" class="active-panel h-screen w-screen bg-green-50 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+        <!-- 背景装饰 -->
+        <div class="absolute top-10 left-10 text-6xl opacity-20">🦜</div>
+        <div class="absolute bottom-20 right-10 text-6xl opacity-20">✅</div>
+        <div class="absolute top-40 right-20 text-6xl opacity-20">🎲</div>
+
+        <h1 class="text-4xl md:text-6xl font-bold text-green-600 mb-2 text-center drop-shadow-md">AI鹦鹉训练营</h1>
+        <p class="text-xl md:text-2xl text-gray-600 mb-10 text-center">第25课：会接话的鹦鹉 2.0</p>
+
+        <div class="flex flex-col gap-6 w-full max-w-md z-10">
+            <button onclick="startGame(1)" class="group relative bg-blue-400 hover:bg-blue-500 text-white text-2xl py-5 px-8 rounded-3xl shadow-[0_8px_0_#2563eb] active:shadow-[0_0px_0_#2563eb] active:translate-y-2 transition-all">
+                <span class="block">🎈 1. 气泡接话大作成</span>
+                <span class="text-sm font-normal text-blue-100 block mt-1">预测下一个词是什么！</span>
+            </button>
+
+            <button onclick="startGame(2)" class="group relative bg-purple-400 hover:bg-purple-500 text-white text-2xl py-5 px-8 rounded-3xl shadow-[0_8px_0_#9333ea] active:shadow-[0_0px_0_#9333ea] active:translate-y-2 transition-all">
+                <span class="block">🎰 2. AI概率扭蛋有</span>
+                <span class="text-sm font-normal text-purple-100 block mt-1">看看AI是怎么计算概率的！</span>
+            </button>
+
+            <button onclick="startGame(3)" class="group relative bg-orange-400 hover:bg-orange-500 text-white text-2xl py-5 px-8 rounded-3xl shadow-[0_8px_0_#ea580c] active:shadow-[0_0px_0_#ea580c] active:translate-y-2 transition-all">
+                <span class="block">🐛 3. 幻觉找茬呀</span>
+                <span class="text-sm font-normal text-orange-100 block mt-1">消灭AI说出的胡言乱语：</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 游成1：气泡接话大作战 -->
+    <div id="game1" class="game-panel bg-blue-50">
+        <div class="p-4 flex justify-between items-center bg-white shadow-sm z-20">
+            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">ↀ返回</button>
+            <div class="text-2xl font-bold text-blue-500">得分: <span id="g1-score">0</span></div>
+        </div>
+        
+        <div class="flex-1 flex flex-col items-center mt-10 z-10 p-4 pointer-events-none">
+            <div class="bg-white px-8 py-6 rounded-3xl shadow-lg border-4 border-blue-200 max-w-2xl w-full text-center">
+                <p class="text-gray-500 text-lg mb-2">鹦鹉说：</p>
+                <p id="g1-question" class="text-3xl md:text-4xl font-bold text-gray-700 tracking-wide">加载一..</p>
+            </div>
+            <p id="g1-feedback" class="mt-6 text-2xl font-bold text-green-500 h-8 opacity-0 transition-opacity">太棒了！</p>
+        </div>
+
+        <!-- 气泡生成区-->
+        <div id="g1-bubble-area" class="absolute inset-0 overflow-hidden pointer-events-auto z-0 pt-40"></div>
+    </div>
+
+    <!-- 游成2：AI概率扭蛋有-->
+    <div id="game2" class="game-panel bg-purple-50">
+        <div class="p-4 flex justify-between items-center bg-white shadow-sm z-20">
+            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">ↀ返回</button>
+            <div class="text-xl font-bold text-purple-500">扭蛋有</div>
+        </div>
+
+        <div class="flex-1 flex flex-col items-center justify-center p-4">
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-purple-200 max-w-md w-full relative">
+                
+                <h2 class="text-center text-xl text-gray-500 mb-4">输入一半的句子...</h2>
+                <div class="bg-gray-100 rounded-xl p-4 mb-6 text-center text-2xl font-bold text-gray-700">
+                    "我饿了，我想合<span id="g2-result" class="text-purple-600 border-b-4 border-purple-400 inline-block min-w-[80px]">___</span>"
+                </div>
+
+                <div class="space-y-3 mb-8">
+                    <p class="text-sm text-gray-400 text-center">AI预测概率表：</p>
+                    <div class="flex items-center gap-2">
+                        <span class="w-12 text-right">米饭</span>
+                        <div class="flex-1 bg-gray-200 h-4 rounded-full overflow-hidden">
+                            <div class="bg-green-400 h-full" style="width: 70%"></div>
+                        </div>
+                        <span class="w-12 text-sm text-gray-500">70%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-12 text-right">苹果</span>
+                        <div class="flex-1 bg-gray-200 h-4 rounded-full overflow-hidden">
+                            <div class="bg-yellow-400 h-full" style="width: 25%"></div>
+                        </div>
+                        <span class="w-12 text-sm text-gray-500">25%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-12 text-right text-red-400">皮鞋</span>
+                        <div class="flex-1 bg-gray-200 h-4 rounded-full overflow-hidden">
+                            <div class="bg-red-400 h-full" style="width: 5%"></div>
+                        </div>
+                        <span class="w-12 text-sm text-gray-500">5%</span>
+                    </div>
+                </div>
+
+                <button id="g2-btn" onclick="spinGacha()" class="w-full bg-purple-500 hover:bg-purple-600 text-white text-2xl py-4 rounded-2xl shadow-[0_6px_0_#7e22ce] active:shadow-[0_0px_0_#7e22ce] active:translate-y-1 transition-all">
+                    🎲 让AI接话：                </button>
+            </div>
+            
+            <!-- 统计围-->
+            <div class="mt-6 flex gap-4 text-center">
+                <div class="bg-white p-3 rounded-xl shadow">米饭: <br><span id="stat-mifan" class="text-2xl font-bold text-green-500">0</span></div>
+                <div class="bg-white p-3 rounded-xl shadow">苹果: <br><span id="stat-pingguo" class="text-2xl font-bold text-yellow-500">0</span></div>
+                <div class="bg-white p-3 rounded-xl shadow">皮鞋: <br><span id="stat-pixie" class="text-2xl font-bold text-red-500">0</span></div>
+            </div>
+            <p class="mt-4 text-gray-500 text-sm max-w-md text-center">多试几次！你会发现AI大部分时候很正常，但偶尔也会说出离谱的"幻觉"词汇哦：</p>
+        </div>
+    </div>
+
+    <!-- 游成3：幻觉找茬员 -->
+    <div id="game3" class="game-panel bg-orange-50">
+        <div class="p-4 flex justify-between items-center bg-white shadow-sm z-20">
+            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">ↀ返回</button>
+            <div class="flex gap-4">
+                <div class="text-xl font-bold text-orange-500">找出错误：</div>
+            </div>
+        </div>
+
+        <!-- 时间条-->
+        <div class="w-full h-2 bg-gray-200">
+            <div id="g3-timer-bar" class="h-full bg-orange-500 w-full transition-all duration-1000 linear"></div>
+        </div>
+
+        <div class="flex-1 flex flex-col items-center mt-20 p-4">
+            <p class="text-gray-500 mb-6 text-lg">AI鹦鹉说胡话了：br>请点击句子中<b class="text-red-500">不合琀</b>的词汇！</p>
+            
+            <div id="g3-sentence-container" class="flex flex-wrap justify-center gap-3 bg-white p-8 rounded-3xl shadow-lg border-4 border-orange-200 max-w-3xl w-full">
+                <!-- 词语由JS动态生成-->
+            </div>
+
+            <div id="g3-status" class="mt-10 text-3xl font-bold text-green-500 opacity-0 transition-opacity">修正成功：</div>
+        </div>
+    </div>
+
+    <!-- 游成逻辑 JS -->
+    <script>
+        // ----------------- 通用控制 -----------------
+        function hideAll() {
+            document.querySelectorAll('.game-panel, #main-menu').forEach(el => {
+                el.classList.remove('active-panel');
+            });
+        }
+
+        function showMenu() {
+            hideAll();
+            document.getElementById('main-menu').classList.add('active-panel');
+            // 停止所有游成的循环
+clearInterval(g1Interval);
+            clearInterval(g3Timer);
+        }
+
+        function startGame(num) {
+            hideAll();
+            document.getElementById('game' + num).classList.add('active-panel');
+            if(num === 1) initGame1();
+            if(num === 2) initGame2();
+            if(num === 3) initGame3();
+        }
+
+        // ----------------- 游成 1：气泡大作战 -----------------
+const g1Questions = [
+            { q: "晚上天黑了，天上有___", a: "月亮", w: ["太阳", "电脑", "桌子"] },
+            { q: "小猫喵喵叫，它喜欢吃___", a: "小鱼", w: ["石头", "汽车", "手机"] },
+            { q: "下雨了，出门要带___", a: "雨伞", w: ["冰箱", "西瓜", "作业"] },
+            { q: "树上结满了线线的___", a: "苹果", w: ["皮球", "袜子", "电视"] }
+        ];
+        
+        let g1CurrentQ = 0;
+        let g1Score = 0;
+        let g1Interval;
+        let g1BubbleArea;
+
+        function initGame1() {
+            g1CurrentQ = 0;
+            g1Score = 0;
+            updateG1Score();
+            g1BubbleArea = document.getElementById('g1-bubble-area');
+            g1BubbleArea.innerHTML = '';
+            loadG1Question();
+        }
+
+        function loadG1Question() {
+            if (g1CurrentQ >= g1Questions.length) {
+                document.getElementById('g1-question').innerText = "🎉 战战完成！你太棒啦！";
+                g1BubbleArea.innerHTML = '';
+                return;
+            }
+            const q = g1Questions[g1CurrentQ];
+            document.getElementById('g1-question').innerText = q.q;
+            
+            // 清理旧气泀        
+g1BubbleArea.innerHTML = '';
+            
+            // 持续生成气泡
+clearInterval(g1Interval);
+            g1Interval = setInterval(spawnBubble, 1000);
+        }
+
+        function spawnBubble() {
+            if (document.hidden || !document.getElementById('game1').classList.contains('active-panel')) return;
+            
+            const q = g1Questions[g1CurrentQ];
+            const isCorrectBubble = Math.random() < 0.3; // 30% 概率生成正确答案
+const word = isCorrectBubble ? q.a : q.w[Math.floor(Math.random() * q.w.length)];
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            
+            // 随机大小和位罀
+const size = 80 + Math.random() * 40;
+            const left = 10 + Math.random() * 80;
+            const duration = 4 + Math.random() * 3; // 4-7秒飞上去
+            
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            bubble.style.left = `${left}%`;
+            bubble.style.animationDuration = `${duration}s`;
+            
+            // 随机边框颜色
+const colors = ['#f87171', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa'];
+            bubble.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            bubble.innerText = word;
+            
+            bubble.onclick = () => {
+                if(word === q.a) {
+                    // 答对
+bubble.classList.add('pop-anim');
+                    g1Score += 10;
+                    updateG1Score();
+                    
+                    // 将题目中的下划线替换为正确的词汇，并加上高亮样式
+document.getElementById('g1-question').innerHTML = q.q.replace("___", `<span class="text-blue-500 border-b-4 border-blue-500 px-2 font-black">${q.a}</span>`);
+
+                    showG1Feedback("✅猜对啦！", "text-green-500");
+                    clearInterval(g1Interval);
+                    g1CurrentQ++;
+                    // 延长停留时间别.5秒，让小玩家看清楚完整的句子
+setTimeout(loadG1Question, 1500);
+                } else {
+                    // 答错
+bubble.classList.add('pop-anim', 'bg-red-200');
+                    showG1Feedback("❌这个词不通顺哦~", "text-red-500");
+                    document.getElementById('g1-question').classList.add('shake');
+                    setTimeout(() => document.getElementById('g1-question').classList.remove('shake'), 500);
+                }
+            };
+
+            g1BubbleArea.appendChild(bubble);
+
+            // 动画结束后移除DOM
+setTimeout(() => {
+                if(bubble.parentElement) bubble.remove();
+            }, duration * 1000);
+        }
+
+        function updateG1Score() {
+            document.getElementById('g1-score').innerText = g1Score;
+        }
+
+        function showG1Feedback(text, colorClass) {
+            const fb = document.getElementById('g1-feedback');
+            fb.className = `mt-6 text-2xl font-bold h-8 transition-opacity duration-300 ${colorClass}`;
+            fb.innerText = text;
+            fb.style.opacity = 1;
+            setTimeout(() => { fb.style.opacity = 0; }, 1500);
+        }
+
+
+        // ----------------- 游成 2：概率扭蛋机 -----------------
+const g2Options = [
+            { text: "米饭", prob: 0.70, id: 'mifan' },
+            { text: "苹果", prob: 0.25, id: 'pingguo' },
+            { text: "皮鞋", prob: 0.05, id: 'pixie' }
+        ];
+        let g2Stats = { mifan: 0, pingguo: 0, pixie: 0 };
+        let g2Spinning = false;
+
+        function initGame2() {
+            document.getElementById('g2-result').innerText = "___";
+            document.getElementById('g2-result').className = "text-purple-600 border-b-4 border-purple-400 inline-block min-w-[80px]";
+        }
+
+        function spinGacha() {
+            if(g2Spinning) return;
+            g2Spinning = true;
+            
+            const btn = document.getElementById('g2-btn');
+            const resultEl = document.getElementById('g2-result');
+            btn.innerText = "AI计算一..";
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            resultEl.classList.add('flash-text');
+
+            let spins = 0;
+            const maxSpins = 20;
+            
+            // 视觉闪烁效果
+const interval = setInterval(() => {
+                resultEl.innerText = g2Options[spins % 3].text;
+                spins++;
+                
+                if(spins > maxSpins) {
+                    clearInterval(interval);
+                    finalizeGacha();
+                }
+            }, 50);
+        }
+
+        function finalizeGacha() {
+            // 根据概率计算结果
+let r = Math.random();
+            let sum = 0;
+            let finalChoice = g2Options[0]; // 默认
+for(let opt of g2Options) {
+                sum += opt.prob;
+                if(r <= sum) {
+                    finalChoice = opt;
+                    break;
+                }
+            }
+
+            // 更新UI
+const resultEl = document.getElementById('g2-result');
+            resultEl.classList.remove('flash-text');
+            resultEl.innerText = finalChoice.text;
+            
+            // 根据结果显示不同颜色
+if(finalChoice.id === 'mifan') resultEl.className = "text-green-600 border-b-4 border-green-400 font-bold inline-block min-w-[80px] scale-110 transition-transform";
+            if(finalChoice.id === 'pingguo') resultEl.className = "text-yellow-600 border-b-4 border-yellow-400 font-bold inline-block min-w-[80px] scale-110 transition-transform";
+            if(finalChoice.id === 'pixie') resultEl.className = "text-red-600 border-b-4 border-red-400 font-bold inline-block min-w-[80px] scale-110 transition-transform shake";
+
+            // 更新统计
+g2Stats[finalChoice.id]++;
+            document.getElementById(`stat-${finalChoice.id}`).innerText = g2Stats[finalChoice.id];
+
+            // 恢复按钮
+const btn = document.getElementById('g2-btn');
+            btn.innerText = "再试一次🎲";
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            g2Spinning = false;
+        }
+
+
+        // ----------------- 游成 3：幻觉找茬员 -----------------
+const g3Sentences = [
+            { words: ["爸爸", "戴着", "眼镜", "在看", "报纸"], correctIdx: -1 }, // 对照练            { words: ["弟弟", "骑着", "大象", "厅, "幼儿围], correctIdx: 2, fix: "自行车" },
+            { words: ["天空一, "飘着", "一朵朵", "沙发"], correctIdx: 3, fix: "白云" },
+            { words: ["成, "画, "嘴巴", "合, "音乐"], correctIdx: 2, fix: "耳朵" },
+            { words: ["小鱼", "圈, "森林釀, "快乐圈, "游泳"], correctIdx: 2, fix: "小河釀 }
+        ];
+
+        let g3CurrentIdx = 1; // 跳过对照组直接开始错的
+let g3Timer;
+        let g3TimeLeft = 100;
+
+        function initGame3() {
+            g3CurrentIdx = 1;
+            loadG3Sentence();
+        }
+
+        function loadG3Sentence() {
+            if(g3CurrentIdx >= g3Sentences.length) {
+                document.getElementById('g3-sentence-container').innerHTML = '<span class="text-4xl text-green-500 font-bold">🎉 所有AI幻觉都被你消灭啦：</span>';
+                document.getElementById('g3-timer-bar').style.width = '100%';
+                return;
+            }
+
+            const data = g3Sentences[g3CurrentIdx];
+            const container = document.getElementById('g3-sentence-container');
+            container.innerHTML = '';
+
+            data.words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.innerText = word;
+                span.className = "text-2xl md:text-4xl font-bold p-3 bg-gray-100 rounded-xl cursor-pointer hover:bg-orange-100 transition-colors shadow-sm";
+                
+                span.onclick = () => {
+                    if(index === data.correctIdx) {
+                        // 点对了
+clearInterval(g3Timer);
+                        span.className = "text-2xl md:text-4xl font-bold p-3 bg-green-400 text-white rounded-xl shadow-md transform scale-110 transition-all";
+                        span.innerText = data.fix; // 修复单词
+showG3Status("✅修复成功：, "text-green-500");
+                        
+                        setTimeout(() => {
+                            g3CurrentIdx++;
+                            loadG3Sentence();
+                        }, 1500);
+
+                    } else {
+                        // 点错了                    
+span.classList.add('bg-red-300', 'shake');
+setTimeout(() => span.classList.remove('bg-red-300', 'shake'), 500);
+                        g3TimeLeft = Math.max(0, g3TimeLeft - 10); // 扣时闀
+}
+                };
+                container.appendChild(span);
+            });
+
+            // 启动倒计旀        
+g3TimeLeft = 100;
+clearInterval(g3Timer);
+            g3Timer = setInterval(() => {
+                g3TimeLeft -= 1;
+                document.getElementById('g3-timer-bar').style.width = `${g3TimeLeft}%`;
+                if(g3TimeLeft <= 0) {
+                    clearInterval(g3Timer);
+                    showG3Status("⏰时间到！AI还是说胡话了", "text-red-500");
+                    container.classList.add('shake');
+                    setTimeout(loadG3Sentence, 2000); // 重新加载当前叀
+}
+            }, 100);
+        }
+
+        function showG3Status(text, color) {
+            const status = document.getElementById('g3-status');
+            status.className = `mt-10 text-3xl font-bold transition-opacity duration-300 ${color}`;
+            status.innerText = text;
+            status.style.opacity = 1;
+            setTimeout(() => { status.style.opacity = 0; }, 1500);
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>点亮聪明灀- AI绘本互动战战</title>
+  <script src="../../libs/libs/tailwind.min.js"></script>
+  <style>
+    /* 自定义动画*/
+    .animate-shake {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+    
+    /* 隐藏滚动条但保留功能 */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-blue-50 font-sans text-gray-800 overflow-hidden selection:bg-orange-200">
+
+  <!-- 装饰性背景泡泀-->
+  <div class="fixed top-10 left-10 w-32 h-32 bg-yellow-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-pulse pointer-events-none z-0"></div>
+  <div class="fixed top-40 right-20 w-48 h-48 bg-pink-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-pulse pointer-events-none z-0" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-20 left-1/3 w-40 h-40 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-pulse pointer-events-none z-0" style="animation-delay: 2s;"></div>
+
+  <!-- 主容器-->
+  <div id="app" class="relative z-10 w-full h-screen overflow-y-auto no-scrollbar">
+    
+    <!-- 主菜单视围-->
+    <div id="view-menu" class="min-h-screen flex flex-col items-center justify-center p-4 py-12">
+      <div class="text-center mb-12 relative">
+        <h1 class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mb-4 drop-shadow-sm filter drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)]">
+          点亮聪明灀        </h1>
+        <p class="text-xl md:text-2xl text-orange-700 font-bold tracking-wider bg-white/50 inline-block px-6 py-2 rounded-full shadow-sm border border-orange-100">AI 互动绘本战战</p>
+        <div class="absolute -top-12 -right-12 md:-right-16 text-5xl md:text-6xl rotate-12 drop-shadow-lg opacity-80 animate-bounce">💡</div>
+        <div class="absolute -bottom-8 -left-8 md:-left-12 text-5xl md:text-6xl -rotate-12 drop-shadow-lg opacity-80 animate-bounce" style="animation-delay: 0.5s;">🧠</div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl px-4 md:px-8 w-full">
+        <!-- 卡片 1 -->
+        <div onclick="app.showView('game1')" class="bg-white/90 backdrop-blur-md p-8 rounded-[2rem] shadow-xl border-4 border-green-100 hover:border-green-400 hover:shadow-2xl hover:-translate-y-4 transition-all duration-300 cursor-pointer group flex flex-col items-center text-center">
+          <div class="bg-green-100 w-28 h-28 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform p-4 shadow-inner">
+            <svg class="text-green-500 w-12 h-12 ml-2" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <h2 class="text-2xl font-black text-gray-800 mb-3">信号发射器</h2>
+          <div class="text-green-600 font-black mb-4 bg-green-50 border-2 border-green-200 px-4 py-1 rounded-full text-sm shadow-sm">适合 3-5页</div>
+          <p class="text-gray-600 font-medium">看准需求，快速点净YES 成NO 发射光束！考验你的反应力！</p>
+        </div>
+
+        <!-- 卡片 2 -->
+        <div onclick="app.showView('game2')" class="bg-white/90 backdrop-blur-md p-8 rounded-[2rem] shadow-xl border-4 border-blue-100 hover:border-blue-400 hover:shadow-2xl hover:-translate-y-4 transition-all duration-300 cursor-pointer group flex flex-col items-center text-center mt-0 md:mt-12">
+          <div class="bg-blue-100 w-28 h-28 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform p-4 shadow-inner">
+             <svg class="text-blue-500 w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          </div>
+          <h2 class="text-2xl font-black text-gray-800 mb-3">动态逻辑电路</h2>
+          <div class="text-blue-600 font-black mb-4 bg-blue-50 border-2 border-blue-200 px-4 py-1 rounded-full text-sm shadow-sm">适合 6-7页</div>
+          <p class="text-gray-600 font-medium">拨动开关，观察真实流动的电流，闯过 AND/OR/NOT 三大关卡：</p>
+        </div>
+
+        <!-- 卡片 3 -->
+        <div onclick="app.showView('game3')" class="bg-white/90 backdrop-blur-md p-8 rounded-[2rem] shadow-xl border-4 border-pink-100 hover:border-pink-400 hover:shadow-2xl hover:-translate-y-4 transition-all duration-300 cursor-pointer group flex flex-col items-center text-center">
+          <div class="bg-pink-100 w-28 h-28 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform p-4 shadow-inner" id="menu-brain-icon">
+            <!-- Brain Icon Injected by JS -->
+          </div>
+          <h2 class="text-2xl font-black text-gray-800 mb-3">自由布线沙盒</h2>
+          <div class="text-pink-600 font-black mb-4 bg-pink-50 border-2 border-pink-200 px-4 py-1 rounded-full text-sm shadow-sm">适合 8-9页</div>
+          <p class="text-gray-600 font-medium">按住鼠标自由拖拽画线，像工程师一样点亮整个神经网络！</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 游成 1 视图 -->
+    <div id="view-game1" class="hidden flex flex-col min-h-screen relative p-4 md:p-8">
+      <button onclick="app.showView('menu')" class="self-start mb-4 px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50 z-20">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> 返回
+      </button>
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+        <div class="flex items-end gap-4 relative z-10">
+          <div class="w-16 h-16 md:w-20 md:h-20 animate-bounce" style="animation-duration: 2s;" id="g1-boy-icon"></div>
+          <div class="bg-white/90 backdrop-blur px-4 py-3 md:px-6 md:py-4 rounded-3xl rounded-bl-none shadow-lg border-2 border-orange-100 max-w-sm relative transform hover:scale-105 transition-transform cursor-default">
+            <p class="text-gray-700 font-bold text-base md:text-lg leading-relaxed">快看！灯泡有不同的需求，快点击按钮给它发射正确的信号光束：</p>
+            <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-white/90 border-b-2 border-l-2 border-orange-100 transform rotate-45"></div>
+          </div>
+        </div>
+        <div class="bg-white px-6 py-3 rounded-2xl shadow-md border-2 border-yellow-300 flex gap-2 items-center self-end md:self-auto">
+           <span class="font-bold text-gray-600 text-lg md:text-xl">能量收集：</span>
+           <span class="font-black text-yellow-500 text-xl md:text-2xl flex items-center gap-1">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 
+             <span id="g1-score">0</span> / 5
+           </span>
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col items-center justify-center relative mt-8">
+        <div id="g1-victory" class="hidden text-center animate-bounce z-20">
+          <div class="text-6xl mb-4">🏆</div>
+          <h2 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500 mb-6 drop-shadow-sm">通关啦！反应真快：</h2>
+          <button onclick="game1.reset()" class="mx-auto px-8 py-4 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-gradient-to-r from-orange-400 to-amber-400 text-white hover:shadow-lg hover:from-orange-500 hover:to-amber-500 border-b-4 border-orange-500">再玩一次</button>
+        </div>
+
+        <div id="g1-gameplay" class="relative w-full max-w-lg h-96 bg-blue-50/50 rounded-3xl border-4 border-blue-100 flex flex-col items-center justify-center overflow-hidden shadow-inner">
+          
+          <!-- 目标区域 -->
+          <div class="relative z-10 flex flex-col items-center">
+            <!-- 需求气泀-->
+            <div id="g1-needs-bubble" class="absolute -top-16 bg-white px-4 py-2 rounded-2xl shadow-md border-2 border-gray-200 animate-bounce flex items-center gap-2 whitespace-nowrap">
+              <span class="font-bold text-gray-600">我需要：</span>
+              <span id="g1-needs-text" class="font-black text-xl">YES (传亮)</span>
+              <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b-2 border-r-2 border-gray-200 rotate-45"></div>
+            </div>
+
+            <!-- 灯泡 -->
+            <div id="g1-bulb-container" class="w-32 h-32 transform hover:scale-105 transition-transform"></div>
+
+            <!-- 浮动文字反馈 -->
+            <div id="g1-floating-text" class="hidden absolute top-1/2 left-full ml-4 font-black text-2xl whitespace-nowrap animate-ping"></div>
+          </div>
+
+          <!-- 光束发射特效 -->
+          <div id="g1-beam" class="hidden absolute bottom-0 w-4 h-1/2 rounded-t-full animate-pulse transform origin-bottom"></div>
+
+          <!-- 控制叀-->
+          <div class="absolute bottom-0 w-full h-32 bg-gray-100 border-t-4 border-gray-200 flex justify-around items-center px-4 md:px-8 z-20 rounded-b-3xl">
+            <button onclick="game1.shoot('yes')" class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-b from-green-300 to-green-500 border-b-8 border-green-600 shadow-lg hover:mt-2 hover:border-b-0 transition-all flex flex-col items-center justify-center active:scale-95">
+              <span class="text-white font-black text-xl md:text-2xl drop-shadow-md">YES</span>
+            </button>
+            <div class="w-12 h-12 md:w-16 md:h-16 bg-gray-800 rounded-full border-4 border-gray-600 flex items-center justify-center shadow-inner">
+               <svg class="text-yellow-400 animate-pulse" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            </div>
+            <button onclick="game1.shoot('no')" class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-b from-red-300 to-red-500 border-b-8 border-red-600 shadow-lg hover:mt-2 hover:border-b-0 transition-all flex flex-col items-center justify-center active:scale-95">
+              <span class="text-white font-black text-xl md:text-2xl drop-shadow-md">NO</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 游成 2 视图 -->
+    <div id="view-game2" class="hidden flex flex-col min-h-screen relative p-4 md:p-8">
+      <button onclick="app.showView('menu')" class="self-start mb-4 px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50 z-20">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> 返回
+      </button>
+      
+      <div class="flex items-end gap-4 mb-6 relative z-10">
+        <div class="w-16 h-16 md:w-20 md:h-20 animate-bounce" style="animation-duration: 2s;" id="g2-robot-icon"></div>
+        <div class="bg-white/90 backdrop-blur px-4 py-3 md:px-6 md:py-4 rounded-3xl rounded-bl-none shadow-lg border-2 border-orange-100 max-w-md relative transform hover:scale-105 transition-transform cursor-default">
+          <p id="g2-dialog-text" class="text-gray-700 font-bold text-base md:text-lg leading-relaxed"></p>
+          <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-white/90 border-b-2 border-l-2 border-orange-100 transform rotate-45"></div>
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col items-center justify-center w-full">
+        <div class="bg-white/90 p-4 md:p-8 rounded-3xl shadow-xl max-w-3xl w-full border border-orange-100 flex flex-col items-center">
+          
+          <h2 id="g2-level-title" class="text-xl md:text-2xl font-black text-blue-600 mb-8 px-6 py-2 bg-blue-100 rounded-full"></h2>
+
+          <div class="relative w-full h-72 md:h-64 flex flex-col md:flex-row items-center justify-between px-4 md:px-12 mb-8 gap-6 md:gap-0">
+             
+             <!-- 左侧：开关区 -->
+             <div class="flex flex-row md:flex-col gap-4 md:gap-8 z-10">
+                <div class="flex items-center gap-2 md:gap-4 bg-white/80 p-2 rounded-xl backdrop-blur-sm">
+                  <span class="font-bold text-gray-600 text-sm md:text-base whitespace-nowrap">开兀A</span>
+                  <div id="g2-switch-a" onclick="game2.toggleSwitch(0)" class="w-16 h-8 md:w-20 md:h-10 rounded-full p-1 cursor-pointer transition-colors duration-300 shadow-inner bg-gray-300">
+                    <div class="w-6 h-6 md:w-8 md:h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 translate-x-0"></div>
+                  </div>
+                </div>
+                
+                <div id="g2-switch-b-container" class="flex items-center gap-2 md:gap-4 bg-white/80 p-2 rounded-xl backdrop-blur-sm">
+                  <span class="font-bold text-gray-600 text-sm md:text-base whitespace-nowrap">开兀B</span>
+                  <div id="g2-switch-b" onclick="game2.toggleSwitch(1)" class="w-16 h-8 md:w-20 md:h-10 rounded-full p-1 cursor-pointer transition-colors duration-300 shadow-inner bg-gray-300">
+                    <div class="w-6 h-6 md:w-8 md:h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 translate-x-0"></div>
+                  </div>
+                </div>
+             </div>
+
+             <!-- 中间：动态连线与大脑 -->
+             <div class="absolute inset-0 pointer-events-none hidden md:block">
+                <svg class="w-full h-full">
+                   <path id="g2-wire-a" d="M 180 80 L 350 120" stroke="#e2e8f0" stroke-width="8" fill="none" class="transition-colors duration-500" />
+                   <circle id="g2-electron-a" r="6" fill="#f59e0b" style="display:none;"><animateMotion dur="1s" repeatCount="indefinite" path="M 180 80 L 350 120"/></circle>
+                   
+                   <path id="g2-wire-b" d="M 180 180 L 350 140" stroke="#e2e8f0" stroke-width="8" fill="none" class="transition-colors duration-500" />
+                   <circle id="g2-electron-b" r="6" fill="#f59e0b" style="display:none;"><animateMotion dur="1s" repeatCount="indefinite" path="M 180 180 L 350 140"/></circle>
+                </svg>
+             </div>
+
+             <div class="z-10 relative md:absolute md:left-1/2 md:top-1/2 transform md:-translate-x-1/2 md:-translate-y-1/2 flex flex-col items-center">
+               <div id="g2-brain-container" class="w-20 h-20 md:w-24 md:h-24 mb-2 bg-white rounded-full p-2 shadow-lg border-4 border-pink-100">
+               </div>
+               <span id="g2-brain-label" class="font-black text-pink-500 bg-pink-100 px-3 py-1 rounded-full text-sm md:text-base"></span>
+               
+               <div class="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-md border-2 border-orange-300 flex items-center justify-center animate-bounce z-20 text-orange-500 font-black text-xl">?</div>
+             </div>
+
+             <!-- 右侧：预测结果区 -->
+             <div class="z-10 flex flex-row md:flex-col gap-2 md:gap-4 bg-gray-50 p-4 rounded-2xl border-2 border-gray-200 shadow-sm">
+                <h3 class="font-bold text-gray-700 text-center w-full text-sm md:text-base hidden md:block">你的预测：</h3>
+                <button onclick="game2.handleGuess(true)" class="px-4 md:px-6 py-2 md:py-3 rounded-full font-bold text-sm md:text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-gradient-to-r from-green-400 to-emerald-400 text-white hover:shadow-lg hover:from-green-500 hover:to-emerald-500 border-b-4 border-green-500">
+                  <svg class="w-5 h-5 md:w-6 md:h-6 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> 会亮
+                </button>
+                <button onclick="game2.handleGuess(false)" class="px-4 md:px-6 py-2 md:py-3 rounded-full font-bold text-sm md:text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-white text-gray-500 border-2 border-gray-200 hover:bg-gray-50">
+                  不亮
+                </button>
+             </div>
+          </div>
+
+          <!-- 反馈信息 -->
+          <div id="g2-feedback-container" class="h-16 flex items-center justify-center w-full opacity-0 transition-opacity">
+             <div id="g2-feedback-content" class="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 rounded-full border"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 游成 3 视图 -->
+    <div id="view-game3" class="hidden flex flex-col min-h-screen relative p-4 md:p-8 select-none">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center z-20 shrink-0 mb-4 gap-4">
+        <button onclick="app.showView('menu')" class="px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50 z-20">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> 返回
+        </button>
+        <div id="g3-level-title" class="bg-pink-100 text-pink-600 font-black px-6 py-2 rounded-full border-2 border-pink-300 shadow-sm text-sm md:text-base"></div>
+      </div>
+      
+      <div class="z-20 shrink-0 flex items-end gap-4 mb-4 md:mb-6">
+        <div class="w-16 h-16 md:w-20 md:h-20 animate-bounce" style="animation-duration: 2s;" id="g3-robot-icon"></div>
+        <div class="bg-white/90 backdrop-blur px-4 py-3 md:px-6 md:py-4 rounded-3xl rounded-bl-none shadow-lg border-2 border-orange-100 max-w-md relative transform hover:scale-105 transition-transform cursor-default">
+          <p id="g3-dialog-text" class="text-gray-700 font-bold text-base md:text-lg leading-relaxed"></p>
+          <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-white/90 border-b-2 border-l-2 border-orange-100 transform rotate-45"></div>
+        </div>
+      </div>
+
+      <div class="flex-1 flex items-center justify-center w-full min-h-[400px] md:min-h-[500px] relative z-10 mb-20 md:mb-0">
+        <div id="g3-sandbox" class="relative w-full max-w-4xl h-[400px] md:h-[500px] bg-white/80 backdrop-blur-md border-4 border-pink-200 rounded-3xl shadow-xl overflow-hidden cursor-crosshair touch-none">
+          <!-- 背景网格 -->
+          <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#f9a8d4 2px, transparent 2px); background-size: 30px 30px;"></div>
+          
+          <!-- SVG 连线层-->
+          <svg id="g3-svg-layer" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
+          
+          <!-- 节点容器层-->
+          <div id="g3-nodes-layer" class="absolute inset-0 w-full h-full z-20 pointer-events-none"></div>
+
+          <!-- 成功覆盖层-->
+          <div id="g3-overlay" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-30 transition-opacity rounded-3xl opacity-0">
+             <div id="g3-overlay-content" class="text-center z-10"></div>
+             <div class="absolute inset-0 pointer-events-none flex justify-center items-center z-0">
+                <div class="w-full h-full animate-ping border-8 border-yellow-400 rounded-3xl opacity-20"></div>
+             </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="g3-footer-controls" class="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-20 flex gap-4">
+         <button onclick="game3.resetLevel()" class="px-4 py-2 md:px-6 md:py-3 rounded-full font-bold text-sm md:text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2 bg-gradient-to-r from-red-400 to-rose-400 text-white border-b-4 border-red-500 hover:shadow-lg">清空连线</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- SVG 模板生成器---
+const SVGs = {
+      Robot: () => `
+        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+          <path d="M30 50 Q30 20 50 20 Q70 20 70 50 A20 20 0 0 1 50 90 A20 20 0 0 1 30 50 Z" fill="#e0f2fe" />
+          <circle cx="25" cy="50" r="15" fill="#e0f2fe" />
+          <circle cx="75" cy="50" r="15" fill="#e0f2fe" />
+          <circle cx="50" cy="80" r="15" fill="#e0f2fe" />
+          <rect x="35" y="40" width="30" height="20" rx="5" fill="#1e293b" />
+          <circle cx="43" cy="50" r="3" fill="#22d3ee" class="animate-pulse" />
+          <circle cx="57" cy="50" r="3" fill="#22d3ee" class="animate-pulse" />
+          <path d="M50 20 L50 10" stroke="#94a3b8" stroke-width="2" />
+          <circle cx="50" cy="8" r="3" fill="#fbbf24" />
+        </svg>`,
+      Boy: () => `
+        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+          <circle cx="50" cy="45" r="25" fill="#fed7aa" />
+          <path d="M25 40 Q50 10 75 40 Q75 25 50 20 Q25 25 25 40 Z" fill="#3f3f46" />
+          <circle cx="40" cy="45" r="3" fill="#3f3f46" />
+          <circle cx="60" cy="45" r="3" fill="#3f3f46" />
+          <path d="M45 55 Q50 60 55 55" stroke="#3f3f46" stroke-width="2" fill="none" stroke-linecap="round" />
+          <path d="M30 70 L70 70 L80 100 L20 100 Z" fill="#f97316" />
+          <rect x="35" y="70" width="8" height="30" fill="#0ea5e9" />
+          <rect x="57" y="70" width="8" height="30" fill="#0ea5e9" />
+        </svg>`,
+      Bulb: (state, extraClass='') => {
+        const isLit = state === 'lit';
+        const isSad = state === 'sad';
+        const glow = isLit ? 'drop-shadow-[0_0_20px_rgba(250,204,21,1)]' : 'drop-shadow-sm';
+        const fill = isLit ? "#fde047" : (isSad ? "#cbd5e1" : "#e2e8f0");
+        const mouth = isLit 
+          ? `<path d="M42 60 Q50 68 58 60" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round" />`
+          : (isSad ? `<path d="M42 65 Q50 55 58 65" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round" />`
+                   : `<path d="M45 60 L55 60" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round" />`);
+        return `
+          <svg viewBox="0 0 100 100" class="w-full h-full ${glow} ${extraClass} transition-all duration-300">
+            <path d="M50 80 C30 80, 20 60, 30 40 C35 30, 40 20, 50 20 C60 20, 65 30, 70 40 C80 60, 70 80, 50 80 Z" fill="${fill}" />
+            <rect x="40" y="75" width="20" height="15" rx="2" fill="#94a3b8" />
+            <rect x="42" y="90" width="16" height="5" rx="2" fill="#64748b" />
+            <circle cx="40" cy="50" r="4" fill="#334155" />
+            <circle cx="60" cy="50" r="4" fill="#334155" />
+            ${mouth}
+          </svg>`;
+      },
+      BrainNode: (active, extraClass='') => {
+        const pulse = active ? "animate-pulse" : "";
+        const glow = active ? 'drop-shadow-[0_0_15px_rgba(244,114,182,0.8)] scale-110' : 'drop-shadow-md scale-100';
+        const strokeColor = active ? "#f59e0b" : "#fcd34d";
+        const strokeW = active ? "6" : "4";
+        const fill = active ? "#fbcfe8" : "#fdf2f8";
+        const mouth = active ? "M42 55 Q50 65 58 55" : "M45 55 Q50 62 55 55";
+        return `
+          <svg viewBox="0 0 100 100" class="w-full h-full ${glow} transition-all duration-300 ${extraClass}">
+            <path d="M50 50 L10 20 M50 50 L90 20 M50 50 L10 80 M50 50 L90 80 M50 50 L50 10 M50 50 L50 90" stroke="${strokeColor}" stroke-width="${strokeW}" stroke-linecap="round" class="${pulse}" />
+            <circle cx="10" cy="20" r="6" fill="#fcd34d" />
+            <circle cx="90" cy="20" r="6" fill="#fcd34d" />
+            <circle cx="10" cy="80" r="6" fill="#fcd34d" />
+            <circle cx="90" cy="80" r="6" fill="#fcd34d" />
+            <circle cx="50" cy="10" r="6" fill="#fcd34d" />
+            <circle cx="50" cy="90" r="6" fill="#fcd34d" />
+            <path d="M30 40 Q30 20 50 20 Q70 20 70 40 Q80 50 70 70 Q50 80 30 70 Q20 50 30 40 Z" fill="${fill}" stroke="#f9a8d4" stroke-width="2" />
+            <path d="M50 20 Q45 50 50 75" stroke="#f9a8d4" stroke-width="2" fill="none" />
+            <circle cx="40" cy="45" r="3" fill="#be185d" />
+            <circle cx="60" cy="45" r="3" fill="#be185d" />
+            <path d="${mouth}" stroke="#be185d" stroke-width="2" fill="none" stroke-linecap="round" />
+          </svg>`;
+      },
+      Zap: (active, extraClass='') => `
+         <svg class="${extraClass}" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+         </svg>
+      `
+    };
+
+    // --- 应用控制器---
+const app = {
+      views: ['menu', 'game1', 'game2', 'game3'],
+      init() {
+        document.getElementById('menu-brain-icon').innerHTML = SVGs.BrainNode(true);
+        document.getElementById('g1-boy-icon').innerHTML = SVGs.Boy();
+        document.getElementById('g2-robot-icon').innerHTML = SVGs.Robot();
+        document.getElementById('g3-robot-icon').innerHTML = SVGs.Robot();
+        this.showView('menu');
+      },
+      showView(viewName) {
+        this.views.forEach(v => {
+          document.getElementById(`view-${v}`).classList.add('hidden');
+        });
+        document.getElementById(`view-${viewName}`).classList.remove('hidden');
+        
+        if(viewName === 'game1') game1.init();
+        if(viewName === 'game2') game2.init();
+        if(viewName === 'game3') game3.init();
+      }
+    };
+
+    // --- 游成 1：信号发射器 ---
+const game1 = {
+      score: 0,
+      targetNeeds: 'yes',
+      bulbState: 'unlit',
+      isAnimating: false,
+      
+      init() {
+        this.score = 0;
+        this.updateScoreUI();
+        this.generateNewTarget();
+        document.getElementById('g1-victory').classList.add('hidden');
+        document.getElementById('g1-gameplay').classList.remove('hidden');
+      },
+      generateNewTarget() {
+        this.bulbState = 'unlit';
+        this.targetNeeds = Math.random() > 0.5 ? 'yes' : 'no';
+        this.updateUI();
+      },
+      updateUI() {
+        document.getElementById('g1-bulb-container').innerHTML = SVGs.Bulb(this.bulbState);
+        const bubble = document.getElementById('g1-needs-bubble');
+        const text = document.getElementById('g1-needs-text');
+        
+        if(this.bulbState === 'unlit') {
+          bubble.classList.remove('hidden');
+          bubble.classList.add('flex');
+          text.innerText = this.targetNeeds === 'yes' ? 'YES (传亮)' : 'NO (不亮)';
+          text.className = `font-black text-xl ${this.targetNeeds === 'yes' ? 'text-green-500' : 'text-red-500'}`;
+        } else {
+          bubble.classList.add('hidden');
+          bubble.classList.remove('flex');
+        }
+      },
+      updateScoreUI() {
+        document.getElementById('g1-score').innerText = this.score;
+      },
+      shoot(signal) {
+        if(this.isAnimating || this.bulbState !== 'unlit') return;
+        this.isAnimating = true;
+        
+        const beam = document.getElementById('g1-beam');
+        beam.className = `absolute bottom-0 w-4 h-1/2 rounded-t-full animate-pulse transform origin-bottom ${signal === 'yes' ? 'bg-green-400 shadow-[0_0_20px_#4ade80]' : 'bg-red-400 shadow-[0_0_20px_#f87171]'}`;
+        beam.style.left = signal === 'yes' ? '30%' : '70%';
+        beam.style.transform = signal === 'yes' ? 'rotate(20deg)' : 'rotate(-20deg)';
+        beam.classList.remove('hidden');
+
+        setTimeout(() => {
+          beam.classList.add('hidden');
+          const floatingText = document.getElementById('g1-floating-text');
+          floatingText.classList.remove('hidden');
+          
+          if (signal === this.targetNeeds) {
+            this.bulbState = this.targetNeeds === 'yes' ? 'lit' : 'sad';
+            this.score++;
+            this.updateScoreUI();
+            floatingText.innerText = '太棒了！+1';
+            floatingText.className = 'absolute top-1/2 left-full ml-4 font-black text-2xl whitespace-nowrap animate-ping text-green-500';
+          } else {
+            this.bulbState = 'sad';
+            floatingText.innerText = '哎呀，射错了！";
+            floatingText.className = 'absolute top-1/2 left-full ml-4 font-black text-2xl whitespace-nowrap animate-ping text-red-500';
+          }
+          this.updateUI();
+
+          setTimeout(() => {
+            floatingText.classList.add('hidden');
+            if(this.score >= 5) {
+              document.getElementById('g1-gameplay').classList.add('hidden');
+              document.getElementById('g1-victory').classList.remove('hidden');
+              this.isAnimating = false;
+            } else {
+              this.generateNewTarget();
+              this.isAnimating = false;
+            }
+          }, 1500);
+        }, 300);
+      },
+      reset() {
+        this.init();
+      }
+    };
+
+    // --- 游成 2：动态逻辑电路 ---
+const game2 = {
+      level: 0,
+      switches: [false, false],
+      isAnimating: false,
+      levels: [
+        { type: 'AND', title: '第关：都要帮忙：', hint: '当【开关A】和【开关B】都打开时，大脑才会通电 , needsInputs: 2 },
+        { type: 'OR', title: '第关：选一个就行！', hint: '只要有【任意一个】开关打开，大脑就能通电啦！', needsInputs: 2 },
+        { type: 'NOT', title: '第关：唱反调大脑！', hint: '这个大脑很奇怪，【不通电】时它反而亮起，通电时它就不亮！', needsInputs: 1 }
+      ],
+      
+      init() {
+        this.level = 0;
+        this.switches = [false, false];
+        this.isAnimating = false;
+        this.hideFeedback();
+        this.renderLevel();
+      },
+      renderLevel() {
+        const lvl = this.levels[this.level];
+        document.getElementById('g2-level-title').innerText = lvl.title;
+        document.getElementById('g2-dialog-text').innerText = `逻辑电路通电测试：{lvl.hint} 快拨动开关看看电流流向，然后预测灯泡会不会亮！`;
+        document.getElementById('g2-brain-label').innerText = `${lvl.type} 脑`;
+        
+        const swB = document.getElementById('g2-switch-b-container');
+        const wireB = document.getElementById('g2-wire-b');
+        const elecB = document.getElementById('g2-electron-b');
+        
+        if(lvl.needsInputs === 1) {
+          swB.classList.add('hidden');
+          swB.classList.remove('flex');
+          if(wireB) wireB.style.display = 'none';
+          if(elecB) elecB.style.display = 'none';
+        } else {
+          swB.classList.remove('hidden');
+          swB.classList.add('flex');
+          if(wireB) wireB.style.display = 'block';
+        }
+        this.updateUI();
+      },
+      toggleSwitch(idx) {
+        if(this.isAnimating) return;
+        this.switches[idx] = !this.switches[idx];
+        this.hideFeedback();
+        this.updateUI();
+      },
+      updateUI() {
+        const lvl = this.levels[this.level];
+        let isBrainActive = false;
+        if (lvl.type === 'AND') isBrainActive = this.switches[0] && this.switches[1];
+        if (lvl.type === 'OR') isBrainActive = this.switches[0] || this.switches[1];
+        if (lvl.type === 'NOT') isBrainActive = !this.switches[0];
+
+        // Update Switches
+const swA = document.getElementById('g2-switch-a');
+        swA.className = `w-16 h-8 md:w-20 md:h-10 rounded-full p-1 cursor-pointer transition-colors duration-300 shadow-inner ${this.switches[0] ? 'bg-green-500' : 'bg-gray-300'}`;
+        swA.firstElementChild.className = `w-6 h-6 md:w-8 md:h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 ${this.switches[0] ? 'translate-x-8 md:translate-x-10' : 'translate-x-0'}`;
+
+        if(lvl.needsInputs > 1) {
+          const swB = document.getElementById('g2-switch-b');
+          swB.className = `w-16 h-8 md:w-20 md:h-10 rounded-full p-1 cursor-pointer transition-colors duration-300 shadow-inner ${this.switches[1] ? 'bg-green-500' : 'bg-gray-300'}`;
+          swB.firstElementChild.className = `w-6 h-6 md:w-8 md:h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 ${this.switches[1] ? 'translate-x-8 md:translate-x-10' : 'translate-x-0'}`;
+        }
+
+        // Update Wires
+const wA = document.getElementById('g2-wire-a');
+        if(wA) wA.setAttribute('stroke', this.switches[0] ? '#fbbf24' : '#e2e8f0');
+        const eA = document.getElementById('g2-electron-a');
+        if(eA) eA.style.display = this.switches[0] ? 'block' : 'none';
+
+        if(lvl.needsInputs > 1) {
+          const wB = document.getElementById('g2-wire-b');
+          if(wB) wB.setAttribute('stroke', this.switches[1] ? '#fbbf24' : '#e2e8f0');
+          const eB = document.getElementById('g2-electron-b');
+          if(eB) eB.style.display = this.switches[1] ? 'block' : 'none';
+        }
+
+        // Update Brain
+document.getElementById('g2-brain-container').innerHTML = SVGs.BrainNode(isBrainActive);
+      },
+      handleGuess(guess) {
+        if(this.isAnimating) return;
+        const lvl = this.levels[this.level];
+        let isBrainActive = false;
+        if (lvl.type === 'AND') isBrainActive = this.switches[0] && this.switches[1];
+        if (lvl.type === 'OR') isBrainActive = this.switches[0] || this.switches[1];
+        if (lvl.type === 'NOT') isBrainActive = !this.switches[0];
+
+        const fc = document.getElementById('g2-feedback-container');
+        const content = document.getElementById('g2-feedback-content');
+        fc.classList.remove('opacity-0');
+        
+        if (guess === isBrainActive) {
+          content.className = 'flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 rounded-full border text-green-600 bg-green-50 border-green-200 animate-bounce';
+          content.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> <span class="text-lg md:text-xl font-bold">完全正确：{this.level === 2 ? '恭喜通关： : '准备进入下一兀..'}</span>`;
+          
+          if (this.level < 2) {
+            this.isAnimating = true;
+            setTimeout(() => {
+              this.level++;
+              this.switches = [false, false];
+              this.hideFeedback();
+              this.renderLevel();
+              this.isAnimating = false;
+            }, 2000);
+          }
+        } else {
+          content.className = 'flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 rounded-full border text-rose-500 bg-rose-50 border-rose-200 animate-shake';
+          content.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg> <span class="text-lg md:text-xl font-bold">再想想哦，看看电流有没有流进大脑：</span>`;
+        }
+      },
+      hideFeedback() {
+        document.getElementById('g2-feedback-container').classList.add('opacity-0');
+      }
+    };
+
+    // --- 游成 3：自由布线沙盀---
+const GAME3_LEVELS = [
+      {
+        title: "第1 关：初试锋芒",
+        desc: "把【电源】、【大脑】和【灯泡】连成一条线，让能量流动起来：,
+        nodes: [
+          { id: 'start1', type: 'start', x: 20, y: 50, active: true },
+          { id: 'b1', type: 'brain', x: 50, y: 50, active: false },
+          { id: 'end1', type: 'lightbulb', x: 80, y: 50, active: false },
+        ]
+      },
+      {
+        title: "第2 关：分工合作",
+        desc: "能量源可以分成两股哦！把电源连给两个大脑，再让它们共同点亮灯泡" ,
+        nodes: [
+          { id: 'start1', type: 'start', x: 15, y: 50, active: true },
+          { id: 'b1', type: 'brain', x: 45, y: 20, active: false },
+          { id: 'b2', type: 'brain', x: 45, y: 80, active: false },
+          { id: 'end1', type: 'lightbulb', x: 80, y: 50, active: false },
+        ]
+      },
+      {
+        title: "第3 关：深度思耀",
+        desc: "这就是真正的神经网络啦！前排的大脑思考完，还要传给后排的大脑做有终决定！",
+        nodes: [
+          { id: 'start1', type: 'start', x: 10, y: 50, active: true },
+          { id: 'b1', type: 'brain', x: 35, y: 20, active: false },
+          { id: 'b2', type: 'brain', x: 35, y: 80, active: false },
+          { id: 'b3', type: 'brain', x: 65, y: 50, active: false },
+          { id: 'end1', type: 'lightbulb', x: 90, y: 50, active: false },
+        ]
+      },
+      {
+        title: "第4 关：双重能量満",
+        desc: "终极战战！这里有两个能量源，看看你能不能把所有节点都激活，点亮有终的超级灯泡：,
+        nodes: [
+          { id: 'start1', type: 'start', x: 15, y: 25, active: true },
+          { id: 'start2', type: 'start', x: 15, y: 75, active: true },
+          { id: 'b1', type: 'brain', x: 40, y: 25, active: false },
+          { id: 'b2', type: 'brain', x: 40, y: 75, active: false },
+          { id: 'b3', type: 'brain', x: 65, y: 50, active: false },
+          { id: 'end1', type: 'lightbulb', x: 85, y: 50, active: false },
+        ]
+      }
+    ];
+
+    const game3 = {
+      levelIndex: 0,
+      nodes: [],
+      edges: [],
+      drawing: null, // { fromId, currentX, currentY }
+      success: false,
+      gameComplete: false,
+
+      init() {
+        this.levelIndex = 0;
+        this.gameComplete = false;
+        this.loadLevel();
+        this.attachGlobalListeners();
+      },
+      loadLevel() {
+        const lvl = GAME3_LEVELS[this.levelIndex];
+        document.getElementById('g3-level-title').innerText = lvl.title;
+        document.getElementById('g3-dialog-text').innerText = lvl.desc;
+        this.nodes = JSON.parse(JSON.stringify(lvl.nodes));
+        this.edges = [];
+        this.success = false;
+        this.drawing = null;
+        
+        const overlay = document.getElementById('g3-overlay');
+        overlay.classList.add('hidden');
+        overlay.classList.remove('opacity-100');
+        overlay.classList.add('opacity-0');
+        document.getElementById('g3-footer-controls').classList.remove('hidden');
+
+        this.renderGraph();
+      },
+      getRelCoords(e) {
+        const container = document.getElementById('g3-sandbox');
+        const rect = container.getBoundingClientRect();
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+        if(e.touches && e.touches.length > 0) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        }
+        return {
+          x: ((clientX - rect.left) / rect.width) * 100,
+          y: ((clientY - rect.top) / rect.height) * 100
+        };
+      },
+      attachGlobalListeners() {
+        const container = document.getElementById('g3-sandbox');
+        container.onmousemove = (e) => this.handlePointerMove(e);
+        container.ontouchmove = (e) => this.handlePointerMove(e);
+        container.onmouseup = () => this.handlePointerUp(null);
+        container.ontouchend = () => this.handlePointerUp(null);
+        container.onmouseleave = () => { this.drawing = null; this.renderGraph(); };
+      },
+      handlePointerDown(e, nodeId) {
+        e.preventDefault();
+        e.stopPropagation();
+        if(this.success) return;
+        const coords = this.getRelCoords(e);
+        this.drawing = { fromId: nodeId, currentX: coords.x, currentY: coords.y };
+        this.renderGraph();
+      },
+      handlePointerMove(e) {
+        if(!this.drawing) return;
+        e.preventDefault();
+        const coords = this.getRelCoords(e);
+        this.drawing.currentX = coords.x;
+        this.drawing.currentY = coords.y;
+        this.renderGraph();
+      },
+      handlePointerUp(e, targetNodeId) {
+        if(!this.drawing) return;
+        if(e && e.stopPropagation) e.stopPropagation();
+        
+        if (targetNodeId && targetNodeId !== this.drawing.fromId) {
+          const edgeExists = this.edges.some(edge => 
+            (edge.from === this.drawing.fromId && edge.to === targetNodeId) ||
+            (edge.to === this.drawing.fromId && edge.from === targetNodeId)
+          );
+          if (!edgeExists) {
+            this.edges.push({ from: this.drawing.fromId, to: targetNodeId });
+            this.evaluateNetwork();
+          }
+        }
+        this.drawing = null;
+        this.renderGraph();
+      },
+      evaluateNetwork() {
+        const startNodeIds = this.nodes.filter(n => n.type === 'start').map(n => n.id);
+        const activeNodes = new Set(startNodeIds);
+        
+        let newlyAdded = true;
+        while(newlyAdded) {
+          newlyAdded = false;
+          this.edges.forEach(edge => {
+            if (activeNodes.has(edge.from) && !activeNodes.has(edge.to)) {
+              activeNodes.add(edge.to);
+              newlyAdded = true;
+            }
+            if (activeNodes.has(edge.to) && !activeNodes.has(edge.from)) {
+              activeNodes.add(edge.from);
+              newlyAdded = true;
+            }
+          });
+        }
+
+        this.nodes.forEach(n => {
+          n.active = n.type === 'start' ? true : activeNodes.has(n.id);
+        });
+
+        const allBrainsActive = this.nodes.filter(n => n.type === 'brain').every(n => n.active);
+        const allBulbsActive = this.nodes.filter(n => n.type === 'lightbulb').every(n => n.active);
+        
+        if (allBrainsActive && allBulbsActive && !this.success) {
+          setTimeout(() => {
+            this.success = true;
+            if (this.levelIndex === GAME3_LEVELS.length - 1) {
+              this.gameComplete = true;
+            }
+            this.showSuccess();
+            this.renderGraph(); // Final render for success state
+}, 300);
+        }
+      },
+      renderGraph() {
+        const svgLayer = document.getElementById('g3-svg-layer');
+        const nodesLayer = document.getElementById('g3-nodes-layer');
+        
+        // Render Edges
+let svgHTML = '';
+        this.edges.forEach((edge, idx) => {
+          const n1 = this.nodes.find(n => n.id === edge.from);
+          const n2 = this.nodes.find(n => n.id === edge.to);
+          const isActive = n1.active && n2.active;
+          const stroke = isActive ? "#fbbf24" : "#cbd5e1";
+          
+          svgHTML += `<g>
+            <line x1="${n1.x}%" y1="${n1.y}%" x2="${n2.x}%" y2="${n2.y}%" stroke="${stroke}" stroke-width="8" stroke-linecap="round" class="transition-colors duration-500" />
+            <path id="g3-path-${idx}" d="M ${n1.x} ${n1.y} L ${n2.x} ${n2.y}" fill="none" />
+          `;
+          if (isActive) {
+            svgHTML += `
+              <circle r="4" fill="#ffffff" class="drop-shadow-md">
+                <animateMotion dur="1.5s" repeatCount="indefinite">
+                  <mpath href="#g3-path-${idx}" />
+                </animateMotion>
+              </circle>
+            `;
+          }
+          svgHTML += `</g>`;
+        });
+
+        // Render Drawing Line
+if (this.drawing) {
+          const fromNode = this.nodes.find(n => n.id === this.drawing.fromId);
+          svgHTML += `<line x1="${fromNode.x}%" y1="${fromNode.y}%" x2="${this.drawing.currentX}%" y2="${this.drawing.currentY}%" stroke="#f472b6" stroke-width="6" stroke-dasharray="10, 10" stroke-linecap="round" class="animate-pulse" />`;
+        }
+        svgLayer.innerHTML = svgHTML;
+
+        // Render Nodes
+        nodesLayer.innerHTML = '';
+        this.nodes.forEach(node => {
+          const div = document.createElement('div');
+          div.className = `absolute transform -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing transition-transform duration-300 pointer-events-auto flex flex-col items-center z-20 ${node.active ? 'scale-110' : 'scale-100 hover:scale-105'}`;
+          div.style.left = `${node.x}%`;
+          div.style.top = `${node.y}%`;
+          
+          div.onmousedown = (e) => this.handlePointerDown(e, node.id);
+          div.onmouseup = (e) => this.handlePointerUp(e, node.id);
+          div.ontouchstart = (e) => this.handlePointerDown(e, node.id);
+          div.ontouchend = (e) => this.handlePointerUp(e, node.id);
+
+          let innerHTML = '';
+          if (node.type === 'start') {
+            const cls = node.active ? 'bg-green-100 border-green-500 shadow-[0_0_20px_#4ade80]' : 'bg-gray-100 border-gray-400';
+            const iconCls = node.active ? "text-green-500 animate-pulse" : "text-gray-400";
+            innerHTML = `
+              <div class="w-16 h-16 md:w-20 md:h-20 p-2 rounded-full border-4 shadow-xl flex items-center justify-center ${cls}">
+                 ${SVGs.Zap(node.active, iconCls)}
+                 <span class="absolute -bottom-6 font-black text-green-600 bg-white px-2 rounded-md shadow-sm border border-green-200 text-xs md:text-sm whitespace-nowrap">能量満</span>
+              </div>`;
+          } else if (node.type === 'brain') {
+            const cls = node.active ? 'bg-pink-50 border-pink-400 shadow-[0_0_15px_#f472b6]' : 'bg-white border-gray-300';
+            innerHTML = `
+              <div class="w-20 h-20 md:w-24 md:h-24 p-2 rounded-full border-4 shadow-lg ${cls} pointer-events-none">
+                ${SVGs.BrainNode(node.active)}
+              </div>`;
+          } else if (node.type === 'lightbulb') {
+            const cls = node.active ? 'bg-yellow-50 border-yellow-400 shadow-[0_0_30px_#facc15]' : 'bg-white border-gray-300';
+            innerHTML = `
+              <div class="w-20 h-20 md:w-24 md:h-24 p-2 rounded-full border-4 shadow-lg ${cls} pointer-events-none">
+                 ${SVGs.Bulb(node.active ? 'lit' : 'unlit')}
+                 <span class="absolute -bottom-6 font-black text-yellow-600 bg-white px-2 rounded-md shadow-sm border border-yellow-200 text-xs md:text-sm whitespace-nowrap">目标灯泡</span>
+              </div>`;
+          }
+          
+          div.innerHTML = innerHTML;
+          nodesLayer.appendChild(div);
+        });
+      },
+      showSuccess() {
+        document.getElementById('g3-footer-controls').classList.add('hidden');
+        const overlay = document.getElementById('g3-overlay');
+        const content = document.getElementById('g3-overlay-content');
+        
+        overlay.classList.remove('hidden');
+        // Trigger reflow
+        void overlay.offsetWidth;
+        overlay.classList.add('opacity-100');
+        overlay.classList.remove('opacity-0');
+
+        let btnsHTML = '';
+        if (this.gameComplete) {
+          btnsHTML = `
+            <div class="text-6xl mb-4 animate-bounce">🏆</div>
+            <h2 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-500 mb-8 drop-shadow-md">太牛啦！所有关卡全部通关：</h2>
+            <div class="flex gap-4 justify-center">
+               <button onclick="game3.init()" class="px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-lg md:text-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50">再玩一次</button>
+               <button onclick="app.showView('menu')" class="px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-lg md:text-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center bg-gradient-to-r from-orange-400 to-amber-400 text-white border-b-4 border-orange-500 hover:shadow-lg">返回主页</button>
+            </div>
+          `;
+        } else {
+          btnsHTML = `
+            <div class="text-6xl mb-4 animate-bounce">🌟</div>
+            <h2 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-500 mb-8 drop-shadow-md">完美连通！</h2>
+            <div class="flex gap-4 justify-center">
+               <button onclick="game3.resetLevel()" class="px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-lg md:text-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50">重玩本关</button>
+               <button onclick="game3.nextLevel()" class="px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-lg md:text-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_15px_#4ade80] flex items-center justify-center bg-gradient-to-r from-green-400 to-emerald-400 text-white border-b-4 border-green-500 hover:shadow-lg hover:from-green-500 hover:to-emerald-500">下一关卡</button>
+            </div>
+          `;
+        }
+        content.innerHTML = btnsHTML;
+      },
+      resetLevel() {
+        this.edges = [];
+        this.drawing = null;
+        this.success = false;
+        
+        const overlay = document.getElementById('g3-overlay');
+        overlay.classList.add('hidden');
+        overlay.classList.remove('opacity-100');
+        overlay.classList.add('opacity-0');
+        document.getElementById('g3-footer-controls').classList.remove('hidden');
+        
+        this.evaluateNetwork();
+        this.renderGraph();
+      },
+      nextLevel() {
+        if (this.levelIndex < GAME3_LEVELS.length - 1) {
+          this.levelIndex++;
+          this.loadLevel();
+        }
+      }
+    };
+
+    // 启动应用
+window.onload = () => {
+      app.init();
+    };
+  </script>
+</body>
+</html>
