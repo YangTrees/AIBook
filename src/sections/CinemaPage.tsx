@@ -13,53 +13,59 @@ interface VideoItem {
   zone: ZoneType;
 }
 
+// 根据课程数据生成视频列表
+function generateVideoList(): VideoItem[] {
+  const videos: VideoItem[] = [];
+
+  COURSE_DATA.forEach((course: any) => {
+    const numStr = String(course.id).padStart(2, '0');
+    const coverImage = course.coverImage?.replace(/^\.\.\//, './assets/') || '';
+
+    // 绘本视频 - 每个课程都有
+    videos.push({
+      lessonId: course.id,
+      courseTitle: course.title || `第${course.id}课`,
+      videoUrl: `./assets/videos/videos/${numStr}/video.mp4`,
+      title: `${course.title || '绘本动画'} - 第${course.id}课`,
+      coverImage,
+      zone: 'picturebook',
+    });
+
+    // 科普视频 - 使用Bilibili占位链接（实际链接需要从课程数据获取）
+    if (course.id <= 8) {
+      videos.push({
+        lessonId: course.id,
+        courseTitle: course.title || `第${course.id}课`,
+        videoUrl: 'bilibili-placeholder',
+        title: `科普知识 - 第${course.id}课`,
+        coverImage,
+        zone: 'science',
+      });
+    }
+
+    // 动手教学视频 - 每4课有一个
+    if (course.id % 4 === 0) {
+      videos.push({
+        lessonId: course.id,
+        courseTitle: course.title || `第${course.id}课`,
+        videoUrl: `./assets/videos/videos/${numStr}/video.mp4`,
+        title: `动手教学 - 第${course.id}课`,
+        coverImage,
+        zone: 'hands-on',
+      });
+    }
+  });
+
+  return videos;
+}
+
 export default function CinemaPage() {
   const [activeZone, setActiveZone] = useState<ZoneType>('picturebook');
   const [playingVideo, setPlayingVideo] = useState<VideoItem | null>(null);
   const { storage, updateVideoProgress } = useStorage();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // 收集所有视频
-  const allVideos: VideoItem[] = [];
-  COURSE_DATA.forEach(course => {
-    // 绘本视频
-    course.picturebookVideos.forEach((url) => {
-      allVideos.push({
-        lessonId: course.id,
-        courseTitle: course.title,
-        videoUrl: `./assets/videos/videos/${String(course.id).padStart(2, '0')}/${url.split('/').pop()}`,
-        title: url.split('/').pop()?.replace('.mp4', '').replace(/AI启蒙绘本_第\d+课_/, '').replace('_横版视频', '') || course.title,
-        coverImage: course.coverImage,
-        zone: 'picturebook',
-      });
-    });
-
-    // 科普视频 (Bilibili iframe, 暂时不支持进度)
-    course.scienceVideos.forEach((sv) => {
-      allVideos.push({
-        lessonId: course.id,
-        courseTitle: course.title,
-        videoUrl: sv.url,
-        title: sv.title,
-        coverImage: course.coverImage,
-        zone: 'science',
-      });
-    });
-
-    // 动手教学视频（如果课程有的话，暂用绘本视频代替）
-    if (course.id % 4 === 0) {
-      course.picturebookVideos.forEach((url) => {
-        allVideos.push({
-          lessonId: course.id,
-          courseTitle: course.title,
-          videoUrl: `./assets/videos/videos/${String(course.id).padStart(2, '0')}/${url.split('/').pop()}`,
-          title: '动手教学指导',
-          coverImage: course.coverImage,
-          zone: 'hands-on',
-        });
-      });
-    }
-  });
+  const allVideos = generateVideoList();
 
   const zones = [
     { key: 'picturebook' as ZoneType, label: '绘本动画区', emoji: '📖', color: 'var(--kid-purple-400)' },
@@ -70,6 +76,11 @@ export default function CinemaPage() {
   const filteredVideos = allVideos.filter(v => v.zone === activeZone);
 
   const handleVideoClick = (video: VideoItem) => {
+    // 跳过占位的Bilibili链接
+    if (video.videoUrl === 'bilibili-placeholder') {
+      alert('科普视频功能正在开发中，敬请期待！');
+      return;
+    }
     setPlayingVideo(video);
   };
 
@@ -157,19 +168,19 @@ export default function CinemaPage() {
       }}>
         {filteredVideos.map((video, idx) => {
           const progress = getVideoProgress(video.lessonId, video.videoUrl);
-          const isBilibili = video.videoUrl.includes('bilibili');
+          const isPlaceholder = video.videoUrl === 'bilibili-placeholder';
           const isMP4 = video.videoUrl.endsWith('.mp4');
 
           return (
             <div
               key={`${video.lessonId}-${video.zone}-${idx}`}
-              onClick={() => !isBilibili && handleVideoClick(video)}
+              onClick={() => !isPlaceholder && handleVideoClick(video)}
               style={{
                 background: 'white',
                 borderRadius: 24,
                 overflow: 'hidden',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-                cursor: isBilibili ? 'default' : 'pointer',
+                cursor: isPlaceholder ? 'default' : 'pointer',
                 transition: 'all 0.2s ease',
                 border: '2px solid var(--kid-gray-100)',
               }}
@@ -219,7 +230,7 @@ export default function CinemaPage() {
                   </div>
                 )}
                 {/* Bilibili标记 */}
-                {isBilibili && (
+                {isPlaceholder && (
                   <div style={{
                     position: 'absolute',
                     top: 8,
