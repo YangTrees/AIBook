@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第26课：给AI的清楚指什- 互动游成</title>
+    <title>第26课：给AI的清楚指示- 互动游戏</title>
     <!-- Tailwind CSS -->
     <script src="../../libs/libs/tailwind.min.js"></script>
     <!-- React & ReactDOM -->
@@ -125,7 +125,7 @@ const now = Tone.now();
             }
         };
 
-        // --- 游成 1: 魔法锅合成大收集 ---
+        // --- 游戏 1: 魔法锅合成大收集 ---
 const Game1 = ({ globalStars, addStar }) => {
             const [target, setTarget] = useState(null);
             const [condition, setCondition] = useState(null);
@@ -166,7 +166,7 @@ const Game1 = ({ globalStars, addStar }) => {
                         const newResult = `${target.icon} ${condition.icon} ${format.icon}`;
                         setResult({
                             icons: newResult,
-                            desc: `一叀${condition.name}的${target.name}：${format.name}`
+                            desc: `一份${condition.name}的${target.name}：${format.name}`
                         });
                         
                         // 加入收藏天
@@ -187,7 +187,7 @@ const comboId = `${target.id}-${condition.id}-${format.id}`;
             return (
                 <div className="bg-white rounded-3xl p-6 shadow-xl border-4 border-teal-200 pop-in cloud-bg">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-bold text-teal-600">🍲 游成1：魔法锅合成收集</h2>
+                        <h2 className="text-2xl font-bold text-teal-600">🍲 游戏1：魔法锅合成收集</h2>
                         <div className="bg-yellow-100 text-yellow-600 px-4 py-2 rounded-full font-bold shadow-sm flex items-center gap-2">
                             <span>⭕x {globalStars}</span>
                             <span className="text-sm border-l border-yellow-300 pl-2">收集图鉴: {collection.length}/27</span>
@@ -202,7 +202,7 @@ const comboId = `${target.id}-${condition.id}-${format.id}`;
                             <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
                                 {/* 目标货架 */}
                                 <div className="flex-1 bg-pink-50 p-4 rounded-2xl border-2 border-pink-200 shadow-inner">
-                                    <h3 className="text-center font-bold text-pink-500 mb-3 bg-white py-1 rounded-full border border-pink-200">🎯 第一件：选目格</h3>
+                                    <h3 className="text-center font-bold text-pink-500 mb-3 bg-white py-1 rounded-full border border-pink-200">🎯 第一件：选目标</h3>
                                     <div className="flex justify-center gap-2">
                                         {targets.map(t => (
                                             <button key={t.id} onClick={() => handleSelect(setTarget, t)} 
@@ -215,7 +215,7 @@ const comboId = `${target.id}-${condition.id}-${format.id}`;
                                 </div>
                                 {/* 条件货架 */}
                                 <div className="flex-1 bg-yellow-50 p-4 rounded-2xl border-2 border-yellow-200 shadow-inner">
-                                    <h3 className="text-center font-bold text-yellow-600 mb-3 bg-white py-1 rounded-full border border-yellow-200">📏 第二件：加条什</h3>
+                                    <h3 className="text-center font-bold text-yellow-600 mb-3 bg-white py-1 rounded-full border border-yellow-200">📏 第二件：加条件</h3>
                                     <div className="flex justify-center gap-2">
                                         {conditions.map(c => (
                                             <button key={c.id} onClick={() => handleSelect(setCondition, c)} 
@@ -228,7 +228,7 @@ const comboId = `${target.id}-${condition.id}-${format.id}`;
                                 </div>
                                 {/* 背景货架 */}
                                 <div className="flex-1 bg-blue-50 p-4 rounded-2xl border-2 border-blue-200 shadow-inner">
-                                    <h3 className="text-center font-bold text-blue-500 mb-3 bg-white py-1 rounded-full border border-blue-200">🖼︀第三件：定背晀</h3>
+                                    <h3 className="text-center font-bold text-blue-500 mb-3 bg-white py-1 rounded-full border border-blue-200">🖼 第三件：定背景</h3>
                                     <div className="flex justify-center gap-2">
                                         {formats.map(f => (
                                             <button key={f.id} onClick={() => handleSelect(setFormat, f)} 
@@ -273,7 +273,7 @@ const comboId = `${target.id}-${condition.id}-${format.id}`;
                                 📜 "{result.desc}"
                             </div>
                             <button onClick={reset} className="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transition transform hover:scale-105 text-xl flex items-center gap-2">
-                                <span>🔄 再炼一销</span>
+                                <span>🔄 再炼一次</span>
                             </button>
                         </div>
                     )}
@@ -295,7 +295,7 @@ const comboId = `${target.id}-${condition.id}-${format.id}`;
             );
         };
 
-        // --- 游成 2: 打败模糊怀(RPG Battle Style) ---
+        // --- 游戏 2: 打败模糊怪(RPG Battle Style) ---
 const Game2 = ({ globalStars, addStar }) => {
             const [step, setStep] = useState(0);
             const [showSuccess, setShowSuccess] = useState(false);
@@ -309,7 +309,7 @@ const Game2 = ({ globalStars, addStar }) => {
                     fuzzy: "帮我画画",
                     fuzzyImg: "🌫️👦",
                     options: [
-                        { text: "随便画点什乀(太模糊啦)", isCorrect: false },
+                        { text: "随便画点什么(太模糊啦)", isCorrect: false },
                         { text: "画一只线色小猫坐在月亮上", isCorrect: true },
                         { text: "用笔画个动物 (缺细节哦)", isCorrect: false }
                     ],
@@ -320,7 +320,7 @@ const Game2 = ({ globalStars, addStar }) => {
                     fuzzy: "画个房子",
                     fuzzyImg: "🌫️🏆",
                     options: [
-                        { text: "画大一点的房子 (多大算大：", isCorrect: false },
+                        { text: "画大一点的房子 (多大算大?)", isCorrect: false },
                         { text: "画一座蘑菇屋，在发光的森林里", isCorrect: true },
                         { text: "画一个彩色的房子 (不够具体)", isCorrect: false }
                     ],
@@ -332,8 +332,8 @@ const Game2 = ({ globalStars, addStar }) => {
                     fuzzyImg: "🌫️⭕",
                     options: [
                         { text: "画一个写实风格的蓝色地球！", isCorrect: true },
-                        { text: "画个大圆圈(还是不清楀", isCorrect: false },
-                        { text: "随便画个圆的东西 (AI听不懀", isCorrect: false }
+                        { text: "画个大圆圈(还是不清楚)", isCorrect: false },
+                        { text: "随便画个圆的东西 (AI听不懂)", isCorrect: false }
                     ],
                     clearImg: '🌍✨🔍'
                 }
@@ -378,7 +378,7 @@ const Game2 = ({ globalStars, addStar }) => {
             return (
                 <div className="bg-white rounded-3xl p-6 shadow-xl border-4 border-indigo-200 pop-in relative overflow-hidden">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-bold text-indigo-600">⚔️ 游成2：模糊建散大作战</h2>
+                        <h2 className="text-2xl font-bold text-indigo-600">⚔️ 游戏2：模糊间谍大作战</h2>
                         <div className="bg-yellow-100 text-yellow-600 px-4 py-2 rounded-full font-bold shadow-sm flex items-center gap-2">
                             <span>⭕x {globalStars}</span>
                             <span className="text-sm border-l border-yellow-300 pl-2">关卡: {step + 1}/{challenges.length}</span>
@@ -397,7 +397,7 @@ const Game2 = ({ globalStars, addStar }) => {
                                 <div className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full font-bold">团团法师</div>
                             </div>
 
-                            {/* VS 标志或信恀*/}
+                            {/* VS 标志或信息*/}
                             <div className="flex-1 flex justify-center text-center px-4">
                                 <div className={`text-sm font-bold px-4 py-2 rounded-xl border-2 transition-colors
                                     ${showSuccess ? 'bg-green-100 text-green-700 border-green-400' : 'bg-gray-800 text-yellow-300 border-gray-600'}`}>
@@ -414,7 +414,7 @@ const Game2 = ({ globalStars, addStar }) => {
                                 </div>
                                 {!showSuccess && (
                                     <div className="bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold animate-pulse">
-                                        模糊怀HP: {"❤️".repeat(current.enemyHp)}
+                                        模糊怪HP: {Array(current.enemyHp).fill('❤️').join('')}
                                     </div>
                                 )}
                             </div>
@@ -454,7 +454,7 @@ const Game2 = ({ globalStars, addStar }) => {
             );
         };
 
-        // --- 游成 3: 魔法照相馀(Time/Task Matching) ---
+        // --- 游戏 3: 魔法照相馆(Time/Task Matching) ---
 const Game3 = ({ globalStars, addStar }) => {
             const [subject, setSubject] = useState('熊猫');
             const [style, setStyle] = useState('写实风');
@@ -509,7 +509,7 @@ setTimeout(() => {
             return (
                 <div className="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-200 pop-in cloud-bg relative">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-bold text-orange-600">📸 游成3：魔法照相馆</h2>
+                        <h2 className="text-2xl font-bold text-orange-600">📸 游戏3：魔法照相馆</h2>
                         <div className="bg-yellow-100 text-yellow-600 px-4 py-2 rounded-full font-bold shadow-sm flex items-center gap-2">
                             <span>⭕x {globalStars}</span>
                             <span className="text-sm border-l border-yellow-300 pl-2">任务: {taskIndex + 1}/{tasks.length}</span>
@@ -527,7 +527,7 @@ setTimeout(() => {
                                 <p className="font-bold text-gray-700 text-lg">{currentTask.text}</p>
                             </div>
                             {feedback === 'success' && <div className="text-green-500 font-bold mt-4 pop-in text-xl">"太棒了！这就是我想要的！"</div>}
-                            {feedback === 'fail' && <div className="text-red-500 font-bold mt-4 shake-error text-xl">"嗀..好像不太对哎" </div>}
+                            {feedback === 'fail' && <div className="text-red-500 font-bold mt-4 shake-error text-xl">"唔...好像不太对哦" </div>}
                         </div>
 
                         {/* 中间：控制台 */}
@@ -633,7 +633,7 @@ useEffect(() => {
                         </p>
                     </div>
 
-                    {/* 游成导航条*/}
+                    {/* 游戏导航条*/}
                     <div className="flex flex-wrap justify-center gap-3 mb-8 w-full max-w-4xl bg-white p-2 rounded-full shadow-md border border-gray-100">
                         {[
                             { id: 1, icon: '🍲', title: '魔法锅合成' },
@@ -649,7 +649,7 @@ useEffect(() => {
                         ))}
                     </div>
 
-                    {/* 游成内容区*/}
+                    {/* 游戏内容区*/}
                     <div className="w-full max-w-5xl relative min-h-[500px]">
                         {activeTab === 1 && <Game1 globalStars={globalStars} addStar={addStar} />}
                         {activeTab === 2 && <Game2 globalStars={globalStars} addStar={addStar} />}
@@ -660,7 +660,7 @@ useEffect(() => {
                     <div className="mt-12 bg-white/90 backdrop-blur-md p-6 rounded-3xl w-full max-w-4xl border-2 border-indigo-100 shadow-lg text-center relative overflow-hidden">
                         <div className="absolute -right-10 -bottom-10 text-9xl opacity-10">💡</div>
                         <h3 className="text-2xl font-bold text-indigo-800 mb-3 flex items-center justify-center gap-2">
-                            <span>💡</span> 今日复盘小课堀                        </h3>
+                            <span>💡</span> 今日复盘小课堂                        </h3>
                         <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 inline-block">
                             <p className="text-gray-700 text-lg leading-relaxed font-bold">
                                 <strong>提示词（Prompt）：</strong>就是我们给AI的规则法术<br/>

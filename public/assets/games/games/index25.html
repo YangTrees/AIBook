@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI鹦鹉互动游成雀</title>
+    <title>AI鹦鹉互动游戏</title>
     <script src="../../libs/libs/tailwind.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
@@ -111,7 +111,7 @@
 
         <div class="flex flex-col gap-6 w-full max-w-md z-10">
             <button onclick="startGame(1)" class="group relative bg-blue-400 hover:bg-blue-500 text-white text-2xl py-5 px-8 rounded-3xl shadow-[0_8px_0_#2563eb] active:shadow-[0_0px_0_#2563eb] active:translate-y-2 transition-all">
-                <span class="block">🎈 1. 气泡接话大作成</span>
+                <span class="block">🎈 1. 气泡接话大作战</span>
                 <span class="text-sm font-normal text-blue-100 block mt-1">预测下一个词是什么！</span>
             </button>
 
@@ -127,10 +127,10 @@
         </div>
     </div>
 
-    <!-- 游成1：气泡接话大作战 -->
+    <!-- 游戏1：气泡接话大作战 -->
     <div id="game1" class="game-panel bg-blue-50">
         <div class="p-4 flex justify-between items-center bg-white shadow-sm z-20">
-            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">ↀ返回</button>
+            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">返回</button>
             <div class="text-2xl font-bold text-blue-500">得分: <span id="g1-score">0</span></div>
         </div>
         
@@ -146,10 +146,10 @@
         <div id="g1-bubble-area" class="absolute inset-0 overflow-hidden pointer-events-auto z-0 pt-40"></div>
     </div>
 
-    <!-- 游成2：AI概率扭蛋有-->
+    <!-- 游戏2：AI概率扭蛋有-->
     <div id="game2" class="game-panel bg-purple-50">
         <div class="p-4 flex justify-between items-center bg-white shadow-sm z-20">
-            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">ↀ返回</button>
+            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">返回</button>
             <div class="text-xl font-bold text-purple-500">扭蛋有</div>
         </div>
 
@@ -158,7 +158,7 @@
                 
                 <h2 class="text-center text-xl text-gray-500 mb-4">输入一半的句子...</h2>
                 <div class="bg-gray-100 rounded-xl p-4 mb-6 text-center text-2xl font-bold text-gray-700">
-                    "我饿了，我想合<span id="g2-result" class="text-purple-600 border-b-4 border-purple-400 inline-block min-w-[80px]">___</span>"
+                    "我饿了，我想吃<span id="g2-result" class="text-purple-600 border-b-4 border-purple-400 inline-block min-w-[80px]">___</span>"
                 </div>
 
                 <div class="space-y-3 mb-8">
@@ -200,10 +200,10 @@
         </div>
     </div>
 
-    <!-- 游成3：幻觉找茬员 -->
+    <!-- 游戏3：幻觉找茬员 -->
     <div id="game3" class="game-panel bg-orange-50">
         <div class="p-4 flex justify-between items-center bg-white shadow-sm z-20">
-            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">ↀ返回</button>
+            <button onclick="showMenu()" class="text-gray-500 hover:text-gray-800 text-xl font-bold bg-gray-100 px-4 py-2 rounded-full">返回</button>
             <div class="flex gap-4">
                 <div class="text-xl font-bold text-orange-500">找出错误：</div>
             </div>
@@ -215,7 +215,7 @@
         </div>
 
         <div class="flex-1 flex flex-col items-center mt-20 p-4">
-            <p class="text-gray-500 mb-6 text-lg">AI鹦鹉说胡话了：br>请点击句子中<b class="text-red-500">不合琀</b>的词汇！</p>
+            <p class="text-gray-500 mb-6 text-lg">AI鹦鹉说胡话了！<br>请点击句子中<b class="text-red-500">不合逻辑</b>的词汇！</p>
             
             <div id="g3-sentence-container" class="flex flex-wrap justify-center gap-3 bg-white p-8 rounded-3xl shadow-lg border-4 border-orange-200 max-w-3xl w-full">
                 <!-- 词语由JS动态生成-->
@@ -225,7 +225,7 @@
         </div>
     </div>
 
-    <!-- 游成逻辑 JS -->
+    <!-- 游戏逻辑 JS -->
     <script>
         // ----------------- 通用控制 -----------------
         function hideAll() {
@@ -237,7 +237,7 @@
         function showMenu() {
             hideAll();
             document.getElementById('main-menu').classList.add('active-panel');
-            // 停止所有游成的循环
+            // 停止所有游戏的循环
 clearInterval(g1Interval);
             clearInterval(g3Timer);
         }
@@ -250,12 +250,12 @@ clearInterval(g1Interval);
             if(num === 3) initGame3();
         }
 
-        // ----------------- 游成 1：气泡大作战 -----------------
+        // ----------------- 游戏 1：气泡大作战 -----------------
 const g1Questions = [
             { q: "晚上天黑了，天上有___", a: "月亮", w: ["太阳", "电脑", "桌子"] },
             { q: "小猫喵喵叫，它喜欢吃___", a: "小鱼", w: ["石头", "汽车", "手机"] },
             { q: "下雨了，出门要带___", a: "雨伞", w: ["冰箱", "西瓜", "作业"] },
-            { q: "树上结满了线线的___", a: "苹果", w: ["皮球", "袜子", "电视"] }
+            { q: "树上结满了红红的___", a: "苹果", w: ["皮球", "袜子", "电视"] }
         ];
         
         let g1CurrentQ = 0;
@@ -274,7 +274,7 @@ const g1Questions = [
 
         function loadG1Question() {
             if (g1CurrentQ >= g1Questions.length) {
-                document.getElementById('g1-question').innerText = "🎉 战战完成！你太棒啦！";
+                document.getElementById('g1-question').innerText = "🎉 挑战完成！你太棒啦！";
                 g1BubbleArea.innerHTML = '';
                 return;
             }
@@ -360,7 +360,7 @@ setTimeout(() => {
         }
 
 
-        // ----------------- 游成 2：概率扭蛋机 -----------------
+        // ----------------- 游戏 2：概率扭蛋机 -----------------
 const g2Options = [
             { text: "米饭", prob: 0.70, id: 'mifan' },
             { text: "苹果", prob: 0.25, id: 'pingguo' },
@@ -435,12 +435,12 @@ const btn = document.getElementById('g2-btn');
         }
 
 
-        // ----------------- 游成 3：幻觉找茬员 -----------------
+        // ----------------- 游戏 3：幻觉找茬员 -----------------
 const g3Sentences = [
-            { words: ["爸爸", "戴着", "眼镜", "在看", "报纸"], correctIdx: -1 }, // 对照练            { words: ["弟弟", "骑着", "大象", "厅, "幼儿围], correctIdx: 2, fix: "自行车" },
-            { words: ["天空一, "飘着", "一朵朵", "沙发"], correctIdx: 3, fix: "白云" },
-            { words: ["成, "画, "嘴巴", "合, "音乐"], correctIdx: 2, fix: "耳朵" },
-            { words: ["小鱼", "圈, "森林釀, "快乐圈, "游泳"], correctIdx: 2, fix: "小河釀 }
+            { words: ["爸爸", "戴着", "眼镜", "在看", "报纸"], correctIdx: -1 }, // 对照练            { words: ["弟弟", "骑着", "大象", "去", "幼儿园"], correctIdx: 2, fix: "自行车" },
+            { words: ["天空", "飘着", "一朵朵", "小狗"], correctIdx: 3, fix: "白云" },
+            { words: ["弟弟", "骑着", "小猫", "去", "幼儿园"], correctIdx: 2, fix: "自行车" },         //{ words: ["城市", "画", "嘴巴", "合唱", "音乐"], correctIdx: 2, fix: "耳朵" },
+            { words: ["小鱼", "在", "森林里", "快乐地", "游泳"], correctIdx: 2, fix: "小河里" }
         ];
 
         let g3CurrentIdx = 1; // 跳过对照组直接开始错的
@@ -474,7 +474,7 @@ let g3Timer;
 clearInterval(g3Timer);
                         span.className = "text-2xl md:text-4xl font-bold p-3 bg-green-400 text-white rounded-xl shadow-md transform scale-110 transition-all";
                         span.innerText = data.fix; // 修复单词
-showG3Status("✅修复成功：, "text-green-500");
+showG3Status("✅修复成功！", "text-green-500");
                         
                         setTimeout(() => {
                             g3CurrentIdx++;

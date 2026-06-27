@@ -39,10 +39,10 @@
     <!-- 顶部标题 -->
     <header class="text-center mb-6 max-w-2xl">
         <h1 class="text-2xl md:text-4xl font-bold text-orange-600 mb-2">✅第22课：从边边角角到整张脸✅</h1>
-        <p class="text-slate-600 text-sm md:text-lg">亲自操作，体骀AI 的"逐层抽象"！</p>
+        <p class="text-slate-600 text-sm md:text-lg">亲自操作，体验AI 的"逐层抽象"！</p>
     </header>
 
-    <!-- 年龄段切换卡牀-->
+    <!-- 年龄段切换卡片-->
     <div class="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 w-full max-w-3xl">
         <button onclick="switchGame(1)" id="btn-tab-1" class="tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-500 text-white shadow-md hover:bg-orange-600 text-sm md:text-base flex-1 min-w-[120px]">👶 3-5页</button>
         <button onclick="switchGame(2)" id="btn-tab-2" class="tab-btn px-4 md:px-6 py-2 rounded-full font-bold transition-colors bg-orange-100 text-orange-700 hover:bg-orange-200 text-sm md:text-base flex-1 min-w-[120px]">🧒 6-7页</button>
@@ -88,8 +88,8 @@ let currentGame = 1;
         // --- 词库与图庀---
 const g1FaceList = [
             { name: 'smile', color: '#fbbf24', desc: '开心的笑脸' },
-            { name: 'sad', color: '#60a5fa', desc: '伤心的哭脸 },
-            { name: 'surprised', color: '#f87171', desc: '惊讶的表情 }
+            { name: 'sad', color: '#60a5fa', desc: '伤心的哭脸' },
+            { name: 'surprised', color: '#f87171', desc: '惊讶的表情' }
         ];
         let g1FaceIndex = 0;
 
@@ -98,13 +98,13 @@ const g1FaceList = [
         let g2WordIndex = 0;
 
         const g3WordList = [
-            { level1: ['一', '一', '一', '一', '一', '一', '一', '乀'], level2: ['有', '有'], level3: '果 },
-            { level1: ['一', '𠃍', '一', '一', '一', '㇀, '一', '一'], level2: ['旀', '有'], level3: '的 },
-            { level1: ['一', '一', '一', '一', '一', '乀'], level2: ['了', '有'], level3: '伀 }
+            { level1: ['丨', '𠃌', '一', '一', '丿', '𠃌', '一', '一'], level2: ['日', '月'], level3: '明' },
+            { level1: ['一', '丨', '丿', '㇏', '一', '丨', '丿', '㇏'], level2: ['木', '木'], level3: '林' },
+            { level1: ['丶', 'ノ', 'ノ', '㇏', '丶', 'ノ', 'ノ', '㇏'], level2: ['火', '火'], level3: '炎' }
         ];
         let g3WordIndex = 0;
 
-        // --- 画布与交互系练---
+        // --- 画布与交互系统---
 const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         let animFrame;
@@ -159,6 +159,9 @@ let g1Items = [];
         let particles = [];
 
         function initStageData() {
+            if (canvasW === 0 || canvasH === 0) {
+                resizeCanvas();
+            }
             const cx = canvasW / 2;
             const cy = canvasH / 2;
             
@@ -327,28 +330,28 @@ if (face === 'smile') {
             else if(currentGame === 2 && currentStage === 3) hint.innerText = "🎉 识别成功！点击屏幕识别下一个物体";
             else if(currentGame === 3 && currentStage === 1) hint.innerText = "👆 点击戳破气泡，提取里面的笔画！";
             else if(currentGame === 3 && currentStage === 2) hint.innerText = "👆 点击屏幕两边的部件，让它们组合！";
-            else hint.innerText = "🎉 组合成功！点击屏幕战战下一个字";
+            else hint.innerText = "🎉 组合成功！点击屏幕进入下一个字";
         }
 
         function updateUI() {
             const texts = {
                 1: [
-                    { title: "第层：散落的特征, desc: "你能抓住乱飞的碎片吗： },
-                    { title: "第层：拼出五官", desc: "底层特征组合成了更高级的部件（眼睛、嘴巴）  },
-                    { title: "第层：认出表情：, desc: `加上轮廓，AI 终于认出这是一个 {g1FaceList[g1FaceIndex].desc}】！` }
+                    { title: "第一层：散落的特征", desc: "你能抓住乱飞的碎片吗？" },
+                    { title: "第二层：拼出五官", desc: "底层特征组合成了更高级的部件（眼睛、嘴巴）" },
+                    { title: "第三层：认出表情！", desc: `加上轮廓，AI 终于认出这是一个 ${g1FaceList[g1FaceIndex].desc}！` }
                 ],
                 2: [
-                    { title: "层级 1：基确像素层, desc: "算力不足，只能看到一团模糊。你能猜出是什么吗： },
+                    { title: "层级 1：基本像素层", desc: "算力不足，只能看到一团模糊。你能猜出是什么吗？" },
                     { title: "层级 2：特征提取层", desc: "算力提升，轮廓开始清晰。你心里有答案了吗？" },
-                    { title: "层级 3：语义识别层", desc: `真相大白！原来是 {g2TextList[g2WordIndex]}】！` }
+                    { title: "层级 3：语义识别层", desc: `真相大白！原来是 ${g2TextList[g2WordIndex]}！` }
                 ],
                 3: [
-                    { title: "第一层：离散的笔画, desc: "戳破气泡，释放有基确的符号元素  },
-                    { title: "第二层：偏旁部首", desc: "笔画组合成了具有一点意义的部件"  },
-                    { title: "第三层：完整汉字", desc: "高度抽象：量变引起质变，合成高阶汉字： }
+                    { title: "第一层：离散的笔画", desc: "戳破气泡，释放基本的笔画部件" },
+                    { title: "第二层：组合部件", desc: "笔画组合成了有意义的偏旁部首" },
+                    { title: "第三层：完整汉字", desc: "高度抽象：偏旁组合成完整汉字！" }
                 ]
             };
-            
+
             document.getElementById('stage-title').innerText = texts[currentGame][currentStage - 1].title;
             document.getElementById('stage-desc').innerText = texts[currentGame][currentStage - 1].desc;
             
@@ -358,10 +361,10 @@ if (face === 'smile') {
             
             const nextBtn = document.getElementById('next-btn');
             if (currentStage === 3) {
-                nextBtn.innerText = "进入下一个战成⏰;
+                nextBtn.innerText = "进入下一个挑战⏰";
                 nextBtn.className = "shake-active px-6 md:px-8 py-3 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md transition-all text-sm md:text-base";
             } else {
-                nextBtn.innerText = "强制进入下一层⏰;
+                nextBtn.innerText = "强制进入下一层⏰";
                 nextBtn.className = "shake-active px-6 md:px-8 py-3 rounded-xl font-bold text-slate-500 bg-slate-200 hover:bg-slate-300 shadow-sm transition-all text-sm md:text-base";
             }
         }
@@ -518,14 +521,12 @@ function drawGame2(cx, cy, w, h) {
 
             ctx.save();
             ctx.filter = `blur(${currentBlur}px)`;
-            
-            const scale = 1 + Math.sin(time*2)*0.02;
-            const fontSize = Math.min(160, h * 0.5); // 动态字体大尀            ctx.translate(cx, cy);
-ctx.scale(scale, scale);
+
+            const fontSize = Math.min(100, Math.min(w, h) * 0.35);
             ctx.font = `${fontSize}px Arial`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(g2WordList[g2WordIndex], 0, 0);
+            ctx.fillText(g2WordList[g2WordIndex], cx, cy);
             ctx.restore();
             
             if(currentStage < 3) {

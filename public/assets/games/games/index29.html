@@ -354,8 +354,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         function updateScoreBoard(id, current, total) {
-            let stars = "⭕.repeat(current) + "★.repeat(total - current);
-            document.getElementById(id).innerText = "进度： + stars;
+            let stars = "⭕".repeat(current) + "★".repeat(total - current);
+            document.getElementById(id).innerText = "进度：" + stars;
         }
 
         function getFeedbackMessage(score, total) {

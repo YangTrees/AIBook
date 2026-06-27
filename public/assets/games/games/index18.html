@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第18课《小狗学握手》互动游成</title>
+    <title>第18课《小狗学握手》互动游戏</title>
     <style>
         :root {
             --primary-color: #88d49e; 
@@ -286,7 +286,7 @@
     <div class="header">
         <div class="global-stars" id="global-stars-ui">🎒 星星: <span id="global-stars-count">0</span></div>
         <div class="characters">👦 🐶 ☁️🤖</div>
-        <h1>《小狗学握手》互动乐围</h1>
+        <h1>《小狗学握手》互动乐园</h1>
         <p>跟着团团和点点，用"奖励"让小狗学会新本领！</p>
     </div>
 
@@ -297,7 +297,7 @@
             <button class="tab-btn" onclick="showGame(3)">3. 记星高手</button>
         </div>
 
-        <!-- 游成 1：小小探险家 -->
+        <!-- 游戏 1：小小探险家 -->
         <div id="game1" class="tab-content active">
             <h2>第一关：教狗狗"握手 </h2>
             <p>一开始狗狗听不懂指令。请下达指令，如果它<strong>碰巧做对</strong>了，赶紧给它奖励：</p>
@@ -320,20 +320,20 @@
             </div>
 
             <div class="dialogue">
-                ☁️🤖 <strong>点点说：</strong> <span id="g1-dialogue">点击"口什 握手"。看看狗狗会做什么？</span>
+                ☁️🤖 <strong>点点说：</strong> <span id="g1-dialogue">点击"口令 握手"。看看狗狗会做什么？</span>
             </div>
 
             <div id="g1-success-feedback" style="display: none; margin-top: 20px; text-align: center; background-color: #e8f5e9; border: 2px solid #81c784; border-radius: 15px; padding: 15px;">
                 <h3 style="color: #2e7d32; margin-top: 0;">🎉 恭喜！第一关完成！</h3>
-                <p style="color: #388e3c; font-weight: bold;">狗狗通过你的奖励，成功把"指令"和"正确的动作"联系在了一起！这就是强化学习的基确哦 </p>
+                <p style="color: #388e3c; font-weight: bold;">狗狗通过你的奖励，成功把"指令"和"正确的动作"联系在了一起！这就是强化学习的基本哦 </p>
                 <button class="action-btn" style="background-color: #4caf50; box-shadow: 0 4px 0 #388e3c; margin-top: 10px;" onclick="showGame(2)">➡️ 前往第二关：迷宫寻宝</button>
             </div>
         </div>
 
-        <!-- 游成 2：迷宫寻宀-->
+        <!-- 游戏 2：迷宫寻宝-->
         <div id="game2" class="tab-content">
-            <h2>第二关：走到宝箱得星的</h2>
-            <p>第一步：你来指路，带狗狗吃到路上的骨头并找到宝箱 br>第二步：看看狗狗能不能自己走一遍！</p>
+            <h2>第二关：走到宝箱得星星</h2>
+            <p>第一步：你来指路，带狗狗吃到路上的骨头并找到宝箱 <br>第二步：看看狗狗能不能自己走一遍！</p>
             
             <div class="maze-grid" id="maze-grid"></div>
 
@@ -344,23 +344,23 @@
                 <button class="action-btn" onclick="moveDog(0, 1)">⬇️</button>
             </div>
 
-            <button class="action-btn" id="g2-autorun-btn" style="display:none; background-color: #88d49e; box-shadow: 0 4px 0 #5c9e6f; margin-top:15px;" onclick="startG2AutoRun()">🤖 让AI小狗自己走一遀</button>
+            <button class="action-btn" id="g2-autorun-btn" style="display:none; background-color: #88d49e; box-shadow: 0 4px 0 #5c9e6f; margin-top:15px;" onclick="startG2AutoRun()">🤖 让AI小狗自己走一遍</button>
 
             <div class="dialogue">
                 👦 <strong>团团说：</strong> <span id="g2-dialogue">别急，我们规划好路线。每走对一步都离奖励更近！</span>
             </div>
         </div>
 
-        <!-- 游成 3：记星高所-->
+        <!-- 游戏 3：记星高手-->
         <div id="game3" class="tab-content">
             <h2>第三关：寻找有高奖励路线</h2>
             <p>找出所有隐藏星星，然后小狗会记住这条高奖励路线并自动收集！</p>
             
-            <div class="memory-status">已找围 <span id="g3-found">0</span> / <span id="g3-total">5</span> 颗星 <span id="g3-mode-text" style="color:#f59e0b; margin-left: 10px;">(训练模式)</span></div>
+            <div class="memory-status">已找到 <span id="g3-found">0</span> / <span id="g3-total">5</span> 颗星 <span id="g3-mode-text" style="color:#f59e0b; margin-left: 10px;">(训练模式)</span></div>
 
             <div class="maze-grid" id="memory-grid"></div>
 
-            <button class="action-btn" id="start-memory-btn" onclick="startMemoryGame()" style="margin: 10px auto;">👁︀开始记忀</button>
+            <button class="action-btn" id="start-memory-btn" onclick="startMemoryGame()" style="margin: 10px auto;">👁︀开始记忆</button>
             
             <div class="dialogue">
                 ☁️🤖 <strong>点点说：</strong> <span id="g3-dialogue">点点会先展示藏有星星的格子。准备好了吗：</span>
@@ -394,7 +394,7 @@ const ui = document.getElementById('global-stars-ui');
         }
 
         // ==========================================
-        // --- 游成 1 逻辑: 强化学习与人工赋别---
+        // --- 游戏 1 逻辑: 强化学习与人工智别---
         // ==========================================
 let g1LearningProgress = 0; 
         const g1DogActions = ['sit', 'bark', 'spin', 'shake']; 
@@ -484,7 +484,7 @@ if (g1LearningProgress >= 100) g1LearningProgress = 100;
         }
 
         // ==========================================
-        // --- 游成 2 逻辑: 迷宫寻宝 (人工寻路 + AI复现) ---
+        // --- 游戏 2 逻辑: 迷宫寻宝 (人工寻路 + AI复现) ---
         // ==========================================
 let g2DogPos = {x: 0, y: 0};
         const g2TreasurePos = {x: 4, y: 4};
@@ -571,7 +571,7 @@ if (g2Bones.some(b => b.x === nx && b.y === ny) && !g2BonesCollected.some(b => b
 
         function startG2AutoRun() {
             document.getElementById('g2-autorun-btn').style.display = 'none';
-            document.getElementById('g2-dialogue').innerText = "🐶 AI小狗正在根据刚才的奖励路线自动寻跀..";
+            document.getElementById('g2-dialogue').innerText = "🐶 AI小狗正在根据刚才的奖励路线自动寻路..";
             
             // 重置状态用于演礀            g2DogPos = {x: 0, y: 0};
 g2BonesCollected = [];
@@ -583,7 +583,7 @@ g2BonesCollected = [];
                     clearInterval(interval);
                     document.getElementById('g2-dialogue').innerHTML = "🌟 <strong>太聪明了：</strong> AI小狗学会了这条获得奖励的路线！";
                     // 提供重置按钮
-document.getElementById('g2-autorun-btn').innerText = "🔄 重新玩迷宀";
+document.getElementById('g2-autorun-btn').innerText = "🔄 重新玩迷宫";
                     document.getElementById('g2-autorun-btn').setAttribute('onclick', 'initMaze()');
                     document.getElementById('g2-autorun-btn').style.display = 'inline-block';
                     return;
@@ -592,12 +592,12 @@ document.getElementById('g2-autorun-btn').innerText = "🔄 重新玩迷宀";
                 g2DogPos = g2PathRecord[step];
                 renderMaze();
                 step++;
-            }, 400); // 毀00ms走一歀
+            }, 400); // 400ms走一歀
 }
 
 
         // ==========================================
-        // --- 游成 3 逻辑: 记星高手 (记忆 + AI自动收集) ---
+        // --- 游戏 3 逻辑: 记星高手 (记忆 + AI自动收集) ---
         // ==========================================
 let g3Level = 1;
         let g3MemoryPath = []; 
@@ -610,11 +610,11 @@ let g3Level = 1;
             g3PlayerFound = [];
             g3MemoryState = 'idle';
             document.getElementById('g3-found').innerText = '0';
-            document.getElementById('g3-mode-text').innerText = "(训练模式) - 第" + g3Level + " 兀";
+            document.getElementById('g3-mode-text').innerText = "(训练模式) - 第" + g3Level + " 关";
             
             const btn = document.getElementById('start-memory-btn');
             btn.style.display = 'block';
-            btn.innerText = "👁︀开始记忀";
+            btn.innerText = "👁︀开始记忆";
             btn.setAttribute('onclick', 'startMemoryGame()');
             
             document.getElementById('g3-dialogue').innerText = "点点会先展示藏有星星的格子。凭记忆找出它们！";
@@ -645,7 +645,7 @@ while(g3MemoryPath.length < count) {
             g3MemoryState = 'showing';
             g3PlayerFound = [];
             document.getElementById('start-memory-btn').style.display = 'none';
-            document.getElementById('g3-dialogue').innerText = "仔细看！星星藏在这些格子釀..";
+            document.getElementById('g3-dialogue').innerText = "仔细看！星星藏在这些格子里..";
             
             let cells = document.querySelectorAll('#memory-grid .maze-cell');
             cells.forEach(c => c.innerText = '');
@@ -685,7 +685,7 @@ while(g3MemoryPath.length < count) {
                 cells[idx].innerText = '❌';
                 document.getElementById('g3-dialogue').innerText = "哎呀，这里没有星星。在强化学习里，这叫做试错。再试试其他地方！";
                 setTimeout(() => {
-                    if(cells[idx].innerText === '❌) cells[idx].innerText = '';
+                    if(cells[idx].innerText === '❌') cells[idx].innerText = '';
                 }, 1000);
             }
         }
@@ -703,7 +703,7 @@ let step = 0;
                     g3Level++; // 增加难度
 const btn = document.getElementById('start-memory-btn');
                     btn.style.display = 'block';
-                    btn.innerText = "🔄 战战更高难度 (第" + g3Level + " 兀";
+                    btn.innerText = "🔄 战战更高难度 (第" + g3Level + " 关";
                     btn.setAttribute('onclick', 'initMemory()');
                     return;
                 }
@@ -721,7 +721,7 @@ setTimeout(() => {
             }, 600); // 慢一点，让孩子看清楚
 }
 
-        // 初始化第一个游成    
+        // 初始化第一个游戏    
 showGame(1);
     </script>
 </body>

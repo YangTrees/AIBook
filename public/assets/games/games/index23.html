@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI启蒙：音量旋钮决定谁更重覀</title>
+    <title>AI启蒙：音量旋钮决定谁更重要</title>
     <script src="../../libs/libs/tailwind.min.js"></script>
     <link href="../../libs/libs/font-awesome.all.min.css" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
             overflow-x: hidden;
         }
 
-        /* 自定义滑块样开*/
+        /* 自定义滑块样式*/
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
@@ -56,7 +56,7 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        /* 游成容器过渡 */
+        /* 游戏容器过渡 */
         .game-section {
             display: none;
             animation: fadeIn 0.5s ease-out forwards;
@@ -84,30 +84,30 @@
     <!-- 顶部导航和标题-->
     <header class="max-w-4xl mx-auto text-center mb-8 bg-white p-6 rounded-3xl shadow-xl border-4 border-green-400">
         <h1 class="text-3xl md:text-5xl font-bold text-green-600 mb-4 tracking-wider">
-            <i class="fas fa-robot text-yellow-400 mr-2"></i> 
-            第23课：音量旋钮决定谁更重要 
-            <i class="fas fa-magic text-purple-400 ml-2"></i>
+            <img src="../../characters/characters/tuantuan.png" alt="团团" style="width:60px;height:75px;display:inline-block;vertical-align:middle;margin-right:10px;">
+            第23课：音量旋钮决定谁更重要
+            <img src="../../characters/characters/diandian.png" alt="点点" style="width:60px;height:68px;display:inline-block;vertical-align:middle;margin-left:10px;">
         </h1>
         <p class="text-xl text-gray-600 mb-6">AI里的"权重"就像调音量，谁的声音大，AI就听谁的：</p>
         
         <div class="flex flex-wrap justify-center gap-4">
             <button onclick="switchGame(1)" id="btn-game1" class="px-6 py-3 bg-blue-400 text-white rounded-full text-xl hover:bg-blue-500 shadow-lg border-4 border-blue-200 transition-transform hover:scale-105 active:scale-95">
-                🎮 游成一：听见小鸀            </button>
+                🎮 游戏一：听见小鸟            </button>
             <button onclick="switchGame(2)" id="btn-game2" class="px-6 py-3 bg-pink-400 text-white rounded-full text-xl hover:bg-pink-500 shadow-lg border-4 border-pink-200 transition-transform hover:scale-105 active:scale-95">
-                🎮 游成二：午餐吃啥
+                🎮 游戏二：午餐吃啥
             </button>
             <button onclick="switchGame(3)" id="btn-game3" class="px-6 py-3 bg-purple-400 text-white rounded-full text-xl hover:bg-purple-500 shadow-lg border-4 border-purple-200 transition-transform hover:scale-105 active:scale-95">
-                🎮 游成三：修理分类有            </button>
+                🎮 游戏三：修理分类器            </button>
         </div>
     </header>
 
-    <!-- 主游成区埀-->
+    <!-- 主游戏区域-->
     <main class="max-w-4xl mx-auto relative">
 
-        <!-- 游成一：听见小鸀-->
+        <!-- 游戏一：听见小鸟-->
         <div id="game1" class="game-section active bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-blue-400">
             <div class="text-center mb-8">
-                <h2 class="text-3xl text-blue-500 mb-2">🔊 游成一：风声太大了：</h2>
+                <h2 class="text-3xl text-blue-500 mb-2">🔊 游戏一：风声太大了：</h2>
                 <p class="text-lg text-gray-600">小鸟的歌声被大风盖住了。请你调整两个"音量旋钮（权重）"，让小鸟的声音变得比风声大吧！</p>
             </div>
 
@@ -136,10 +136,10 @@
             </div>
         </div>
 
-        <!-- 游成二：午餐决策有-->
+        <!-- 游戏二：午餐决策-->
         <div id="game2" class="game-section bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-pink-400">
             <div class="text-center mb-8">
-                <h2 class="text-3xl text-pink-500 mb-2">🍽︀游成二：午餐决策有</h2>
+                <h2 class="text-3xl text-pink-500 mb-2">🍽︀游戏二：午餐决策</h2>
                 <p class="text-lg text-gray-600">点点不知道吃苹果还是吃蛋糕。请你分配"权重豆豆"，你觉得哪个条件更重要：</p>
             </div>
 
@@ -181,7 +181,7 @@
                     <div class="my-4 h-6 bg-gray-200 rounded-full overflow-hidden">
                         <div id="apple-bar" class="h-full bg-red-400 transition-all duration-500" style="width: 50%;"></div>
                     </div>
-                    <p class="text-xl">总得别 <span id="apple-score" class="font-bold text-2xl text-red-600">4</span></p>
+                    <p class="text-xl">总得分 <span id="apple-score" class="font-bold text-2xl text-red-600">4</span></p>
                 </div>
 
                 <!-- 蛋糕得分 -->
@@ -192,21 +192,21 @@
                     <div class="my-4 h-6 bg-gray-200 rounded-full overflow-hidden">
                         <div id="cake-bar" class="h-full bg-orange-400 transition-all duration-500" style="width: 50%;"></div>
                     </div>
-                    <p class="text-xl">总得别 <span id="cake-score" class="font-bold text-2xl text-orange-500">4</span></p>
+                    <p class="text-xl">总得分 <span id="cake-score" class="font-bold text-2xl text-orange-500">4</span></p>
                 </div>
             </div>
             <div id="game2-result" class="text-center text-2xl font-bold text-pink-500 mt-6 h-8">
                 平层！请调整上面的"权重豆豆"来打破平层：            </div>
         </div>
 
-        <!-- 游成三：分类工厂 -->
+        <!-- 游戏三：分类工厂 -->
         <div id="game3" class="game-section bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-purple-400">
             <div class="text-center mb-8">
-                <h2 class="text-3xl text-purple-600 mb-2">🤖 游成三：偏心的分类机器人</h2>
+                <h2 class="text-3xl text-purple-600 mb-2">🤖 游戏三：偏心的分类机器人</h2>
                 <p class="text-lg text-gray-600">机器坏了！它现在的"颜色权重"太大，把圆形和方形混在一起了。请把控制台的偏好调向"形状"，修好它！</p>
             </div>
 
-            <!-- 控制叀-->
+            <!-- 控制区-->
             <div class="bg-gray-800 p-6 rounded-2xl mb-8 shadow-inner relative overflow-hidden">
                 <div class="absolute top-2 right-2 flex gap-2">
                     <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
@@ -224,16 +224,16 @@
             <!-- 传送带与箱子-->
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1 bg-blue-50 p-4 rounded-xl border-2 border-blue-300 min-h-[150px]" id="box-left">
-                    <h4 id="box-left-title" class="text-center font-bold text-blue-600 mb-4 border-b-2 border-blue-200 pb-2">线色简</h4>
+                    <h4 id="box-left-title" class="text-center font-bold text-blue-600 mb-4 border-b-2 border-blue-200 pb-2">线色箱</h4>
                     <div id="box-left-items" class="flex flex-wrap gap-3 justify-center">
-                        <!-- 物品将通过JS动态放兀-->
+                        <!-- 物品将通过JS动态放入-->
                     </div>
                 </div>
                 
                 <div class="flex-1 bg-green-50 p-4 rounded-xl border-2 border-green-300 min-h-[150px]" id="box-right">
-                    <h4 id="box-right-title" class="text-center font-bold text-green-600 mb-4 border-b-2 border-green-200 pb-2">蓝色简</h4>
+                    <h4 id="box-right-title" class="text-center font-bold text-green-600 mb-4 border-b-2 border-green-200 pb-2">蓝色箱</h4>
                     <div id="box-right-items" class="flex flex-wrap gap-3 justify-center">
-                        <!-- 物品将通过JS动态放兀-->
+                        <!-- 物品将通过JS动态放入-->
                     </div>
                 </div>
             </div>
@@ -248,27 +248,27 @@
     <script>
         // --- 导航与全层逻辑 ---
         function switchGame(gameId) {
-            // 隐藏所有游成
+            // 隐藏所有游戏
 document.querySelectorAll('.game-section').forEach(el => el.classList.remove('active'));
             // 移除所有按钮高亮
 document.querySelectorAll('header button').forEach(btn => {
                 btn.classList.remove('ring-4', 'ring-offset-2', 'ring-yellow-400');
             });
             
-            // 显示目标游成
+            // 显示目标游戏
 document.getElementById('game' + gameId).classList.add('active');
             // 高亮当前按钮
 document.getElementById('btn-game' + gameId).classList.add('ring-4', 'ring-offset-2', 'ring-yellow-400');
 
-            // 如果切换到游成，初始化物品
+            // 如果切换到游戏，初始化物品
 if(gameId === 3) initGame3();
         }
         
-        // 初始高亮游成一
+        // 初始高亮游戏一
 document.getElementById('btn-game1').classList.add('ring-4', 'ring-offset-2', 'ring-yellow-400');
 
 
-        // --- 游成一逻辑：音量调芀---
+        // --- 游戏一逻辑：音量调节---
         function updateGame1() {
             const windVal = document.getElementById('wind-slider').value;
             const birdVal = document.getElementById('bird-slider').value;
@@ -277,7 +277,7 @@ document.getElementById('btn-game1').classList.add('ring-4', 'ring-offset-2', 'r
             const birdEmoji = document.getElementById('bird-emoji');
             const resultText = document.getElementById('game1-result');
 
-            // 根据滑块值缩放大尀(有尀.5倍，有天.5倀
+            // 根据滑块值缩放大尀(有尀.5倍，有时.5倀
 windEmoji.style.transform = `scale(${windVal / 40 + 0.5})`;
             birdEmoji.style.transform = `scale(${birdVal / 40 + 0.5})`;
 
@@ -301,7 +301,7 @@ if (parseInt(birdVal) > parseInt(windVal) + 20) {
         }
 
 
-        // --- 游成二逻辑：午餐决策机 ---
+        // --- 游戏二逻辑：午餐决策机 ---
 let weightH = 1; // 健康权重
 let weightT = 1; // 味道权重
 function changeWeight(type, delta) {
@@ -355,7 +355,7 @@ appleCard.classList.remove('pulse-win', 'border-red-400');
         }
 
 
-        // --- 游成三逻辑：分类工厅---
+        // --- 游戏三逻辑：分类工厂---
 const items = [
             { id: 1, color: 'red', shape: 'circle', symbol: '🔴' },
             { id: 2, color: 'blue', shape: 'circle', symbol: '🔵' },
@@ -405,8 +405,8 @@ const val = document.getElementById('sort-slider').value;
 setTimeout(() => {
                 if (val < 50) {
                     // 按颜色分 (错误状态
-titleLeft.innerText = "线色物体简";
-                    titleRight.innerText = "蓝色物体简";
+titleLeft.innerText = "线色物体箱";
+                    titleRight.innerText = "蓝色物体箱";
                     
                     items.forEach(item => {
                         const el = document.createElement('div');
@@ -422,8 +422,8 @@ titleLeft.innerText = "线色物体简";
 
                 } else {
                     // 按形状分 (正确状态
-titleLeft.innerText = "圆形简";
-                    titleRight.innerText = "方形简";
+titleLeft.innerText = "圆形箱";
+                    titleRight.innerText = "方形箱";
 
                     items.forEach(item => {
                         const el = document.createElement('div');
