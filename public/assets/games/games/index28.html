@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第28课：会编故事的机器人 (升级牀</title>
-    <!-- 引入 Tailwind CSS 进行快速样式构廀-->
+    <title>第28课：会编故事的机器人 (升级版)</title>
+    <!-- 引入 Tailwind CSS 进行快速样式构建-->
     <script src="../../libs/libs/tailwind.min.js"></script>
     <!-- 引入 SweetAlert2 用于可爱的弹窗-->
     <script src="../../libs/libs/sweetalert2.all.min.js"></script>
@@ -145,7 +145,7 @@
 
     <main class="max-w-4xl mx-auto px-4 w-full flex-grow flex flex-col">
         
-        <!-- ================= 游戏 1：火眼金睛捉捣蛋 ================= -->
+        <!-- ================= 游戏 1：火眼金睛捉怪蛋 ================= -->
         <section id="game-1" class="game-card bg-white rounded-3xl p-6 md:p-10 flex-grow animate__animated animate__fadeIn">
             <div class="text-center mb-6">
                 <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">第一关：火眼金睛捉捣蛀</h2>
@@ -246,7 +246,7 @@
                         </div>
                     </div>
 
-                    <!-- 待选碎牀-->
+                    <!-- 待选碎片-->
                     <div class="bg-white p-6 md:p-8 rounded-2xl border-2 border-gray-100 shadow-md">
                         <h3 class="text-center text-gray-500 mb-6 font-bold text-lg">👇 点击下方的卡片放入槽一👇</h3>
                         <div class="flex justify-center gap-4 md:gap-6 flex-wrap" id="puzzle-pieces-container">
@@ -382,7 +382,7 @@ for(let i=1; i<=3; i++) {
             if(gameId === 3) activeTab.classList.add('bg-accent', 'text-gray-800', 'border-yellow-600');
         }
 
-        /* ================= 游戏 1：扩充题题================= */
+        /* ================= 游戏 1：扩充题目 =================*/
         const g1Questions = [
             { text: "月亮是奶酪做的！", type: "fake", explanation: "月亮是巨大的岩石星球哦"  },
             { text: "小狗有四条腿", type: "true", explanation: "没错，这是我们都能看到的常识"  },
@@ -461,7 +461,7 @@ for(let i=1; i<=3; i++) {
         }
 
 
-        /* ================= 游戏 2：真相放大镜 (升级一个场景 ================= */
+        /* ================= 游戏 2：真相放大镜 (升级一个场景) ================= */
         const g2LevelsData = [
             {
                 statement: "月亮是奶酪做的，香喷喷的！",
@@ -474,7 +474,7 @@ for(let i=1; i<=3; i++) {
             {
                 statement: "昨天夜里，外星人飞船降落在我们学校操场上了！",
                 options: [
-                    { icon: '📺', text: '看早间新闻报遀', type: 'correct', msg: '聪明！新闻会报道真实发生的大事，如果有外星人一定会上电视！' },
+                    { icon: '📺', text: '看早间新闻报道', type: 'correct', msg: '聪明！新闻会报道真实发生的大事，如果有外星人一定会上电视！' },
                     { icon: '🎮', text: '去游戏机里找', type: 'wrong', msg: '游戏机里是虚拟的世界，不能当成现实的证据哦！' },
                     { icon: '🔮', text: '看魔法水晶球', type: 'wrong', msg: '水晶球是魔法故事里的玩具，不是查真相的工具哦！' }
                 ]
@@ -644,7 +644,7 @@ let badge = '';
             await initAudioContext();
             if (slots.includes(null)) {
                 playWrongSound();
-                Swal.fire({ title: '还没完成品', text: '请把三个步骤都填满！', icon: 'warning', confirmButtonColor: '#FF6B6B' });
+                Swal.fire({ title: '还没完成', text: '请把三个步骤都填满！', icon: 'warning', confirmButtonColor: '#FF6B6B' });
                 return;
             }
 
