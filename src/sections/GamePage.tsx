@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
 
@@ -196,7 +197,7 @@ export default function GamePage() {
       </div>
 
       {/* 游戏模态框 */}
-      {playingGame && (
+      {playingGame && createPortal(
         <div
           style={{
             position: 'fixed',
@@ -302,7 +303,7 @@ export default function GamePage() {
 
             {/* 底部鼓励语 */}
             <div style={{
-              padding: '16px 24px',
+              padding: '8px 24px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -310,28 +311,29 @@ export default function GamePage() {
               background: 'var(--kid-green-50)',
               flexShrink: 0,
             }}>
-              <img src="./assets/characters/characters/tuantuan.png" alt="团团" style={{ width: 50, height: 65 }} />
+              <img src="./assets/characters/characters/tuantuan.png" alt="团团" style={{ width: 30, height: 40 }} />
               <div style={{ textAlign: 'center' }}>
                 <p style={{
-                  fontSize: 16,
+                  fontSize: 13,
                   fontWeight: 700,
                   color: 'var(--kid-green-600)',
-                  margin: '0 0 4px 0',
+                  margin: 0,
                 }}>
                   团团和点点的加油声 🚀
                 </p>
                 <p style={{
-                  fontSize: 14,
+                  fontSize: 12,
                   color: 'var(--kid-gray-500)',
                   margin: 0,
                 }}>
                   加油！你一定能完成的！游戏里答错了也没关系，多试几次就好了！
                 </p>
               </div>
-              <img src="./assets/characters/characters/diandian.png" alt="点点" style={{ width: 46, height: 56 }} />
+              <img src="./assets/characters/characters/diandian.png" alt="点点" style={{ width: 28, height: 36 }} />
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

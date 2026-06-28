@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
 
@@ -317,7 +318,7 @@ export default function CinemaPage() {
       </div>
 
       {/* 视频播放器模态框 */}
-      {playingVideo && (
+      {playingVideo && createPortal(
         <div
           style={{
             position: 'fixed',
@@ -410,7 +411,8 @@ export default function CinemaPage() {
               </p>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
