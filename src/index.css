@@ -109,8 +109,8 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    /* 圆润童趣无衬线字体 */
-    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei Rounded',
+    /* 圆润童趣无衬线字体 - Baloo 2 优先 */
+    font-family: 'Baloo 2', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei Rounded',
                  'Microsoft YaHei', 'Noto Sans SC', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

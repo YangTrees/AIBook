@@ -1,4 +1,5 @@
 import type { TabType } from '../App';
+import { Home, Clapperboard, Gamepad2, BookOpen, Users } from 'lucide-react';
 
 interface BottomNavProps {
   currentTab: TabType;
@@ -8,7 +9,7 @@ interface BottomNavProps {
 interface TabItem {
   key: TabType;
   label: string;
-  emoji: string;
+  Icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
   activeColor: string;
   activeBg: string;
   activeGradient: string;
@@ -18,7 +19,7 @@ const TABS: TabItem[] = [
   {
     key: 'home',
     label: '首页',
-    emoji: '🏠',
+    Icon: Home,
     activeColor: '#2185d0',
     activeBg: 'var(--kid-blue-50)',
     activeGradient: 'linear-gradient(135deg, #eef7ff, #d6ecff)',
@@ -26,7 +27,7 @@ const TABS: TabItem[] = [
   {
     key: 'cinema',
     label: '影院',
-    emoji: '🎬',
+    Icon: Clapperboard,
     activeColor: '#7c5de0',
     activeBg: 'var(--kid-purple-50)',
     activeGradient: 'linear-gradient(135deg, #f5f0ff, #e4d9fe)',
@@ -34,7 +35,7 @@ const TABS: TabItem[] = [
   {
     key: 'game',
     label: '游戏',
-    emoji: '🎮',
+    Icon: Gamepad2,
     activeColor: '#27a872',
     activeBg: 'var(--kid-green-50)',
     activeGradient: 'linear-gradient(135deg, #edfaf4, #c7f0de)',
@@ -42,7 +43,7 @@ const TABS: TabItem[] = [
   {
     key: 'archive',
     label: '档案',
-    emoji: '📚',
+    Icon: BookOpen,
     activeColor: '#2185d0',
     activeBg: 'var(--kid-blue-50)',
     activeGradient: 'linear-gradient(135deg, #eef7ff, #d6ecff)',
@@ -50,7 +51,7 @@ const TABS: TabItem[] = [
   {
     key: 'parent',
     label: '家长',
-    emoji: '👨‍👩‍👧',
+    Icon: Users,
     activeColor: '#e07010',
     activeBg: 'var(--kid-orange-50)',
     activeGradient: 'linear-gradient(135deg, #fff6ed, #fde8cc)',
@@ -98,17 +99,15 @@ export default function BottomNav({ currentTab, onTabChange }: BottomNavProps) {
             )}
 
             {/* 图标 */}
-            <span
+            <tab.Icon
+              size={isActive ? 30 : 26}
+              strokeWidth={2}
               style={{
-                fontSize: isActive ? 30 : 26,
-                lineHeight: 1,
-                transition: 'font-size 0.18s cubic-bezier(0.34,1.56,0.64,1)',
-                /* 激活时加投影凸显 */
-                filter: isActive ? `drop-shadow(0 2px 4px ${tab.activeColor}44)` : 'none',
+                transition: 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)',
+                color: isActive ? tab.activeColor : 'var(--kid-gray-400)',
+                filter: isActive ? `drop-shadow(0 2px 6px ${tab.activeColor}44)` : 'none',
               }}
-            >
-              {tab.emoji}
-            </span>
+            />
 
             {/* 文字标签 */}
             <span

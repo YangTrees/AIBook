@@ -1,4 +1,5 @@
 import COURSE_DATA from '../data/courseData.ts';
+import { BookOpen, Target, Brain, Layers, Gamepad2, Award } from 'lucide-react';
 
 interface HomePageProps {
   onSelectCourse: (id: number) => void;
@@ -106,9 +107,9 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
           {/* 数据徽章 */}
           <div style={{ display: 'flex', gap: 16 }}>
             {[
-              { n: '32', label: '节课程', emoji: '📚' },
-              { n: '7',  label: '大模块', emoji: '🎯' },
-              { n: '320', label: '道题目', emoji: '🧠' },
+              { n: '32', label: '节课程', Icon: BookOpen },
+              { n: '7',  label: '大模块', Icon: Target },
+              { n: '320', label: '道题目', Icon: Brain },
             ].map((stat) => (
               <div
                 key={stat.n}
@@ -122,7 +123,7 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
                   minWidth: 100,
                 }}
               >
-                <div style={{ fontSize: 22, marginBottom: 2 }}>{stat.emoji}</div>
+                <stat.Icon size={22} strokeWidth={2} style={{ color: '#fff', margin: '0 auto 2px' }} />
                 <div style={{ color: '#fff', fontWeight: 900, fontSize: 30, lineHeight: 1 }}>{stat.n}</div>
                 <div style={{ color: 'rgba(255,255,255,0.78)', fontSize: 14, marginTop: 4 }}>{stat.label}</div>
               </div>
@@ -142,9 +143,9 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
         }}
       >
         {[
-          { emoji: '🎯', title: '7大学习模块', desc: '科普视频·知识讲解·绘本动画·知识问答·互动游戏·动手实践·课程总结', color: 'var(--kid-blue-400)' },
-          { emoji: '🎮', title: '互动游戏体验', desc: '每节课专属游戏，团团&点点陪玩，寓教于乐巩固知识', color: 'var(--kid-green-400)' },
-          { emoji: '🏅', title: '勋章成就激励', desc: '答题获得金银铜勋章，32节全部完成解锁毕业认证', color: 'var(--kid-orange-400)' },
+          { Icon: Layers, title: '7大学习模块', desc: '科普视频·知识讲解·绘本动画·知识问答·互动游戏·动手实践·课程总结', color: 'var(--kid-blue-400)' },
+          { Icon: Gamepad2, title: '互动游戏体验', desc: '每节课专属游戏，团团&点点陪玩，寓教于乐巩固知识', color: 'var(--kid-green-400)' },
+          { Icon: Award, title: '勋章成就激励', desc: '答题获得金银铜勋章，32节全部完成解锁毕业认证', color: 'var(--kid-orange-400)' },
         ].map((f) => (
           <div
             key={f.title}
@@ -163,7 +164,7 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
               (e.currentTarget as HTMLDivElement).style.boxShadow = '';
             }}
           >
-            <div style={{ fontSize: 44, marginBottom: 10 }}>{f.emoji}</div>
+            <f.Icon size={44} strokeWidth={1.75} style={{ color: f.color, margin: '0 auto 10px' }} />
             <div style={{ fontWeight: 800, fontSize: 20, color: f.color, marginBottom: 8 }}>{f.title}</div>
             <div style={{ fontSize: 15, color: 'var(--kid-gray-400)', lineHeight: 1.7 }}>{f.desc}</div>
           </div>

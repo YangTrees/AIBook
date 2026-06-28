@@ -5,6 +5,7 @@ import QuizModule from './modules/QuizModule';
 import GameModule from './modules/GameModule';
 import SummaryModule from './modules/SummaryModule';
 import { useStorage } from '../hooks/useStorage';
+import { Video, BookOpen, BookImage, Brain, Gamepad2, Wrench, Trophy } from 'lucide-react';
 
 interface CoursePageProps {
   courseId: number;
@@ -20,13 +21,13 @@ interface QuizRecord {
 }
 
 const MODULES = [
-  { id: 1, title: '科普视频', emoji: '🎥', subtitle: '课程导入', color: '#2185d0', bg: '#eef7ff' },
-  { id: 2, title: '核心知识', emoji: '📖', subtitle: '知识讲解', color: '#6244c8', bg: '#f5f0ff' },
-  { id: 3, title: '绘本视频', emoji: '🎞️', subtitle: '绘本动画', color: '#c244a0', bg: '#fdf0fb' },
-  { id: 4, title: '知识问答', emoji: '🧠', subtitle: '随堂检测', color: '#d05c10', bg: '#fff6ed' },
-  { id: 5, title: '互动游戏', emoji: '🎮', subtitle: '趣味实践', color: '#27a872', bg: '#edfaf4' },
-  { id: 6, title: '动手时间', emoji: '🧱', subtitle: '实操指导', color: '#d07010', bg: '#fffbeb' },
-  { id: 7, title: '课程总结', emoji: '🏅', subtitle: '成果汇总', color: '#c89010', bg: '#fffaeb' },
+  { id: 1, title: '科普视频', Icon: Video, subtitle: '课程导入', color: '#2185d0', bg: '#eef7ff' },
+  { id: 2, title: '核心知识', Icon: BookOpen, subtitle: '知识讲解', color: '#6244c8', bg: '#f5f0ff' },
+  { id: 3, title: '绘本视频', Icon: BookImage, subtitle: '绘本动画', color: '#c244a0', bg: '#fdf0fb' },
+  { id: 4, title: '知识问答', Icon: Brain, subtitle: '随堂检测', color: '#d05c10', bg: '#fff6ed' },
+  { id: 5, title: '互动游戏', Icon: Gamepad2, subtitle: '趣味实践', color: '#27a872', bg: '#edfaf4' },
+  { id: 6, title: '动手时间', Icon: Wrench, subtitle: '实操指导', color: '#d07010', bg: '#fffbeb' },
+  { id: 7, title: '课程总结', Icon: Trophy, subtitle: '成果汇总', color: '#c89010', bg: '#fffaeb' },
 ];
 
 /* 每个模块内容区域样式 */
@@ -388,7 +389,7 @@ export default function CoursePage({ courseId, onBack }: CoursePageProps) {
                   background: `linear-gradient(135deg, ${mod.color}dd, ${mod.color})`,
                 } : {}}
               >
-                <span style={{ fontSize: 20 }}>{mod.emoji}</span>
+                <mod.Icon size={20} strokeWidth={2} />
                 <span style={{ fontSize: 14 }}>{mod.title}</span>
                 {isCompleted && (
                   <span style={{
@@ -414,7 +415,7 @@ export default function CoursePage({ courseId, onBack }: CoursePageProps) {
           padding: '18px 24px',
           border: `1.5px solid ${activeMod.color}20`,
         }}>
-          <div style={{ fontSize: 40 }}>{activeMod.emoji}</div>
+          <activeMod.Icon size={40} strokeWidth={1.5} style={{ color: activeMod.color }} />
           <div style={{ flex: 1 }}>
             <h2 style={{ fontWeight: 900, fontSize: 26, color: activeMod.color, marginBottom: 2 }}>
               {activeMod.title}

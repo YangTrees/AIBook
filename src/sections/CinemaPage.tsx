@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
+import { BookOpen, GraduationCap, Blocks } from 'lucide-react';
 
 type ZoneType = 'picturebook' | 'science' | 'hands-on';
 
@@ -69,9 +70,9 @@ export default function CinemaPage() {
   const allVideos = generateVideoList();
 
   const zones = [
-    { key: 'picturebook' as ZoneType, label: '绘本动画区', emoji: '📖', color: 'var(--kid-purple-400)' },
-    { key: 'science' as ZoneType, label: '科普知识区', emoji: '🎓', color: 'var(--kid-blue-500)' },
-    { key: 'hands-on' as ZoneType, label: '动手教学区', emoji: '🧱', color: 'var(--kid-orange-400)' },
+    { key: 'picturebook' as ZoneType, label: '绘本动画区', Icon: BookOpen, color: 'var(--kid-purple-400)' },
+    { key: 'science' as ZoneType, label: '科普知识区', Icon: GraduationCap, color: 'var(--kid-blue-500)' },
+    { key: 'hands-on' as ZoneType, label: '动手教学区', Icon: Blocks, color: 'var(--kid-orange-400)' },
   ];
 
   const filteredVideos = allVideos.filter(v => v.zone === activeZone);
@@ -147,7 +148,7 @@ export default function CinemaPage() {
               gap: 10,
             }}
           >
-            <span style={{ fontSize: 24 }}>{zone.emoji}</span>
+            <zone.Icon size={24} strokeWidth={2} />
             {zone.label}
             <span style={{
               background: activeZone === zone.key ? 'rgba(255,255,255,0.3)' : 'var(--kid-gray-100)',

@@ -1,4 +1,5 @@
 import type { Course } from '../../data/courseData';
+import { Trophy, Medal, Award, Video, BookOpen, BookImage, Brain, Gamepad2, Wrench } from 'lucide-react';
 
 interface QuizRecord {
   total: number;
@@ -16,7 +17,7 @@ interface SummaryModuleProps {
 const MEDALS = [
   {
     min: 90,
-    emoji: '🥇',
+    Icon: Trophy,
     name: '金星勋章',
     gradient: 'linear-gradient(135deg, #f5c842, #e09010)',
     textColor: '#7a5200',
@@ -25,7 +26,7 @@ const MEDALS = [
   },
   {
     min: 70,
-    emoji: '🥈',
+    Icon: Medal,
     name: '银星勋章',
     gradient: 'linear-gradient(135deg, #c8d8e8, #8aa0b8)',
     textColor: '#4a6080',
@@ -34,7 +35,7 @@ const MEDALS = [
   },
   {
     min: 0,
-    emoji: '🥉',
+    Icon: Award,
     name: '铜星勋章',
     gradient: 'linear-gradient(135deg, #f5b060, #c87020)',
     textColor: '#7a4010',
@@ -44,13 +45,13 @@ const MEDALS = [
 ];
 
 const LEARNING_STEPS = [
-  { icon: '🎥', label: '科普视频' },
-  { icon: '📖', label: '核心知识' },
-  { icon: '🎞️', label: '绘本视频' },
-  { icon: '🧠', label: '知识问答' },
-  { icon: '🎮', label: '互动游戏' },
-  { icon: '🧱', label: '动手时间' },
-  { icon: '🏅', label: '课程总结' },
+  { Icon: Video, label: '科普视频' },
+  { Icon: BookOpen, label: '核心知识' },
+  { Icon: BookImage, label: '绘本视频' },
+  { Icon: Brain, label: '知识问答' },
+  { Icon: Gamepad2, label: '互动游戏' },
+  { Icon: Wrench, label: '动手时间' },
+  { Icon: Trophy, label: '课程总结' },
 ];
 
 export default function SummaryModule({ course, quizRecord }: SummaryModuleProps) {
@@ -81,7 +82,7 @@ export default function SummaryModule({ course, quizRecord }: SummaryModuleProps
           width: 160, height: 160, borderRadius: '50%',
           background: 'rgba(255,255,255,0.1)',
         }} />
-        <div style={{ fontSize: 64, marginBottom: 12 }}>{medal.emoji}</div>
+        <medal.Icon size={64} strokeWidth={1.5} style={{ color: medal.textColor, marginBottom: 12 }} />
         <h3 style={{ fontSize: 30, fontWeight: 900, marginBottom: 8 }}>课程学习完成！</h3>
         <p style={{ fontSize: 17, opacity: 0.9 }}>第{course.id}课 · {course.title}</p>
       </div>
@@ -188,7 +189,7 @@ export default function SummaryModule({ course, quizRecord }: SummaryModuleProps
               borderRadius: 999,
               padding: '7px 18px',
             }}>
-              <span style={{ fontSize: 18 }}>{step.icon}</span>
+              <step.Icon size={18} strokeWidth={2} style={{ color: 'var(--kid-green-400)' }} />
               <span style={{ fontSize: 14, color: 'var(--kid-gray-600)', fontWeight: 600 }}>{step.label}</span>
               <span style={{ fontSize: 14, color: 'var(--kid-green-400)', fontWeight: 800 }}>✓</span>
             </div>
@@ -204,7 +205,7 @@ export default function SummaryModule({ course, quizRecord }: SummaryModuleProps
         border: `1.5px solid ${medal.borderColor}`,
         display: 'flex', alignItems: 'center', gap: 20,
       } as React.CSSProperties}>
-        <div style={{ fontSize: 48 }}>{medal.emoji}</div>
+        <medal.Icon size={48} strokeWidth={1.5} style={{ color: medal.textColor }} />
         <div>
           <div style={{ fontWeight: 900, fontSize: 22, color: medal.textColor }}>{medal.name}</div>
           <p style={{ fontSize: 15, color: 'var(--kid-gray-400)', marginTop: 4 }}>

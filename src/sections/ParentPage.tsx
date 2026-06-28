@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
+import { BarChart3, BookOpen, Target, Lightbulb, Star, RefreshCw } from 'lucide-react';
 
 type SubTabType = 'data' | 'outline' | 'weak' | 'advice';
 
@@ -10,10 +11,10 @@ export default function ParentPage() {
   const stats = getStats();
 
   const subTabs = [
-    { key: 'data' as SubTabType, label: '学习数据', emoji: '📊' },
-    { key: 'outline' as SubTabType, label: '课程大纲', emoji: '📚' },
-    { key: 'weak' as SubTabType, label: '薄弱分析', emoji: '🎯' },
-    { key: 'advice' as SubTabType, label: '学习建议', emoji: '💡' },
+    { key: 'data' as SubTabType, label: '学习数据', Icon: BarChart3 },
+    { key: 'outline' as SubTabType, label: '课程大纲', Icon: BookOpen },
+    { key: 'weak' as SubTabType, label: '薄弱分析', Icon: Target },
+    { key: 'advice' as SubTabType, label: '学习建议', Icon: Lightbulb },
   ];
 
   // 计算薄弱知识点
@@ -203,7 +204,7 @@ export default function ParentPage() {
               gap: 8,
             }}
           >
-            <span style={{ fontSize: 20 }}>{tab.emoji}</span>
+            <tab.Icon size={20} strokeWidth={2} />
             {tab.label}
           </button>
         ))}
@@ -519,10 +520,10 @@ export default function ParentPage() {
               </h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
                 {[
-                  { emoji: '🌟', title: '保持学习节奏', desc: '建议每天学习1-2节课，保持稳定的学习节奏比一次性学很多更有效。' },
-                  { emoji: '🔄', title: '温故知新', desc: '学完新课后，可以第二天再复习一遍，做做错题本里的题目。' },
-                  { emoji: '🎮', title: '游戏是学习', desc: '互动游戏是很好的学习方式，让孩子在游戏中理解知识点。' },
-                  { emoji: '💪', title: '错题不可怕', desc: '做错了题目是好事，说明学到了新东西！关键是从错误中学习。' },
+                  { Icon: Star, title: '保持学习节奏', desc: '建议每天学习1-2节课，保持稳定的学习节奏比一次性学很多更有效。' },
+                  { Icon: RefreshCw, title: '温故知新', desc: '学完新课后，可以第二天再复习一遍，做做错题本里的题目。' },
+                  { Icon: Gamepad2, title: '游戏是学习', desc: '互动游戏是很好的学习方式，让孩子在游戏中理解知识点。' },
+                  { Icon: Target, title: '错题不可怕', desc: '做错了题目是好事，说明学到了新东西！关键是从错误中学习。' },
                 ].map((tip, idx) => (
                   <div
                     key={idx}
@@ -534,7 +535,7 @@ export default function ParentPage() {
                       gap: 16,
                     }}
                   >
-                    <div style={{ fontSize: 36 }}>{tip.emoji}</div>
+                    <tip.Icon size={36} strokeWidth={1.75} style={{ color: 'var(--kid-blue-400)', flexShrink: 0 }} />
                     <div>
                       <h4 style={{ fontSize: 16, fontWeight: 800, color: 'var(--kid-gray-700)', margin: '0 0 6px 0' }}>
                         {tip.title}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
+import { BarChart3, ClipboardList, FileText, Award } from 'lucide-react';
 
 type SubTabType = 'overview' | 'details' | 'wrong' | 'badges';
 
@@ -10,10 +11,10 @@ export default function ArchivePage() {
   const stats = getStats();
 
   const subTabs = [
-    { key: 'overview' as SubTabType, label: '学习总览', emoji: '📊' },
-    { key: 'details' as SubTabType, label: '课程详情', emoji: '📋' },
-    { key: 'wrong' as SubTabType, label: '错题本', emoji: '📝' },
-    { key: 'badges' as SubTabType, label: '我的勋章', emoji: '🏅' },
+    { key: 'overview' as SubTabType, label: '学习总览', Icon: BarChart3 },
+    { key: 'details' as SubTabType, label: '课程详情', Icon: ClipboardList },
+    { key: 'wrong' as SubTabType, label: '错题本', Icon: FileText },
+    { key: 'badges' as SubTabType, label: '我的勋章', Icon: Award },
   ];
 
   // 收集所有错题
@@ -168,7 +169,7 @@ export default function ArchivePage() {
               gap: 8,
             }}
           >
-            <span style={{ fontSize: 20 }}>{tab.emoji}</span>
+            <tab.Icon size={20} strokeWidth={2} />
             {tab.label}
           </button>
         ))}

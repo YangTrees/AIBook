@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Gamepad2 } from 'lucide-react';
 
 interface GameModuleProps {
   courseId: number;
@@ -25,7 +26,7 @@ export default function GameModule({ courseId, numStr, onComplete }: GameModuleP
           textAlign: 'center',
           border: '1.5px solid var(--kid-green-100)',
         }}>
-          <div style={{ fontSize: 56, marginBottom: 10 }}>🎮</div>
+          <Gamepad2 size={56} strokeWidth={1.5} style={{ color: '#27a872', marginBottom: 10 }} />
           <h3 style={{ fontWeight: 900, fontSize: 24, color: '#1a7a52', marginBottom: 6 }}>互动游戏</h3>
           <p style={{ fontSize: 16, color: '#27a872' }}>第{courseId}课专属互动小游戏</p>
         </div>
