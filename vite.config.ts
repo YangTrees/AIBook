@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/AIBook/',
+  base: process.env.NODE_ENV === 'production' ? '/AIBook/' : './',
   plugins: [react()],
   resolve: {
     alias: {
