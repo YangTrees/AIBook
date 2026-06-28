@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
-import { BarChart3, BookOpen, Target, Lightbulb, Star, RefreshCw } from 'lucide-react';
+import { BarChart3, BookOpen, Target, Lightbulb, Star, RefreshCw, Gamepad2 } from 'lucide-react';
 
 type SubTabType = 'data' | 'outline' | 'weak' | 'advice';
 

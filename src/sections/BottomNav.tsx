@@ -99,15 +99,19 @@ export default function BottomNav({ currentTab, onTabChange }: BottomNavProps) {
             )}
 
             {/* 图标 */}
-            <tab.Icon
-              size={isActive ? 30 : 26}
-              strokeWidth={2}
+            <span
               style={{
-                transition: 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)',
+                display: 'flex',
                 color: isActive ? tab.activeColor : 'var(--kid-gray-400)',
+                transition: 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)',
                 filter: isActive ? `drop-shadow(0 2px 6px ${tab.activeColor}44)` : 'none',
               }}
-            />
+            >
+              <tab.Icon
+                size={isActive ? 30 : 26}
+                strokeWidth={2}
+              />
+            </span>
 
             {/* 文字标签 */}
             <span
