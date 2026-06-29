@@ -33,99 +33,107 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
           borderRadius: 32,
           overflow: 'hidden',
           /* 标题栏背景图 + 渐变叠加，确保文字可读 */
-          background: 'linear-gradient(135deg, rgba(74,158,232,0.55) 0%, rgba(124,142,232,0.45) 40%, rgba(176,106,216,0.4) 100%), url(assets/backgrounds/backgrounds/title_bg.jpg) center center / cover no-repeat',
-          boxShadow: '0 16px 48px rgba(74, 158, 232, 0.22)',
-          padding: '44px 64px',
+          background: 'linear-gradient(145deg, rgba(74,158,232,0.72) 0%, rgba(124,93,224,0.65) 50%, rgba(255,107,107,0.5) 100%), url(assets/backgrounds/backgrounds/title_bg.jpg) center center / cover no-repeat',
+          boxShadow: '0 20px 60px rgba(74, 158, 232, 0.3), 0 4px 20px rgba(255, 107, 107, 0.2)',
+          padding: '52px 72px',
           position: 'relative',
-          minHeight: 240,
+          minHeight: 280,
         }}
       >
-        {/* 背景装饰圆 */}
+        {/* 签名装饰：大圆形渐变光晕 - 右上角 */}
         <div style={{
-          position: 'absolute', right: -60, top: -60,
-          width: 360, height: 360,
+          position: 'absolute', right: 60, top: -40,
+          width: 400, height: 400,
           borderRadius: '50%',
-          background: 'rgba(255,255,255,0.07)',
+          background: 'radial-gradient(circle, rgba(255,202,87,0.25) 0%, rgba(255,107,107,0.15) 40%, transparent 70%)',
           pointerEvents: 'none',
         }} />
+        {/* 签名装饰：左下角青色光晕 */}
         <div style={{
-          position: 'absolute', right: 80, bottom: -80,
-          width: 240, height: 240,
+          position: 'absolute', left: 80, bottom: -60,
+          width: 280, height: 280,
           borderRadius: '50%',
-          background: 'rgba(255,255,255,0.05)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute', left: '45%', top: 0, bottom: 0,
-          width: '2px',
-          background: 'rgba(255,255,255,0.08)',
+          background: 'radial-gradient(circle, rgba(72,219,251,0.2) 0%, transparent 70%)',
           pointerEvents: 'none',
         }} />
 
-        <div className="relative" style={{ maxWidth: 860, zIndex: 2 }}>
-          {/* 标签行 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-          <span style={{
-              background: 'rgba(255,255,255,0.22)',
+        <div className="relative" style={{ maxWidth: 900, zIndex: 2 }}>
+          {/* 标签行 - 更醒目的设计 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
+            <span style={{
+              background: 'linear-gradient(135deg, #ff6b6b, #feca57)',
               color: '#fff',
               fontSize: 15,
+              fontWeight: 800,
+              padding: '6px 20px',
+              borderRadius: 999,
+              boxShadow: '0 4px 14px rgba(255,107,107,0.35)',
+              letterSpacing: '0.04em',
+            }}>
+              ✨ 32节完整课程
+            </span>
+            <span style={{
+              background: 'rgba(255,255,255,0.2)',
+              color: '#fff',
+              fontSize: 14,
               fontWeight: 700,
-              padding: '5px 18px',
+              padding: '6px 18px',
               borderRadius: 999,
               backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255,255,255,0.25)',
-              letterSpacing: '0.05em',
+              border: '1px solid rgba(255,255,255,0.3)',
             }}>
-              32节完整课程 · 全系统学习
+              7大模块 · 系统学习
             </span>
           </div>
 
-          {/* 主标题 */}
+          {/* 主标题 - 更大更有冲击力 */}
           <h1 style={{
-            fontSize: 52,
+            fontSize: 58,
             fontWeight: 900,
             color: '#fff',
-            lineHeight: 1.25,
-            marginBottom: 16,
-            textShadow: '0 2px 12px rgba(0,0,0,0.12)',
-            letterSpacing: '-0.01em',
+            lineHeight: 1.2,
+            marginBottom: 18,
+            textShadow: '0 4px 20px rgba(0,0,0,0.15)',
+            letterSpacing: '-0.02em',
           }}>
             AI人工智能<br />启蒙绘本课程
           </h1>
 
-          {/* 副标题 */}
+          {/* 副标题 - 更清晰 */}
           <p style={{
-            color: 'rgba(255,255,255,0.88)',
-            fontSize: 20,
-            lineHeight: 1.7,
-            marginBottom: 28,
+            color: 'rgba(255,255,255,0.92)',
+            fontSize: 21,
+            lineHeight: 1.75,
+            marginBottom: 36,
+            maxWidth: 680,
           }}>
             和团团、点点一起探索人工智能的神奇世界，<br />
             从信息到深度学习，系统掌握AI核心知识！
           </p>
 
-          {/* 数据徽章 */}
-          <div style={{ display: 'flex', gap: 16 }}>
+          {/* 数据徽章 - 更精致的卡片 */}
+          <div style={{ display: 'flex', gap: 18 }}>
             {[
-              { n: '32', label: '节课程', Icon: BookOpen },
-              { n: '7',  label: '大模块', Icon: Target },
-              { n: '320', label: '道题目', Icon: Brain },
+              { n: '32', label: '节课程', Icon: BookOpen, color: '#feca57' },
+              { n: '7',  label: '大模块', Icon: Target, color: '#48dbfb' },
+              { n: '320', label: '道题目', Icon: Brain, color: '#ff6b6b' },
             ].map((stat) => (
               <div
                 key={stat.n}
                 style={{
-                  background: 'rgba(255,255,255,0.18)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.28)',
-                  borderRadius: 20,
-                  padding: '14px 28px',
+                  background: 'rgba(255,255,255,0.15)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  borderRadius: 22,
+                  padding: '16px 32px',
                   textAlign: 'center',
-                  minWidth: 100,
+                  minWidth: 110,
+                  boxShadow: `0 4px 20px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)`,
                 }}
               >
-                <stat.Icon size={22} strokeWidth={2} style={{ color: '#fff', margin: '0 auto 2px' }} />
-                <div style={{ color: '#fff', fontWeight: 900, fontSize: 30, lineHeight: 1 }}>{stat.n}</div>
-                <div style={{ color: 'rgba(255,255,255,0.78)', fontSize: 14, marginTop: 4 }}>{stat.label}</div>
+                <stat.Icon size={24} strokeWidth={2} style={{ color: stat.color, margin: '0 auto 4px' }} />
+                <div style={{ color: '#fff', fontWeight: 900, fontSize: 34, lineHeight: 1 }}>{stat.n}</div>
+                <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, marginTop: 4, fontWeight: 600 }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -174,36 +182,37 @@ export default function HomePage({ onSelectCourse }: HomePageProps) {
       {/* ===== 课程网格标题 ===== */}
       <div
         className="kid-float-in delay-200"
-        style={{ margin: '8px 48px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        style={{ margin: '32px 48px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
       >
         <div>
-          <h2 style={{ fontSize: 32, fontWeight: 900, color: 'var(--kid-gray-900)', marginBottom: 4 }}>
+          <h2 style={{ fontSize: 34, fontWeight: 900, color: 'var(--kid-gray-900)', marginBottom: 6, letterSpacing: '-0.01em' }}>
             全部课程
           </h2>
-          <p style={{ fontSize: 17, color: 'var(--kid-gray-400)' }}>
+          <p style={{ fontSize: 17, color: 'var(--kid-gray-400)', fontWeight: 500 }}>
             点击课程卡片，开始探索AI世界 ✨
           </p>
         </div>
         <div style={{
-          background: 'var(--kid-blue-50)',
-          border: '1.5px solid var(--kid-blue-100)',
-          borderRadius: 16,
-          padding: '10px 24px',
+          background: 'linear-gradient(135deg, var(--kid-blue-50), var(--kid-purple-50))',
+          border: '2px solid var(--kid-blue-100)',
+          borderRadius: 20,
+          padding: '12px 28px',
           color: 'var(--kid-blue-500)',
-          fontWeight: 700,
-          fontSize: 15,
+          fontWeight: 800,
+          fontSize: 16,
+          boxShadow: '0 4px 14px rgba(33,133,208,0.1)',
         }}>
           共 32 节课 · 4大章节
         </div>
       </div>
 
-      {/* ===== 课程卡片网格 ===== */}
+      {/* ===== 课程卡片网格 - 调整为6列更有呼吸感 ===== */}
       <div
         className="kid-float-in delay-300"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(8, 1fr)',
-          gap: 20,
+          gridTemplateColumns: 'repeat(6, 1fr)',
+          gap: 24,
           margin: '0 48px',
         }}
       >
