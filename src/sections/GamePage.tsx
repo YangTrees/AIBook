@@ -1,11 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import COURSE_DATA from '../data/courseData';
 import { useStorage } from '../hooks/useStorage';
 
 export default function GamePage() {
   const [playingGame, setPlayingGame] = useState<{ lessonId: number; title: string } | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const { storage, markGameCompleted } = useStorage();
+
+  // Handle modal animation state
+  useEffect(() => {
+    if (playingGame) {
+      setModalVisible(true);
+    } else {
+      setModalVisible(false);
+    }
+  }, [playingGame]);
 
   const gameList = COURSE_DATA.map(course => ({
     lessonId: course.id,
@@ -30,6 +41,11 @@ export default function GamePage() {
   const handleGameComplete = () => {
     if (playingGame) {
       markGameCompleted(playingGame.lessonId);
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+        setPlayingGame(null);
+      }, 2000);
     }
   };
 
@@ -63,13 +79,14 @@ export default function GamePage() {
             <div
               key={game.lessonId}
               onClick={() => handlePlayGame(game)}
+              className="game-card"
               style={{
                 background: 'white',
                 borderRadius: 24,
                 overflow: 'hidden',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 border: '2px solid var(--kid-gray-100)',
                 position: 'relative',
               }}
@@ -114,7 +131,7 @@ export default function GamePage() {
                   justifyContent: 'center',
                   background: 'rgba(0,0,0,0.3)',
                 }}>
-                  <div style={{
+                  <div className="game-play-btn" style={{
                     width: 72,
                     height: 72,
                     borderRadius: '50%',
@@ -125,13 +142,13 @@ export default function GamePage() {
                     fontSize: 32,
                     boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
                   }}>
-                    🎮
+                    <span style={{ marginLeft: 4 }}>▶</span>
                   </div>
                 </div>
 
                 {/* 已完成标记 */}
                 {progress === 100 && (
-                  <div style={{
+                  <div className="completed-badge" style={{
                     position: 'absolute',
                     top: 10,
                     right: 10,
@@ -199,17 +216,21 @@ export default function GamePage() {
       {/* 游戏模态框 */}
       {playingGame && createPortal(
         <div
+          className="game-modal-backdrop"
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0,0,0,0.9)',
+            background: modalVisible ? 'rgba(0,0,0,0.85)' : 'rgba(0,0,0,0)',
+            backdropFilter: modalVisible ? 'blur(8px)' : 'blur(0px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 1000,
+            transition: 'all 0.35s ease',
           }}
         >
           <div
+            className="game-modal-content kid-bounce-in"
             style={{
               width: '95%',
               maxWidth: 1400,
@@ -219,6 +240,7 @@ export default function GamePage() {
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.4)',
             }}
           >
             {/* 游戏头部 */}
@@ -257,6 +279,7 @@ export default function GamePage() {
                     const iframe = document.querySelector('iframe');
                     if (iframe) iframe.src = iframe.src;
                   }}
+                  className="kid-btn game-control-btn"
                   style={{
                     background: 'rgba(255,255,255,0.2)',
                     border: 'none',
@@ -272,8 +295,9 @@ export default function GamePage() {
                 </button>
                 <button
                   onClick={handleGameComplete}
+                  className="kid-btn game-control-btn-complete"
                   style={{
-                    background: 'var(--kid-yellow-400)',
+                    background: 'linear-gradient(135deg, #feca57, #f08a24)',
                     border: 'none',
                     borderRadius: 10,
                     padding: '8px 20px',
@@ -281,6 +305,7 @@ export default function GamePage() {
                     fontSize: 14,
                     fontWeight: 700,
                     cursor: 'pointer',
+                    boxShadow: '0 4px 14px rgba(240, 138, 36, 0.35)',
                   }}
                 >
                   ✅ 我完成了
@@ -332,6 +357,24 @@ export default function GamePage() {
               <img src="./assets/characters/characters/diandian.png" alt="点点" style={{ width: 28, height: 36 }} />
             </div>
           </div>
+
+          {/* 彩带庆祝动画 */}
+          {showConfetti && (
+            <div className="confetti-container">
+              {Array.from({ length: 50 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="confetti-piece"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    background: ['#feca57', '#ff6b6b', '#48dbfb', '#1a8c5c', '#a55eea', '#f08a24'][Math.floor(Math.random() * 6)],
+                    animationDelay: `${Math.random() * 0.5}s`,
+                    animationDuration: `${1.5 + Math.random() * 1}s`,
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>,
         document.body
       )}

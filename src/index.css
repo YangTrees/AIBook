@@ -343,6 +343,12 @@
   background: var(--kid-green-50);
   color: var(--kid-green-500);
   box-shadow: 0 0 0 3px rgba(39, 168, 114, 0.15);
+  animation: correct-pulse 0.5s ease;
+}
+@keyframes correct-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
 }
 /* 错误 */
 .kid-quiz-option.wrong {
@@ -350,6 +356,14 @@
   background: var(--kid-red-50);
   color: var(--kid-red-500);
   box-shadow: 0 0 0 3px rgba(224, 80, 80, 0.12);
+  animation: wrong-shake 0.4s ease;
+}
+@keyframes wrong-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
 }
 /* 禁用（已答对后其余选项）*/
 .kid-quiz-option.disabled {
@@ -497,6 +511,15 @@
 .kid-bounce-in { animation: kid-bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .kid-slide-up  { animation: kid-slide-up  0.3s ease both; }
 
+/* 已完成徽章闪烁动画 */
+.completed-badge {
+  animation: badge-glow 2s ease-in-out infinite;
+}
+@keyframes badge-glow {
+  0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  50% { box-shadow: 0 2px 16px rgba(26, 140, 92, 0.6); }
+}
+
 /* 延迟工具类 */
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }
@@ -519,6 +542,95 @@
   border-radius: var(--radius-full);
   transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   height: 100%;
+}
+
+/* ============================================================
+   游戏卡片交互
+   ============================================================ */
+.game-card {
+  transform-style: preserve-3d;
+}
+.game-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  border-color: var(--kid-blue-200);
+  box-shadow: 0 20px 50px rgba(33, 133, 208, 0.22);
+}
+.game-card:hover .game-play-btn {
+  transform: scale(1.15);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+}
+.game-card:active {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 10px 30px rgba(33, 133, 208, 0.18);
+}
+
+/* 游戏播放按钮 - 呼吸动画 */
+.game-play-btn {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: game-btn-breathe 2s ease-in-out infinite;
+}
+@keyframes game-btn-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  50% { transform: scale(1.08); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+}
+.game-card:hover .game-play-btn {
+  animation: none;
+  transform: scale(1.15);
+}
+
+/* 游戏控制按钮 */
+.game-control-btn {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.game-control-btn:hover {
+  background: rgba(255,255,255,0.35) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+.game-control-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+.game-control-btn-complete {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.game-control-btn-complete:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(240, 138, 36, 0.5) !important;
+}
+.game-control-btn-complete:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* 彩带庆祝动画 */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1001;
+}
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 18px;
+  border-radius: 3px;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
 }
 
 /* ============================================================
